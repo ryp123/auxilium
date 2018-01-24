@@ -7,4 +7,4 @@ Contribute
 --------------------
 
 We've set up a separate document for our
-[contribution guidelines](https://github.com/angular/angular.js/blob/master/CONTRIBUTING.md).
+[contribution guidelines](CONTRIBUTING.md).

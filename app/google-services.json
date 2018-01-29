@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "973402036675",
+    "firebase_url": "https://auxilium-ecd15.firebaseio.com",
+    "project_id": "auxilium-ecd15",
+    "storage_bucket": "auxilium-ecd15.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:973402036675:android:305dc6b30fd12750",
+        "android_client_info": {
+          "package_name": "ca.usask.auxilium"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "973402036675-b32fca6d1rlv53h1l2uppt529suq6vnb.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "ca.usask.auxilium",
+            "certificate_hash": "c9c78b0ec00c8babdc422c2bbfdb27df1aefae46"
+          }
+        },
+        {
+          "client_id": "973402036675-qjig9g4g8hdrda8ip5tt4v34ubtucf5q.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCANogh8M9abIHMj7TZ6KoxdDafXJQVP4c"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "973402036675-qjig9g4g8hdrda8ip5tt4v34ubtucf5q.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

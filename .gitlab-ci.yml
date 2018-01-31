@@ -1,0 +1,14 @@
+image: ryp123/android-sdk
+
+stages:
+  - lint
+
+linter:
+  stage: lint
+  script:
+    - ./gradlew lint
+    - ./gradlew checkstyle
+  artifacts:
+    paths:
+      - app/build/reports/lint-result.html
+      - build/reports/checkstyle/checkstyle.html

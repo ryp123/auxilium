@@ -17,7 +17,8 @@
             </intent-filter>
         </activity>
         <activity android:name=".auth.BaseActivity" />
-        <activity android:name=".auth.CreateRoomActivity"></activity>
+        <activity android:name=".auth.CreateRoomActivity"/>
+        <activity android:name=".auth.JoinActivity"/>
     </application>
 
 </manifest>

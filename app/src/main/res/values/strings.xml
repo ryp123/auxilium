@@ -77,4 +77,9 @@
 
     <string name="id_fmt">User ID: %s</string>
     <string name="email_fmt">Email: %s</string>
+
+    <string name="help_button">Help</string>
+    <string name="account_button">Account</string>
+    <string name="about_button">About</string>
+
 </resources>

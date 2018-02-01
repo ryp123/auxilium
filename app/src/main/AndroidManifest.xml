@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-          package="ca.usask.auxilium">
+    package="ca.usask.auxilium">
 
     <application
         android:allowBackup="true"
@@ -11,13 +11,13 @@
         android:theme="@style/AppTheme">
         <activity android:name=".auth.SignInActivity">
             <intent-filter>
-                <action android:name="android.intent.action.MAIN"/>
+                <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER"/>
+                <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".auth.BaseActivity"></activity>
-
+        <activity android:name=".auth.BaseActivity" />
+        <activity android:name=".auth.JoinActivity"></activity>
     </application>
 
 </manifest>

@@ -8,6 +8,7 @@
     android:background="#f7f6f4"
     android:visibility="visible"
     tools:context="ca.usask.auxilium.auth.JoinActivity">
+    <!--android:layout_height="wrap_content"-->
 
     <ImageView
         android:id="@+id/joinImg"
@@ -85,11 +86,12 @@
         android:layout_marginEnd="17dp"
         android:layout_marginStart="17dp"
         android:background="#ffffff"
+        android:text="More info"
+        android:textSize="10sp"
         android:ems="10"
         android:inputType="textMultiLine"
         android:selectAllOnFocus="false"
         android:singleLine="false"
-        android:text="@string/more_info_text"
         android:textAlignment="textStart"
         android:textAppearance="@style/TextAppearance.AppCompat.Body1"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -128,6 +130,10 @@
         android:layout_marginStart="16dp"
         android:layout_marginTop="287dp"
         android:background="#b3e5b3"
+        android:fontFamily="sans-serif"
+        android:text="Friend Requests"
+        android:textAlignment="textStart"
+        android:textColor="@android:color/black"
         android:clipToPadding="false"
         android:foregroundTint="@color/grey_300"
         android:scrollbarStyle="insideOverlay"
@@ -137,12 +143,23 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
+    <!--<ScrollView-->
+        <!--style="@android:style/Widget.Holo.ScrollView"-->
+        <!--android:layout_width="352dp"-->
+        <!--android:layout_height="89dp"-->
+        <!--android:clipToPadding="false"-->
+        <!--android:foregroundTint="@color/grey_300"-->
+        <!--android:visibility="visible"-->
+        <!--tools:layout_editor_absoluteX="16dp"-->
+        <!--tools:layout_editor_absoluteY="291dp">-->
+
         <LinearLayout
             android:id="@+id/friendRqstsScroll"
             android:layout_width="368dp"
             android:layout_height="wrap_content"
             android:orientation="vertical"
             android:visibility="visible" />
+
     </ScrollView>
 
     <EditText

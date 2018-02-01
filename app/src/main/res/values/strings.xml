@@ -80,6 +80,7 @@
 
 
 
+
     <string name="enter_mssg">Enter Message</string>
     <string name="send_button">SEND</string>
 
@@ -89,4 +90,6 @@
 
 
 
+
+    <string name="place_holder">Temp String</string>
 </resources>

@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="164dp"
+        android:layout_height="147dp"
+        app:srcCompat="@drawable/default_profile_picture"
+        tools:layout_editor_absoluteX="110dp"
+        tools:layout_editor_absoluteY="28dp" />
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="164dp"
+        android:layout_height="28dp"
+        android:gravity="center"
+        android:text="John Doe"
+        android:textAppearance="@style/TextAppearance.AppCompat"
+
+        android:textSize="24sp"
+        tools:layout_editor_absoluteX="110dp"
+        tools:layout_editor_absoluteY="175dp" />
+
+    <View
+        android:layout_width="315dp"
+        android:layout_height="2dp"
+        android:background="#A9A9A9"
+        android:gravity="center"
+
+        tools:layout_editor_absoluteX="30"
+        tools:layout_editor_absoluteY="224dp" />
+
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Phone Number: "
+        android:textSize="18sp"
+        tools:layout_editor_absoluteX="30dp"
+        tools:layout_editor_absoluteY="292dp" />
+
+    <TextView
+        android:id="@+id/textView3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="E-mail:"
+        android:textSize="18sp"
+        tools:layout_editor_absoluteX="30dp"
+        tools:layout_editor_absoluteY="337dp" />
+
+    <TextView
+        android:id="@+id/textView4"
+        android:layout_width="73dp"
+        android:layout_height="0dp"
+        android:text="Ailment:"
+        android:textSize="18sp"
+        tools:layout_editor_absoluteX="30dp"
+        tools:layout_editor_absoluteY="243dp" />
+
+    <Button
+        android:id="@+id/button2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Resources"
+        tools:layout_editor_absoluteX="30dp"
+        tools:layout_editor_absoluteY="373dp" />
+
+    <Button
+        android:id="@+id/button3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="  Emergency Contact  "
+        android:background="#ff00"
+
+        tools:layout_editor_absoluteX="30dp"
+        tools:layout_editor_absoluteY="435dp" />
+
+</android.support.constraint.ConstraintLayout>

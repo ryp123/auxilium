@@ -10,6 +10,7 @@
         android:id="@+id/imageView"
         android:layout_width="164dp"
         android:layout_height="147dp"
+<<<<<<< HEAD
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
@@ -18,11 +19,17 @@
         app:layout_constraintTop_toTopOf="parent"
         android:contentDescription="@string/about_button"
         app:srcCompat="@drawable/default_profile_picture" />
+=======
+        app:srcCompat="@drawable/default_profile_picture"
+        tools:layout_editor_absoluteX="110dp"
+        tools:layout_editor_absoluteY="28dp" />
+>>>>>>> added a default profile picture as well as a simple profile page xml
 
     <TextView
         android:id="@+id/textView"
         android:layout_width="164dp"
         android:layout_height="28dp"
+<<<<<<< HEAD
         android:layout_marginBottom="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
@@ -49,33 +56,66 @@
         android:gravity="center"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+=======
+        android:gravity="center"
+        android:text="John Doe"
+        android:textAppearance="@style/TextAppearance.AppCompat"
+
+        android:textSize="24sp"
+        tools:layout_editor_absoluteX="110dp"
+        tools:layout_editor_absoluteY="175dp" />
+
+    <View
+        android:layout_width="315dp"
+        android:layout_height="2dp"
+        android:background="#A9A9A9"
+        android:gravity="center"
+
+        tools:layout_editor_absoluteX="30"
+        tools:layout_editor_absoluteY="224dp" />
+>>>>>>> added a default profile picture as well as a simple profile page xml
 
     <TextView
         android:id="@+id/textView2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+<<<<<<< HEAD
         android:layout_marginBottom="184dp"
         android:layout_marginStart="16dp"
         android:text="@string/concerned_phone"
         android:textSize="18sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
+=======
+        android:text="Phone Number: "
+        android:textSize="18sp"
+        tools:layout_editor_absoluteX="30dp"
+        tools:layout_editor_absoluteY="292dp" />
+>>>>>>> added a default profile picture as well as a simple profile page xml
 
     <TextView
         android:id="@+id/textView3"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+<<<<<<< HEAD
         android:layout_marginBottom="140dp"
         android:layout_marginStart="16dp"
         android:text="@string/concerned_email"
         android:textSize="18sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
+=======
+        android:text="E-mail:"
+        android:textSize="18sp"
+        tools:layout_editor_absoluteX="30dp"
+        tools:layout_editor_absoluteY="337dp" />
+>>>>>>> added a default profile picture as well as a simple profile page xml
 
     <TextView
         android:id="@+id/textView4"
         android:layout_width="73dp"
         android:layout_height="0dp"
+<<<<<<< HEAD
         android:layout_marginEnd="292dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="256dp"
@@ -85,11 +125,18 @@
         app:layout_constraintHorizontal_bias="0.727"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+=======
+        android:text="Ailment:"
+        android:textSize="18sp"
+        tools:layout_editor_absoluteX="30dp"
+        tools:layout_editor_absoluteY="243dp" />
+>>>>>>> added a default profile picture as well as a simple profile page xml
 
     <Button
         android:id="@+id/button2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+<<<<<<< HEAD
         android:layout_marginBottom="84dp"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
@@ -98,11 +145,17 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.03"
         app:layout_constraintStart_toStartOf="parent" />
+=======
+        android:text="Resources"
+        tools:layout_editor_absoluteX="30dp"
+        tools:layout_editor_absoluteY="373dp" />
+>>>>>>> added a default profile picture as well as a simple profile page xml
 
     <Button
         android:id="@+id/button3"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+<<<<<<< HEAD
         android:layout_marginBottom="28dp"
         android:layout_marginStart="16dp"
 
@@ -110,5 +163,12 @@
         android:text="@string/concerned_emergency_contact"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
+=======
+        android:text="  Emergency Contact  "
+        android:background="#ff00"
+
+        tools:layout_editor_absoluteX="30dp"
+        tools:layout_editor_absoluteY="435dp" />
+>>>>>>> added a default profile picture as well as a simple profile page xml
 
 </android.support.constraint.ConstraintLayout>

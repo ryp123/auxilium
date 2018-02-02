@@ -6,6 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:visibility="visible"
+    android:background="#f7f6f4"
     tools:context="ca.usask.auxilium.auth.JoinActivity">
 
     <ImageView
@@ -58,13 +59,14 @@
         style="@android:style/Widget.DeviceDefault.Light.EditText"
         android:layout_width="350dp"
         android:layout_height="118dp"
+        android:background="#ffffff"
         android:ems="10"
         android:inputType="textMultiLine"
         android:selectAllOnFocus="false"
         android:singleLine="false"
         android:text="More info "
-        android:textAlignment="viewStart"
-        android:textSize="10sp"
+        android:textAlignment="textStart"
+        android:textAppearance="@style/TextAppearance.AppCompat.Body1"
         tools:layout_editor_absoluteX="17dp"
         tools:layout_editor_absoluteY="139dp" />
 
@@ -117,8 +119,8 @@
         android:inputType="textEmailAddress"
         android:text="Enter email"
         android:textSize="10sp"
-        tools:layout_editor_absoluteX="16dp"
-        tools:layout_editor_absoluteY="390dp" />
+        tools:layout_editor_absoluteX="28dp"
+        tools:layout_editor_absoluteY="389dp" />
 
     <Button
         android:id="@+id/join2Btn"

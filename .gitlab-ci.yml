@@ -10,5 +10,6 @@ linter:
     - ./gradlew checkstyle
   artifacts:
     paths:
-      - app/build/reports/lint-result.html
+      - app/build/reports/lint-results.html
       - build/reports/checkstyle/checkstyle.html
+    expire_in: 1 week

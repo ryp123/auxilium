@@ -62,7 +62,7 @@
         android:inputType="textMultiLine"
         android:selectAllOnFocus="false"
         android:singleLine="false"
-        android:text="More info"
+        android:text="More info "
         android:textAlignment="viewStart"
         android:textSize="10sp"
         tools:layout_editor_absoluteX="17dp"
@@ -83,15 +83,17 @@
         android:text="Friend Requests"
         android:textAlignment="textStart"
         android:textColor="@android:color/black"
-        tools:layout_editor_absoluteX="16dp"
+        tools:layout_editor_absoluteX="28dp"
         tools:layout_editor_absoluteY="265dp" />
 
     <ScrollView
         style="@android:style/Widget.Holo.ScrollView"
         android:layout_width="352dp"
         android:layout_height="89dp"
+        android:background="#b3e5b3"
         android:clipToPadding="false"
         android:foregroundTint="@color/grey_300"
+        android:scrollbarStyle="insideOverlay"
         android:visibility="visible"
         tools:layout_editor_absoluteX="16dp"
         tools:layout_editor_absoluteY="291dp">
@@ -108,6 +110,7 @@
 
     <EditText
         android:id="@+id/frndEmailText"
+        style="@style/Widget.AppCompat.EditText"
         android:layout_width="184dp"
         android:layout_height="31dp"
         android:ems="10"

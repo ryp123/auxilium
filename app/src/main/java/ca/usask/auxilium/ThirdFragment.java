@@ -10,12 +10,12 @@ import android.view.ViewGroup;
  * Created by i7-3770 on 2/1/2018.
  */
 
-public class FirstFragment extends Fragment {
+public class ThirdFragment extends Fragment {
     View myView;
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
-        myView = inflater.inflate(R.layout.profile_page,container,false);
+        myView = inflater.inflate(R.layout.main_chat_page,container,false);
         return myView;
     }
 }

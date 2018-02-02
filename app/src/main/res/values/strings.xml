@@ -79,12 +79,14 @@
     <string name="email_fmt">Email: %s</string>
 
 
+
     <string name="enter_mssg">Enter Message</string>
     <string name="send_button">SEND</string>
 
     <string name="help_button">Help</string>
     <string name="account_button">Account</string>
     <string name="about_button">About</string>
+
 
 
 </resources>

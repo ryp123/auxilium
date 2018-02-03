@@ -78,10 +78,6 @@
     <string name="id_fmt">User ID: %s</string>
     <string name="email_fmt">Email: %s</string>
 
-
-
-
-
     <string name="enter_mssg">Enter Message</string>
     <string name="send_button">SEND</string>
 
@@ -89,7 +85,12 @@
     <string name="account_button">Account</string>
     <string name="about_button">About</string>
 
-
-
+    
     <string name="place_holder">Temp String</string>
+
+    <!--welcome screen-->
+    <string name="weclome_title">Welcome</string>
+    <string name="join_button">JOIN</string>
+    <string name="create_button">CREATE</string>
+
 </resources>

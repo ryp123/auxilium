@@ -78,10 +78,6 @@
     <string name="id_fmt">User ID: %s</string>
     <string name="email_fmt">Email: %s</string>
 
-
-
-
-
     <string name="enter_mssg">Enter Message</string>
     <string name="send_button">SEND</string>
 
@@ -90,6 +86,14 @@
     <string name="about_button">About</string>
 
 
-
     <string name="place_holder">Temp String</string>
+
+    <!--join activity-->
+    <string name="join_button">JOIN</string>
+    <string name="email_text">Enter email</string>
+    <string name="friend_scroll_label">Friend Requests</string>
+    <string name="more_info_text">More info</string>
+    <string name="last_name_text">Last Name</string>
+    <string name="first_name_text">First Name</string>
+
 </resources>

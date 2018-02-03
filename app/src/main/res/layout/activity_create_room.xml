@@ -6,4 +6,140 @@
     android:layout_height="match_parent"
     tools:context="ca.usask.auxilium.auth.CreateRoomActivity">
 
+    <EditText
+        android:id="@+id/friendEmail1"
+        style="@style/Widget.AppCompat.EditText"
+        android:layout_width="147dp"
+        android:layout_height="32dp"
+        android:ems="10"
+        android:inputType="textEmailAddress"
+        android:text="Email address"
+        android:textColor="@color/grey_300"
+        android:textSize="12sp"
+        tools:layout_editor_absoluteX="37dp"
+        tools:layout_editor_absoluteY="310dp" />
+
+    <EditText
+        android:id="@+id/roomNameText"
+        android:layout_width="189dp"
+        android:layout_height="29dp"
+        android:ems="10"
+        android:inputType="textPersonName"
+        android:textSize="12sp"
+        tools:layout_editor_absoluteX="158dp"
+        tools:layout_editor_absoluteY="120dp" />
+
+    <TextView
+        android:id="@+id/newRoomLabel"
+        android:layout_width="463dp"
+        android:layout_height="47dp"
+        android:background="#8de88f"
+        android:fontFamily="sans-serif-condensed"
+        android:text="Create a new room"
+        android:textAlignment="center"
+        android:textAppearance="@style/TextAppearance.Design.CollapsingToolbar.Expanded"
+        android:textColor="@android:color/white"
+        android:textSize="30sp"
+        android:typeface="monospace"
+        tools:layout_editor_absoluteX="-43dp"
+        tools:layout_editor_absoluteY="42dp" />
+
+    <TextView
+        android:id="@+id/roomNameLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="sans-serif-condensed"
+        android:text="Room name"
+        android:textColor="@android:color/black"
+        android:textSize="18sp"
+        android:typeface="monospace"
+        tools:layout_editor_absoluteX="37dp"
+        tools:layout_editor_absoluteY="120dp" />
+
+    <TextView
+        android:id="@+id/roomInfoLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="sans-serif-condensed"
+        android:text="Room info"
+        android:textAlignment="textStart"
+        android:textColor="@android:color/black"
+        android:textSize="18sp"
+        android:typeface="monospace"
+        tools:layout_editor_absoluteX="37dp"
+        tools:layout_editor_absoluteY="169dp" />
+
+    <EditText
+        android:id="@+id/roomInfoText"
+        android:layout_width="189dp"
+        android:layout_height="86dp"
+        android:ems="10"
+        android:background="#d1d6d2"
+        android:inputType="textMultiLine"
+        android:textSize="12sp"
+        tools:layout_editor_absoluteX="158dp"
+        tools:layout_editor_absoluteY="169dp" />
+
+    <TextView
+        android:id="@+id/inviteFriendsLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="sans-serif-condensed"
+        android:text="Invite Friends"
+        android:textAlignment="center"
+        android:textColor="@android:color/black"
+        android:textSize="18sp"
+        android:typeface="monospace"
+        tools:layout_editor_absoluteX="145dp"
+        tools:layout_editor_absoluteY="274dp" />
+
+    <EditText
+        android:id="@+id/friendEmail2"
+        style="@style/Widget.AppCompat.EditText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:inputType="textEmailAddress"
+        android:text="Email address"
+        android:textColor="@color/grey_300"
+        android:textSize="12sp"
+        tools:layout_editor_absoluteX="37dp"
+        tools:layout_editor_absoluteY="342dp" />
+
+    <Button
+        android:id="@+id/addMoreBtn"
+        style="@style/Widget.AppCompat.Button.Borderless"
+        android:layout_width="86dp"
+        android:layout_height="29dp"
+        android:padding="0dp"
+        android:text="+ Add more"
+        android:textColor="@android:color/holo_blue_dark"
+        android:textSize="8sp"
+        tools:layout_editor_absoluteX="37dp"
+        tools:layout_editor_absoluteY="379dp" />
+
+    <Button
+        android:id="@+id/sendInviteBtn"
+        style="@style/Widget.AppCompat.Button"
+        android:layout_width="86dp"
+        android:layout_height="32dp"
+        android:fontFamily="sans-serif"
+        android:text="Invite"
+        android:textAlignment="center"
+        android:textColor="@android:color/white"
+        android:textSize="10sp"
+        android:textStyle="bold"
+        android:typeface="monospace"
+        tools:layout_editor_absoluteX="240dp"
+        tools:layout_editor_absoluteY="310dp" />
+
+    <Button
+        android:id="@+id/doneCreateBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Create"
+        android:background="#aee2af"
+        tools:layout_editor_absoluteX="148dp"
+        tools:layout_editor_absoluteY="428dp" />
+
 </android.support.constraint.ConstraintLayout>

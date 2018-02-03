@@ -15,7 +15,6 @@
         android:layout_marginEnd="42dp"
         android:layout_marginStart="42dp"
         android:layout_marginTop="46dp"
-
         android:background="@null"
         android:ems="10"
         android:fontFamily="monospace"
@@ -61,7 +60,6 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
-
     <TextView
         android:id="@+id/textView"
         android:layout_width="wrap_content"
@@ -71,6 +69,5 @@
         app:layout_constraintBottom_toTopOf="@+id/joinBtn"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
-
 
 </android.support.constraint.ConstraintLayout>

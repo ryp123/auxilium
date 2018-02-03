@@ -81,4 +81,16 @@
     <string name="enter_mssg">Enter Message</string>
     <string name="send_button">SEND</string>
 
+    <!--create room activity: -->
+    <string name="create_room_title">Create a new room</string>
+    <string name="room_name_label">Room name</string>
+    <string name="room_info_label">Room info</string>
+    <string name="invite_label">Invite friends</string>
+    <string name="email_text">Email address</string>
+    <string name="add_more_button">+ Add more</string>
+    <string name="invite_button">INVITE</string>
+    <string name="create_button">CREATE</string>
+
+
+
 </resources>

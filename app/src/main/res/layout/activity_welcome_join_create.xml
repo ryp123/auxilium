@@ -9,53 +9,65 @@
     <EditText
         android:id="@+id/welcomeText"
         style="@style/Widget.AppCompat.AutoCompleteTextView"
-        android:layout_width="300dp"
-        android:layout_height="81dp"
+        android:layout_width="0dp"
+        android:layout_height="115dp"
+        android:layout_marginBottom="49dp"
+        android:layout_marginEnd="42dp"
+        android:layout_marginStart="42dp"
+        android:layout_marginTop="46dp"
         android:background="@null"
         android:ems="10"
         android:fontFamily="monospace"
         android:inputType="textPersonName"
         android:selectAllOnFocus="false"
         android:singleLine="false"
-        android:text="Welcome"
+        android:text="@string/weclome_title"
         android:textAlignment="center"
         android:textAppearance="@style/TextAppearance.AppCompat.Light.SearchResult.Title"
         android:textSize="45sp"
         android:typeface="monospace"
         android:visibility="visible"
-        tools:layout_editor_absoluteX="42dp"
-        tools:layout_editor_absoluteY="46dp" />
+        app:layout_constraintBottom_toTopOf="@+id/textView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <Button
         android:id="@+id/joinBtn"
-        android:layout_width="177dp"
-        android:layout_height="58dp"
+        android:layout_width="175dp"
+        android:layout_height="56dp"
+        android:layout_marginBottom="36dp"
         android:background="#aee2af"
         android:fontFamily="monospace"
-        android:text="Join"
+        android:text="@string/join_button"
         android:textSize="24sp"
         android:typeface="monospace"
-        tools:layout_editor_absoluteX="104dp"
-        tools:layout_editor_absoluteY="271dp" />
+        app:layout_constraintBottom_toTopOf="@+id/createBtn"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 
     <Button
         android:id="@+id/createBtn"
-        android:layout_width="179dp"
-        android:layout_height="59dp"
+        android:layout_width="175dp"
+        android:layout_height="56dp"
+        android:layout_marginBottom="87dp"
         android:background="#aee2af"
         android:fontFamily="monospace"
-        android:text="CREATE"
+        android:text="@string/create_button"
         android:textSize="24sp"
         android:typeface="monospace"
-        tools:layout_editor_absoluteX="103dp"
-        tools:layout_editor_absoluteY="365dp" />
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 
     <TextView
         android:id="@+id/textView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="52dp"
         android:text="ADD LOGO "
-        tools:layout_editor_absoluteX="156dp"
-        tools:layout_editor_absoluteY="176dp" />
+        app:layout_constraintBottom_toTopOf="@+id/joinBtn"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 
 </android.support.constraint.ConstraintLayout>

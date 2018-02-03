@@ -78,6 +78,7 @@
     <string name="id_fmt">User ID: %s</string>
     <string name="email_fmt">Email: %s</string>
 
+<<<<<<< HEAD
 
 
 
@@ -91,5 +92,7 @@
 
 
 
+=======
+>>>>>>> f70f4d101b329d92ad545128916e60bb77201609
     <string name="place_holder">Temp String</string>
 </resources>

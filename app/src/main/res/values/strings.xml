@@ -95,6 +95,10 @@
     <string name="email_text">Email address</string>
     <string name="add_more_button">+ Add more</string>
     <string name="invite_button">INVITE</string>
+
+    <!--welcome screen-->
+    <string name="weclome_title">Welcome</string>
+    <string name="join_button">JOIN</string>
     <string name="create_button">CREATE</string>
 
 </resources>

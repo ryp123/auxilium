@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item android:id="@+id/circle_title" android:title="Circles"/>
+    <item android:id="@+id/circle1_name" android:title="Ryan Gray"/>
+    <item android:id="@+id/circle2_name" android:title="Jane Woods"/>
+    <item android:id="@+id/circle3_name" android:title="John Gram"/>
+
+
+</menu>

@@ -8,7 +8,6 @@
     android:background="#f7f6f4"
     android:visibility="visible"
     tools:context="ca.usask.auxilium.auth.JoinActivity">
-    <!--android:layout_height="wrap_content"-->
 
     <ImageView
         android:id="@+id/joinImg"

@@ -9,6 +9,7 @@ linter:
     - ./gradlew lint
     - ./gradlew checkstyle
   artifacts:
+    when: always
     paths:
       - app/build/reports/lint-results.html
       - build/reports/checkstyle/checkstyle.html

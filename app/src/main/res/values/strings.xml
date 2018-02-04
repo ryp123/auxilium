@@ -107,4 +107,14 @@
     <string name="join_button">JOIN</string>
     <string name="create_button">CREATE</string>
 
+    <!--concerned profile -->
+    <string name="concerned_name">John Doe</string>
+    <string name="concerned_resources"> Resources </string>
+    <string name="concerned_emergency_contact"> Emergency Contact </string>
+    <string name="concerned_ailment">Ailment:</string>
+    <string name="concerned_email">E-mail:</string>
+    <string name="concerned_phone">Phone Number:</string>
+
+
+
 </resources>

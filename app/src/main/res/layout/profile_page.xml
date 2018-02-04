@@ -10,74 +10,105 @@
         android:id="@+id/imageView"
         android:layout_width="164dp"
         android:layout_height="147dp"
-        app:srcCompat="@drawable/default_profile_picture"
-        tools:layout_editor_absoluteX="110dp"
-        tools:layout_editor_absoluteY="28dp" />
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:contentDescription="@string/about_button"
+        app:srcCompat="@drawable/default_profile_picture" />
 
     <TextView
         android:id="@+id/textView"
         android:layout_width="164dp"
         android:layout_height="28dp"
-        android:gravity="center"
-        android:text="John Doe"
-        android:textAppearance="@style/TextAppearance.AppCompat"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
 
+        android:layout_marginTop="8dp"
+        android:gravity="center"
+        android:text="@string/concerned_name"
+        android:textAppearance="@style/TextAppearance.AppCompat"
         android:textSize="24sp"
-        tools:layout_editor_absoluteX="110dp"
-        tools:layout_editor_absoluteY="175dp" />
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.334" />
 
     <View
+        android:id="@+id/view"
         android:layout_width="315dp"
         android:layout_height="2dp"
+        android:layout_marginEnd="32dp"
+
+        android:layout_marginTop="200dp"
         android:background="#A9A9A9"
         android:gravity="center"
-
-        tools:layout_editor_absoluteX="30"
-        tools:layout_editor_absoluteY="224dp" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/textView2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Phone Number: "
+        android:layout_marginBottom="184dp"
+        android:layout_marginStart="16dp"
+        android:text="@string/concerned_phone"
         android:textSize="18sp"
-        tools:layout_editor_absoluteX="30dp"
-        tools:layout_editor_absoluteY="292dp" />
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 
     <TextView
         android:id="@+id/textView3"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="E-mail:"
+        android:layout_marginBottom="140dp"
+        android:layout_marginStart="16dp"
+        android:text="@string/concerned_email"
         android:textSize="18sp"
-        tools:layout_editor_absoluteX="30dp"
-        tools:layout_editor_absoluteY="337dp" />
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 
     <TextView
         android:id="@+id/textView4"
         android:layout_width="73dp"
         android:layout_height="0dp"
-        android:text="Ailment:"
+        android:layout_marginEnd="292dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="256dp"
+        android:text="@string/concerned_ailment"
         android:textSize="18sp"
-        tools:layout_editor_absoluteX="30dp"
-        tools:layout_editor_absoluteY="243dp" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.727"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <Button
         android:id="@+id/button2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Resources"
-        tools:layout_editor_absoluteX="30dp"
-        tools:layout_editor_absoluteY="373dp" />
+        android:layout_marginBottom="84dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:text="@string/concerned_resources"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.03"
+        app:layout_constraintStart_toStartOf="parent" />
 
     <Button
         android:id="@+id/button3"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="  Emergency Contact  "
-        android:background="#ff00"
+        android:layout_marginBottom="28dp"
+        android:layout_marginStart="16dp"
 
-        tools:layout_editor_absoluteX="30dp"
-        tools:layout_editor_absoluteY="435dp" />
+        android:background="#ff00"
+        android:text="@string/concerned_emergency_contact"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 
 </android.support.constraint.ConstraintLayout>

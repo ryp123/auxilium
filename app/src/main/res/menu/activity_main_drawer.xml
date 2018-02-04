@@ -10,11 +10,11 @@
             android:icon="@android:drawable/btn_star_big_on"
             android:title="Profile" />
         <item
-            android:id="@+id/nav_signin"
+            android:id="@+id/nav_indexstatus"
             android:icon="@android:drawable/ic_menu_info_details"
             android:title="Index Status" />
         <item
-            android:id="@+id/nav_main_chat_page"
+            android:id="@+id/nav_helpscreen"
             android:icon="@android:drawable/ic_menu_help"
             android:title="Help Information" />
 

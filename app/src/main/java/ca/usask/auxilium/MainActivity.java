@@ -84,10 +84,10 @@ public class MainActivity extends AppCompatActivity
         if (id == R.id.nav_profile_page) {
             fragmentManager.beginTransaction().replace(R.id.content_frame, new FirstFragment()).commit();
             // Handle the camera action
-        } else if (id == R.id.nav_signin) {
+        } else if (id == R.id.nav_indexstatus) {
             fragmentManager.beginTransaction().replace(R.id.content_frame, new SecondFragment()).commit();
 
-        } else if (id == R.id.nav_main_chat_page) {
+        } else if (id == R.id.nav_helpscreen) {
             fragmentManager.beginTransaction().replace(R.id.content_frame, new ThirdFragment()).commit();
 
         } else if (id == R.id.nav_share) {

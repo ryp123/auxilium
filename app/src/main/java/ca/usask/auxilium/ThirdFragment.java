@@ -15,7 +15,7 @@ public class ThirdFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
-        myView = inflater.inflate(R.layout.main_chat_page,container,false);
+        myView = inflater.inflate(R.layout.activity_help_screen,container,false);
         return myView;
     }
 }

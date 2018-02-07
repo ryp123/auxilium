@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Exclude file taken from https://stackoverflow.com/a/2757401/5960886 -->
+<FindBugsFilter>
+    <Match>
+        <Class name="~.*\.R\$.*"/>
+    </Match>
+    <Match>
+    <Class name="~.*\.Manifest\$.*"/>
+    </Match>
+</FindBugsFilter>

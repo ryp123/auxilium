@@ -59,7 +59,7 @@ findbugs {
   sourceSets = [sourceSets.main]
   reportsDir = file("$project.buildDir/reports/findbugs")
   // report level attr is counter intuitive by "medium" it actually means I'll report
-  // on low priority issues and upwards not that it is going to report less say "high".
+  // on medium priority issues and upwards not that it is going to report less than say "high".
   reportLevel = "medium"
   // This will try to scan class files that we don't have access to source code
   // but we are importing into our source code and will throw a warning.

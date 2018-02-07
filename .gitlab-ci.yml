@@ -1,16 +1,23 @@
 image: ryp123/android-sdk:ubuntu
 
 stages:
-  - lint
+  - build-debug
+  - code-analysis
 
-linter:
-  stage: lint
+debug-build:
+    stage: build-debug
+    script: ./gradlew  assembleDebug
+
+code-analysis:
+  stage: code-analysis
   script:
     - ./gradlew lint
     - ./gradlew checkstyle
+    - ./gradlew findbugs
   artifacts:
     when: always
     paths:
       - app/build/reports/lint-results.html
       - build/reports/checkstyle/checkstyle.html
+      - build/reports/findbugs/findbugs.html
     expire_in: 1 week

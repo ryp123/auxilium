@@ -1,6 +1,8 @@
 image: ryp123/android-sdk:ubuntu
 
 
+# before_script and cache section based heavily on
+# https://stackoverflow.com/a/45855551/5960886
 before_script:
   - export GRADLE_USER_HOME=`pwd`/.gradle
 

@@ -1,12 +1,23 @@
 image: ryp123/android-sdk:ubuntu
 
+
+before_script:
+  - export GRADLE_USER_HOME=`pwd`/.gradle
+
+cache:
+  paths:
+    - .gradle/wrapper
+    - .gradle/caches
+    - build/
+    - app/build/
+
 stages:
-  - build-debug
+  - build
   - code-analysis
 
-debug-build:
-    stage: build-debug
-    script: ./gradlew  assembleDebug
+build:
+    stage: build
+    script: ./gradlew assemble
 
 code-analysis:
   stage: code-analysis

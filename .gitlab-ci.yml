@@ -16,6 +16,7 @@ cache:
 stages:
   - build
   - code-analysis
+  - test
 
 build:
     stage: build
@@ -34,3 +35,9 @@ code-analysis:
       - build/reports/checkstyle/checkstyle.html
       - build/reports/findbugs/findbugs.html
     expire_in: 1 week
+
+  test:
+    stage: test
+    script:
+      - ./gradlew test
+       

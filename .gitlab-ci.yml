@@ -36,8 +36,6 @@ code-analysis:
       - build/reports/findbugs/findbugs.html
     expire_in: 1 week
 
-  test:
+test:
     stage: test
-    script:
-      - ./gradlew test
-       
+    script: ./gradlew test

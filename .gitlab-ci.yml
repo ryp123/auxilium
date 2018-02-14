@@ -48,6 +48,8 @@ deploy:
     stage: deploy
     only:
       - master
+    script:
+      - mv app/build/outputs/apk/release/app-release-unsigned.apk app/build/outputs/apk/release/auxilium-release.apk
     artifacts:
         paths:
-          - app/build/outputs/apk/release/app-release-unsigned.apk
+          - app/build/outputs/apk/release/auxilium-release.apk

@@ -2,7 +2,6 @@
     "app_name": "Auxilium",
     "version_name" : "v0.0.1",
     "file": "CHANGELOG.md",
-    "tag": false, 
     "sections": [
         {
             "title": "Bug Fixes",

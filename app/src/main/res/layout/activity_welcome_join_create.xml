@@ -53,12 +53,13 @@
         android:layout_marginBottom="87dp"
         android:background="#aee2af"
         android:fontFamily="monospace"
+        android:onClick="go_to_create"
         android:text="@string/create_button"
         android:textSize="24sp"
         android:typeface="monospace"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"/>
 
     <TextView
         android:id="@+id/textView"

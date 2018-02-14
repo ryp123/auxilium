@@ -79,6 +79,17 @@
                 android:layout_weight="1"
                 android:text="@string/disconnect"
                 android:theme="@style/ThemeOverlay.MyDarkButton" />
+
+            <Button
+                android:id="@+id/go_to_create_button"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:onClick="go_to_create_join"
+                android:text="@string/create_room_or_join_room_button"
+                android:theme="@style/ThemeOverlay.MyDarkButton"/>
+
+
         </LinearLayout>
 
     </RelativeLayout>

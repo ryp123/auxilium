@@ -106,6 +106,8 @@
     <string name="weclome_title">Welcome</string>
     <string name="join_button">JOIN</string>
     <string name="create_button">CREATE</string>
+    <string name="create_room_or_join_room_button">Create Or Join Room</string>
+
 
     <!--concerned profile -->
     <string name="concerned_name">John Doe</string>

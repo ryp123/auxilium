@@ -176,9 +176,10 @@
         android:layout_marginBottom="27dp"
         android:layout_marginStart="22dp"
         android:background="#aee2af"
+        android:onClick="do_click"
         android:text="@string/create_button"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/addMoreBtn" />
+        app:layout_constraintStart_toEndOf="@+id/addMoreBtn"/>
 
 
 </android.support.constraint.ConstraintLayout>

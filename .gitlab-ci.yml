@@ -17,6 +17,7 @@ stages:
   - build
   - code-analysis
   - test
+  - deploy
 
 build:
     stage: build
@@ -39,3 +40,14 @@ code-analysis:
 test:
     stage: test
     script: ./gradlew test
+
+# The deployment stage is simply uploading the
+# apk file to gitlab. Depending on the situation this could
+# be changed to deploy to google play store.
+deploy:
+    stage: deploy
+    only:
+      - master
+    artifacts:
+        paths:
+          - app/build/outputs/apk/release/app-release-unsigned.apk

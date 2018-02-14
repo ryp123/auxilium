@@ -47,6 +47,19 @@ public class CreateRoomActivity extends AppCompatActivity {
 
         updateDatabase();
 
+        String personName;
+        GoogleSignInAccount acct = GoogleSignIn.getLastSignedInAccount(this);
+        if (acct != null) {
+
+            personName = acct.getDisplayName();
+            User user1 = new User();
+            user1.setUserName(personName);
+            user1.setActive(Boolean.TRUE);
+
+            mDatabase.child("Circles").child("Circle 3").child("Concerned").setValue(user1);
+
+        }
+
     }
 
      public void updateDatabase(){

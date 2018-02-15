@@ -214,7 +214,7 @@ public class SignInActivity extends BaseActivity implements View.OnClickListener
         }
     }
 
-   public void go_to_create_join(View v){
+   public void onCreateJoinButtonClick(View v){
         Intent intent = new Intent(getBaseContext(), WelcomeJoinCreateActivity.class);
         startActivity(intent);
    }

@@ -25,12 +25,8 @@ public class CreateRoomActivity extends AppCompatActivity {
         setContentView(R.layout.activity_create_room);
     }
 
-    private void addRoomName(){
-
-    }
-
-    public void  do_click(View v){
-        EditText edt = (EditText)findViewById(R.id.roomNameText);
+    public void  onCreateButtonClick(View v){
+        EditText edt = findViewById(R.id.roomNameText);
         String CircleName = edt.getText().toString();
 
         Circle circle = new Circle();

@@ -15,7 +15,7 @@ public class WelcomeJoinCreateActivity extends AppCompatActivity {
         setContentView(R.layout.activity_welcome_join_create);
     }
 
-    public void go_to_create(View v) {
+    public void onCreateBtnClick(View v) {
 
         Intent intent = new Intent(getBaseContext(), CreateRoomActivity.class);
         startActivity(intent);

@@ -18,6 +18,7 @@ public class CreateRoomActivity extends AppCompatActivity {
 
     private DatabaseReference mDatabase;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -37,7 +38,7 @@ public class CreateRoomActivity extends AppCompatActivity {
         circle.setCircleName(CircleName);
 
         mDatabase = FirebaseDatabase.getInstance().getReference();
-        mDatabase.child("Circles").child("Circle 3").setValue(circle);
+        mDatabase.child("Circles").child(circle.getCircleName()).setValue(circle);
 
         String personName;
         GoogleSignInAccount acct = GoogleSignIn.getLastSignedInAccount(this);
@@ -48,7 +49,7 @@ public class CreateRoomActivity extends AppCompatActivity {
             user1.setUserName(personName);
             user1.setActive(Boolean.TRUE);
 
-            mDatabase.child("Circles").child("Circle 3").child("Concerned").setValue(user1);
+            mDatabase.child("Circles").child(circle.getCircleName()).child("Concerned").setValue(user1);
 
         }
 

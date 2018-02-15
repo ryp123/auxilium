@@ -6,6 +6,60 @@ To ensure consistency throughout the source code, keep these rules in mind as yo
 * We also follow the AngularJS git commit guidelines which can be found [here](https://github.com/angular/angular.js/blob/master/DEVELOPERS.md#commits),
 but will also be described below.
 
+## <a name="mergerequests"></a> Creating A Merge Request
+
+Before submitting you merge request(s) please review the following guidelines:
+
+* Search for a merge request that may have already covered your changes.
+* Try to recreates the development environment as close as possible.
+* Make you changes in a new git branch:
+
+  ```bash
+    git checkout -b feat-mynewfeature
+  ```
+* Implement you changes and include appropriate test cases.
+* Please follow our coding rules as indicated [above](https://git.cs.usask.ca/CMPT371T3/Auxilium/blob/master/CONTRIBUTING.md#-coding-rules).
+* If necessary please add any relevant documentation be it software contracts or correcting the javadocs and so forth.
+* While it will be run in the pipeline it is always a good idea to run the  appropriate code analysis tools. Namely:
+
+```bash
+./gradlew lint
+./gradlew checkstyle
+./gradlew findbugs
+```
+The reports can be found in the `build/reports` and the `app/build/reports` folder. You might want to checkout our wiki
+article on adding a [precommit hook](https://git.cs.usask.ca/CMPT371T3/Auxilium/wikis/precommit-hook) to automate this process.
+
+* Before pushing you branch upstream rebase your branch onto development:
+
+```bash
+git pull --rebase origin development
+```
+
+* If we suggest any changes commit your changes to you branch and push upstream.
+
+* If you need to amend the commit messages you can do:
+
+```
+git rebase -i <hash>
+git push origin <mybranch> -f
+```
+
+Where the `<hash>` should be hash for the commit just before (chronologically) the commits you wish to amend. If you just just need to amend the most recent commit message you can do:
+
+```
+git commit --amend
+git push origin <mybranch> -f
+```
+
+* After the branch has been merged you can safely delete your local branch by running:
+
+```
+git branch -d <mybranch>
+```
+
+* You can also check out our [wiki article](https://git.cs.usask.ca/CMPT371T3/Auxilium/wikis/git-flow) which will go over the content above, but will also expand on other git flow policy, but at the minimum the above should be understood.
+
 ## <a name="commits"></a> Git Commit Guidelines
 
 We have very precise rules over how our git commit messages can be formatted.  This leads to **more

@@ -2,6 +2,7 @@ package ca.usask.auxilium.auth;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 
@@ -18,6 +19,11 @@ public class CreateRoomActivity extends AppCompatActivity {
 
     private DatabaseReference mDatabase;
 
+    private Circle mCircle;
+    private String mUserName;
+
+    GoogleSignInAccount mAcct;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,30 +31,38 @@ public class CreateRoomActivity extends AppCompatActivity {
         setContentView(R.layout.activity_create_room);
     }
 
-    public void  onCreateButtonClick(View v){
-        EditText edt = findViewById(R.id.roomNameText);
-        String CircleName = edt.getText().toString();
+    public void  onCreateButtonClick(View v) {
+        EditText edt = (EditText) findViewById(R.id.roomNameText);
 
-        Circle circle = new Circle();
 
-        circle.setCircleName(CircleName);
+        String circleName = edt.getText().toString();
 
+        Log.d("the name of circle being created",circleName);
+
+        mCircle = new Circle();
+        mCircle.setCircleName(circleName);
+
+        mAcct = GoogleSignIn.getLastSignedInAccount(this);
         mDatabase = FirebaseDatabase.getInstance().getReference();
-        mDatabase.child("Circles").child(circle.getCircleName()).setValue(circle);
 
-        String personName;
-        GoogleSignInAccount acct = GoogleSignIn.getLastSignedInAccount(this);
-        if (acct != null) {
-
-            personName = acct.getDisplayName();
-            User user = new User();
-            user.setUserName(personName);
-            user.setStatus("Active");
-            mDatabase.child("Circles").child(circle.getCircleName()).child("Concerned").child(user.getUserName()).setValue(user);
-
-        }
+        updateDatabase();
 
     }
 
+     public void updateDatabase(){
+
+         mDatabase.child("Circles").child(mCircle.getCircleName()).setValue(mCircle);
+
+         if (mAcct != null) {
+
+             mUserName = mAcct.getDisplayName();
+             User user = new User();
+             user.setUserName(mUserName);
+             user.setStatus("Active");
+             mDatabase.child("Circles").child(mCircle.getCircleName()).child("Concerned").child(user.getUserName()).setValue(user);
+
+         }
+
+    }
 
 }

@@ -45,11 +45,10 @@ public class CreateRoomActivity extends AppCompatActivity {
         if (acct != null) {
 
             personName = acct.getDisplayName();
-            User user1 = new User();
-            user1.setUserName(personName);
-            user1.setActive(Boolean.TRUE);
-
-            mDatabase.child("Circles").child(circle.getCircleName()).child("Concerned").setValue(user1);
+            User user = new User();
+            user.setUserName(personName);
+            user.setStatus("Active");
+            mDatabase.child("Circles").child(circle.getCircleName()).child("Concerned").child(user.getUserName()).setValue(user);
 
         }
 

@@ -6,8 +6,10 @@ package ca.usask.auxilium;
 
 public class User {
 
-    private Boolean isActive;
+
     private String mUserName;
+    private String mStatus;
+
 
 
     public String getUserName() {
@@ -20,16 +22,13 @@ public class User {
 
 
 
-    public Boolean getActive() {
-        return isActive;
+    public String getStatus() {
+        return mStatus;
     }
 
-    public void setActive(Boolean active) {
-        isActive = active;
+    public void setStatus(String status) {
+        mStatus = status;
     }
-
-
-
 
 
 }

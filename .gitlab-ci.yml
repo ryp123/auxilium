@@ -7,11 +7,13 @@ before_script:
   - export GRADLE_USER_HOME=`pwd`/.gradle
 
 cache:
+  key: "$CI_JOB_NAME"
   paths:
     - .gradle/wrapper
     - .gradle/caches
     - build/
     - app/build/
+
 
 stages:
   - build

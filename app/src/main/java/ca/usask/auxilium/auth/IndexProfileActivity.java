@@ -1,6 +1,7 @@
 package ca.usask.auxilium.auth;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -14,7 +15,7 @@ import ca.usask.auxilium.R;
 public class IndexProfileActivity extends AppCompatActivity {
 
     private FirebaseAuth mAuth;
-    
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -34,8 +35,14 @@ public class IndexProfileActivity extends AppCompatActivity {
             //user logged in
             Log.d("AUTH", mAuth.getCurrentUser().getEmail());
 
-            imgProfilePic.setImageURI(mAuth.getCurrentUser().getPhotoUrl());
-            txtPrefName.setText(mAuth.getCurrentUser().getDisplayName());
+            String[] fullName = mAuth.getCurrentUser().getDisplayName().split(" ");
+//            Uri profileURI = mAuth.getCurrentUser().getPhotoUrl();
+//            if(profileURI != null) {
+//                imgProfilePic.setImageURI(null);
+//                imgProfilePic.setImageURI(profileURI);
+//            }
+            txtFirstName.setText(fullName[0]);
+            txtLastName.setText(fullName[fullName.length - 1]);
             txtEmergencyContact.setText(mAuth.getCurrentUser().getPhoneNumber());
         }
 

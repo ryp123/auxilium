@@ -24,6 +24,7 @@ public class CreateRoomActivity extends AppCompatActivity {
 
     GoogleSignInAccount mAcct;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -32,6 +33,7 @@ public class CreateRoomActivity extends AppCompatActivity {
 
     public void  onCreateButtonClick(View v) {
         EditText edt = (EditText) findViewById(R.id.roomNameText);
+
 
         String circleName = edt.getText().toString();
 

@@ -9,8 +9,26 @@ public class User {
 
     private String mUserName;
     private String mStatus;
+    private String firstName;
+    private String lastName;
+    private String preferredName;
+    private String age;
+    private String gender;
+    private String diagnosis;
+    private String emergencyContact;
 
 
+    public User(){}
+
+    public User(String firstName, String lastName, String preferredName, String age, String gender, String diagnosis, String emergencyContact) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.preferredName = preferredName;
+        this.age = age;
+        this.gender = gender;
+        this.diagnosis = diagnosis;
+        this.emergencyContact = emergencyContact;
+    }
 
     public String getUserName() {
         return mUserName;
@@ -31,4 +49,59 @@ public class User {
     }
 
 
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
+
+    public String getPreferredName() {
+        return preferredName;
+    }
+
+    public void setPreferredName(String preferredName) {
+        this.preferredName = preferredName;
+    }
+
+    public String getAge() {
+        return age;
+    }
+
+    public void setAge(String age) {
+        this.age = age;
+    }
+
+    public String getGender() {
+        return gender;
+    }
+
+    public void setGender(String gender) {
+        this.gender = gender;
+    }
+
+    public String getDiagnosis() {
+        return diagnosis;
+    }
+
+    public void setDiagnosis(String diagnosis) {
+        this.diagnosis = diagnosis;
+    }
+
+    public String getEmergencyContact() {
+        return emergencyContact;
+    }
+
+    public void setEmergencyContact(String emergencyContact) {
+        this.emergencyContact = emergencyContact;
+    }
 }

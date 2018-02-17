@@ -62,8 +62,10 @@ public class ChatLanding extends AppCompatActivity {
                 //Add to database -- change later to make it adaptive.  Find a way to auto increment
                 root.child("Circles").child("Circle 2").child("Chat").child("Concerned Group").updateChildren(map);
                 root.child("Circles").child("Circle 2").child("Chat").child("Concerned Group").child(newMessage).setValue(newMessage);
-                //Clear
+                //Clear the message box
                 message.setText("");
+
+
             }
         });
 

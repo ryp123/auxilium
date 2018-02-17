@@ -22,7 +22,7 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="@dimen/title_bottom_margin"
             android:layout_marginTop="@dimen/title_top_margin"
-            android:textSize="32dp"
+            android:textSize="32sp"
             android:text="@string/sign_in_title"
             android:theme="@style/ThemeOverlay.MyTitleText" />
 

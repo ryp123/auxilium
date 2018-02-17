@@ -49,6 +49,7 @@ deploy:
     only:
       - master
     script:
+      - ./gradlew assembleRelease
       - mv app/build/outputs/apk/release/app-release-unsigned.apk app/build/outputs/apk/release/auxilium-release.apk
     artifacts:
         paths:

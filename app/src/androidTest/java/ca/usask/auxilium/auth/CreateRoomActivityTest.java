@@ -1,15 +1,15 @@
 package ca.usask.auxilium.auth;
 
-import android.view.View;
-import com.google.android.gms.auth.api.signin.GoogleSignIn;
-import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import static org.junit.Assert.*;
-
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+//import android.view.View;
+//import com.google.android.gms.auth.api.signin.GoogleSignIn;
+//import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
+//import com.google.firebase.database.DatabaseReference;
+//import com.google.firebase.database.FirebaseDatabase;
+//import static org.junit.Assert.*;
+//
+//import org.junit.Before;
+//import org.junit.Test;
+//import org.junit.runner.RunWith;
 //import org.mockito.ArgumentCaptor;
 //import org.mockito.Captor;
 //import org.mockito.Mock;

@@ -65,14 +65,14 @@ public class MainActivity extends AppCompatActivity
 
         getAllUsersFromFirebase();
 
-        ListView lv =  findViewById(R.id.users_list_view);
-
-        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(
-                this,
-                android.R.layout.simple_list_item_1,
-                userNames);
-
-        userNames[0]= "sssssssssss";
+//        ListView lv =  findViewById(R.id.users_list_view);
+//
+//        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(
+//                this,
+//                android.R.layout.simple_list_item_1,
+//                userNames);
+//
+//        userNames[0]= "sssssssssss";
 //        for(int i =0; i<1; i++){
 //            Log.d("user name", userNames[0]);
 //        }

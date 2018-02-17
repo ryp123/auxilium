@@ -31,6 +31,7 @@ package ca.usask.auxilium.auth;
 //@RunWith(MockitoJUnitRunner.class)
 public class CreateRoomActivityTest {
 
+
 //    @Mock
 //    private GoogleSignIn mockGoogleSignIn;
 //
@@ -45,7 +46,8 @@ public class CreateRoomActivityTest {
 //
 //    @InjectMocks
 //    CreateRoomActivity mockRoomActivity;
-//
+
+
 //
 //    @Test
 //    public void testOnCreateButtonClick(){

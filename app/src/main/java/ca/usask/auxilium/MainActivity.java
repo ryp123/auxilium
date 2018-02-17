@@ -66,6 +66,7 @@ public class MainActivity extends AppCompatActivity
         getAllUsersFromFirebase();
 
 //        ListView lv =  findViewById(R.id.users_list_view);
+<<<<<<< HEAD
 
         ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(
                 this,
@@ -73,6 +74,15 @@ public class MainActivity extends AppCompatActivity
                 userNames);
 
         userNames[0]= "sssssssssss";
+=======
+//
+//        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(
+//                this,
+//                android.R.layout.simple_list_item_1,
+//                userNames);
+//
+//        userNames[0]= "sssssssssss";
+>>>>>>> fix(MainActivity.java):comment out some WIP code to pass pipeline
 //        for(int i =0; i<1; i++){
 //            Log.d("user name", userNames[0]);
 //        }

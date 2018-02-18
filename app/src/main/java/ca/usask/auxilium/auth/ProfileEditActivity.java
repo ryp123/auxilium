@@ -32,7 +32,7 @@ public class ProfileEditActivity extends AppCompatActivity {
     private DatabaseReference mDatabase;
     Circle circle;
 
-    ImageView imgProfilePic;
+    //ImageView imgProfilePic;
     EditText txtFirstName;
     EditText txtLastName;
     EditText txtPrefName;
@@ -50,12 +50,11 @@ public class ProfileEditActivity extends AppCompatActivity {
         mAcct = GoogleSignIn.getLastSignedInAccount(this);
         mAuth = FirebaseAuth.getInstance();
         String userName = mAcct.getDisplayName();
-        final String uid = mAuth.getCurrentUser().getUid();
 
         circle = new Circle();
         circle.setCircleName("JadenTestCircle");
 
-        imgProfilePic = findViewById(R.id.profilePicture);
+        //imgProfilePic = findViewById(R.id.profilePicture);
         txtFirstName = findViewById(R.id.indexFirstName);
         txtLastName = findViewById(R.id.indexLastName);
         txtPrefName = findViewById(R.id.indexPrefName);

@@ -194,18 +194,18 @@
         android:typeface="monospace"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/ailmentSpinner"
-
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/newRoomLabel"
-        app:layout_constraintVertical_bias="0.88" />
+        app:layout_constraintVertical_bias="0.833" />
 
 
     <Spinner
         android:id="@+id/ailmentSpinner"
         android:layout_width="176dp"
         android:layout_height="26dp"
-        android:layout_marginBottom="92dp"
-        android:layout_marginEnd="37dp"
+        android:layout_marginBottom="96dp"
+        android:layout_marginEnd="32dp"
         android:visibility="visible"
         app:layout_constraintBottom_toBottomOf="@+id/inviteFriendsLabel"
         app:layout_constraintEnd_toEndOf="parent" />

@@ -27,7 +27,6 @@ public class Circle {
     public String getAilment() { return ailment; }
 
     public void setCircleInfo(String info) {
-
         circleInfo = info;
     }
 

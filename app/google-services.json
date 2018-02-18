@@ -15,6 +15,62 @@
       },
       "oauth_client": [
         {
+          "client_id": "973402036675-vhev8at4dfcrt5bi0nhhhom0e1a796vt.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "ca.usask.auxilium",
+            "certificate_hash": "23ab81c52a3afaa25059bc2530d1af1820dee5c2"
+          }
+        },
+        {
+          "client_id": "973402036675-orcln8jo8m63d5ok0g8o6pqh70a80h28.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "ca.usask.auxilium",
+            "certificate_hash": "3a6e1d18b901359ef1087594f9122c6a7cd169ed"
+          }
+        },
+        {
+          "client_id": "973402036675-epmd8kl893gkrofngnm68qbd8a79frla.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "ca.usask.auxilium",
+            "certificate_hash": "85cb031ce1f38f9b432a97cb27a1b1b602dbea92"
+          }
+        },
+        {
+          "client_id": "973402036675-dg34nmnnso9jb78ivndnlsaikbgvarta.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "ca.usask.auxilium",
+            "certificate_hash": "f6ca4dfc49b12845b87bd8adae8f0f614a06256e"
+          }
+        },
+        {
+          "client_id": "973402036675-1t8ek72k2j301i4a2m3rsigosbtlq8u4.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "ca.usask.auxilium",
+            "certificate_hash": "9629093c19cb00e11f33a0785cb0a85f64598ecd"
+          }
+        },
+        {
+          "client_id": "973402036675-1r9v0eb37cg8o8p8k4ga598an25em9in.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "ca.usask.auxilium",
+            "certificate_hash": "5c18bc1d6218987662d391f1e93edd03e09fc0d1"
+          }
+        },
+        {
+          "client_id": "973402036675-dnp8s19cc0qd8m31jord4pndhp4162sc.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "ca.usask.auxilium",
+            "certificate_hash": "78f9e3a9e34ad16aad85eae4d31982a663476e4b"
+          }
+        },
+        {
           "client_id": "973402036675-b32fca6d1rlv53h1l2uppt529suq6vnb.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {

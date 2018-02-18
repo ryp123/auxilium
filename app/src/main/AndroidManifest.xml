@@ -23,6 +23,7 @@
         <activity android:name=".auth.WelcomeJoinCreateActivity"/>
         <activity android:name="DrawerCircleActivity"/>
         <activity android:name=".auth.IndexProfileActivity"/>
+        <activity android:name=".auth.ProfileEditActivity"/>
 
         <activity
             android:name=".MainActivity"

@@ -29,8 +29,6 @@ public class ChatLanding extends AppCompatActivity {
 
     private ListView listView;
     private ArrayAdapter<String> arrayAdapter;
-    private ArrayList<String> list_of_messages = new ArrayList<>();
-    private String name;
     private DatabaseReference root = FirebaseDatabase.getInstance().getReference().getRoot();
 
     @Override
@@ -53,7 +51,6 @@ public class ChatLanding extends AppCompatActivity {
             public void onClick(View view) {
 
                 Map<String,Object> map = new HashMap<String, Object>();
-                map.put("Message: ","");
                 String newMessage = message.getText().toString();
 
                 //Post message to screen

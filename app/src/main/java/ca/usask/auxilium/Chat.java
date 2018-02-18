@@ -34,11 +34,8 @@ public class Chat extends AppCompatActivity
     private EditText input_msg;
     private TextView chat_conversation;
     private FirebaseAuth mAuth;
-    private String circleID;
 
-    private String user_name,room_name;
     private DatabaseReference root = FirebaseDatabase.getInstance().getReference().getRoot() ;
-    private String temp_key;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,9 +48,7 @@ public class Chat extends AppCompatActivity
         input_msg = (EditText) findViewById(R.id.msg_input);
         chat_conversation = (TextView) findViewById(R.id.textView);
         mAuth = FirebaseAuth.getInstance();
-        circleID = mAuth.getCurrentUser().getUid();
-        Bundle bundle = getIntent().getExtras();
-        String newString = bundle.getString("room_name");
+        //circleID = mAuth.getCurrentUser().getUid();
 
 
         btn_send_msg.setOnClickListener(new View.OnClickListener() {
@@ -61,7 +56,7 @@ public class Chat extends AppCompatActivity
             public void onClick(View view) {
 
                 Map<String,Object> map = new HashMap<String, Object>();
-                temp_key = root.push().getKey();
+                //temp_key = root.push().getKey();
                 root.updateChildren(map);
 
                 DatabaseReference message_root = root;

@@ -7,6 +7,7 @@ package ca.usask.auxilium;
 public class Circle {
     private String CircleName;
 
+    private String ailment;
 
 
 
@@ -20,6 +21,10 @@ public class Circle {
         return CircleName;
     }
 
+    public void setAilment(String ail){
+       ailment = ail;
+    }
 
+    public String getAilment() { return ailment; }
 
 }

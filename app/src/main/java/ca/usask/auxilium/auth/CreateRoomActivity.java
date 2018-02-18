@@ -4,7 +4,9 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.EditText;
+import android.widget.Spinner;
 
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
@@ -28,6 +30,13 @@ public class CreateRoomActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_room);
+
+        //Set the default items for the ailment drop down
+        Spinner spinner = (Spinner) findViewById(R.id.ailmentSpinner);
+        String[] spinItems = new String[]{"Alcoholic", "Depression", "Drug Addiction"};
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
+                android.R.layout.simple_spinner_dropdown_item, spinItems);
+        spinner.setAdapter(adapter);
     }
 
     public void  onCreateButtonClick(View v) {
@@ -39,6 +48,9 @@ public class CreateRoomActivity extends AppCompatActivity {
 
         mCircle = new Circle();
         mCircle.setCircleName(circleName);
+
+        Spinner spinner = (Spinner) findViewById(R.id.ailmentSpinner);
+        spinner.getSelectedItem();
 
         mAcct = GoogleSignIn.getLastSignedInAccount(this);
         mDatabase = FirebaseDatabase.getInstance().getReference();

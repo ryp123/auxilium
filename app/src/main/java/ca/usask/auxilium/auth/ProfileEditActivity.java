@@ -27,7 +27,6 @@ import ca.usask.auxilium.User;
 
 public class ProfileEditActivity extends AppCompatActivity {
 
-    private FirebaseAuth mAuth;
     private GoogleSignInAccount mAcct;
     private DatabaseReference mDatabase;
     Circle circle;
@@ -48,7 +47,6 @@ public class ProfileEditActivity extends AppCompatActivity {
 
         mDatabase = FirebaseDatabase.getInstance().getReference();
         mAcct = GoogleSignIn.getLastSignedInAccount(this);
-        mAuth = FirebaseAuth.getInstance();
         String userName = mAcct.getDisplayName();
 
         circle = new Circle();

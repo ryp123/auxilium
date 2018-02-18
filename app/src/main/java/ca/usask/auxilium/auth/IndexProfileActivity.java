@@ -22,11 +22,10 @@ import ca.usask.auxilium.User;
 
 public class IndexProfileActivity extends AppCompatActivity {
 
-    private FirebaseAuth mAuth;
     private GoogleSignInAccount mAcct;
     Circle circle;
 
-    ImageView imgProfilePic;
+    //ImageView imgProfilePic;
     TextView txtFirstName;
     TextView txtLastName;
     TextView txtPrefName;
@@ -42,12 +41,11 @@ public class IndexProfileActivity extends AppCompatActivity {
         setContentView(R.layout.index_profile_page);
 
         mAcct = GoogleSignIn.getLastSignedInAccount(this);
-        mAuth = FirebaseAuth.getInstance();
         String userName = mAcct.getDisplayName();
         circle = new Circle();
         circle.setCircleName("JadenTestCircle");
 
-        imgProfilePic = findViewById(R.id.profilePicture);
+        //imgProfilePic = findViewById(R.id.profilePicture);
         txtFirstName = findViewById(R.id.indexFirstName);
         txtLastName = findViewById(R.id.indexLastName);
         txtPrefName = findViewById(R.id.indexPrefName);

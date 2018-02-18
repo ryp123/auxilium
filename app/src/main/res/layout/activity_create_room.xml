@@ -26,7 +26,7 @@
         android:id="@+id/roomNameLabel"
         android:layout_width="95dp"
         android:layout_height="29dp"
-        android:layout_marginBottom="360dp"
+        android:layout_marginBottom="380dp"
         android:layout_marginStart="40dp"
         android:fontFamily="sans-serif-condensed"
         android:text="@string/room_name_label"
@@ -41,20 +41,20 @@
         android:layout_width="179dp"
         android:layout_height="37dp"
         android:layout_marginBottom="362dp"
-        android:layout_marginEnd="36dp"
+        android:layout_marginEnd="32dp"
         android:ems="10"
         android:inputType="textPersonName"
         android:textSize="12sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/newRoomLabel"
-        app:layout_constraintVertical_bias="1.0" />
+        app:layout_constraintVertical_bias="0.736" />
 
     <TextView
         android:id="@+id/roomInfoLabel"
         android:layout_width="102dp"
         android:layout_height="32dp"
-        android:layout_marginBottom="312dp"
+        android:layout_marginBottom="328dp"
         android:layout_marginStart="40dp"
         android:fontFamily="sans-serif-condensed"
         android:text="@string/room_info_label"
@@ -69,8 +69,8 @@
         android:id="@+id/roomInfoText"
         android:layout_width="172dp"
         android:layout_height="32dp"
-        android:layout_marginBottom="312dp"
-        android:layout_marginEnd="40dp"
+        android:layout_marginBottom="328dp"
+        android:layout_marginEnd="36dp"
         android:background="#d1d6d2"
         android:ems="10"
         android:inputType="textMultiLine"
@@ -193,16 +193,17 @@
         android:typeface="monospace"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/ailmentSpinner"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/newRoomLabel"
-        app:layout_constraintVertical_bias="0.88" />
+        app:layout_constraintVertical_bias="0.833" />
 
     <Spinner
         android:id="@+id/ailmentSpinner"
         android:layout_width="176dp"
         android:layout_height="26dp"
-        android:layout_marginBottom="92dp"
-        android:layout_marginEnd="37dp"
+        android:layout_marginBottom="96dp"
+        android:layout_marginEnd="32dp"
         android:visibility="visible"
         app:layout_constraintBottom_toBottomOf="@+id/inviteFriendsLabel"
         app:layout_constraintEnd_toEndOf="parent" />

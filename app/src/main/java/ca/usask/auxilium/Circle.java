@@ -11,7 +11,6 @@ public class Circle {
 
     private String circleInfo;
 
-
     public void setCircleName(String circle_name){
         CircleName = circle_name;
 

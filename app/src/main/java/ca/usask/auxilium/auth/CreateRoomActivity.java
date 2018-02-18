@@ -50,6 +50,7 @@ public class CreateRoomActivity extends AppCompatActivity {
         mCircle.setCircleName(circleName);
 
         Spinner spinner = (Spinner) findViewById(R.id.ailmentSpinner);
+
         mCircle.setAilment(spinner.getSelectedItem().toString());
 
         EditText circleInfo = (EditText) findViewById(R.id.roomInfoText);

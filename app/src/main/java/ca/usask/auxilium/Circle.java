@@ -9,7 +9,7 @@ public class Circle {
 
     private String ailment;
 
-
+    private String circleInfo;
 
 
     public void setCircleName(String circle_name){
@@ -26,5 +26,11 @@ public class Circle {
     }
 
     public String getAilment() { return ailment; }
+
+    public void setCircleInfo(String info) {
+        roomInfo = info;
+    }
+
+    public String getCircleInfo( ){ return roomInfo;}
 
 }

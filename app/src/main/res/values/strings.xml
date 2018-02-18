@@ -88,7 +88,7 @@
     <string name="place_holder">Temp String</string>
 
     <!--create room activity: -->
-    <string name="create_room_title">Create a new room</string>
+    <string name="create_room_title">Create a new circle</string>
     <string name="room_name_label">Room name</string>
     <string name="room_info_label">Room info</string>
     <string name="invite_label">Invite friends</string>

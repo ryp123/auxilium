@@ -51,7 +51,11 @@ public class CreateRoomActivity extends AppCompatActivity {
 
         Spinner spinner = (Spinner) findViewById(R.id.ailmentSpinner);
         mCircle.setAilment(spinner.getSelectedItem().toString());
-        
+
+        EditText circleInfo = (EditText) findViewById(R.id.roomInfoText);
+        String circleInfoTxt = circleInfo.getText().toString();
+        mCircle.setCircleInfo(circleInfoTxt);
+
         mAcct = GoogleSignIn.getLastSignedInAccount(this);
         mDatabase = FirebaseDatabase.getInstance().getReference();
 

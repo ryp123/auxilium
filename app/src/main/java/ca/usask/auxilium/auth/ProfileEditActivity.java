@@ -29,7 +29,7 @@ public class ProfileEditActivity extends AppCompatActivity {
 
     private GoogleSignInAccount mAcct;
     private DatabaseReference mDatabase;
-    Circle circle;
+    private User user;
 
     //ImageView imgProfilePic;
     EditText txtFirstName;
@@ -47,10 +47,8 @@ public class ProfileEditActivity extends AppCompatActivity {
 
         mDatabase = FirebaseDatabase.getInstance().getReference();
         mAcct = GoogleSignIn.getLastSignedInAccount(this);
-        String userName = mAcct.getDisplayName();
+        String userId = mAcct.getEmail();
 
-        circle = new Circle();
-        circle.setCircleName("JadenTestCircle");
 
         //imgProfilePic = findViewById(R.id.profilePicture);
         txtFirstName = findViewById(R.id.indexFirstName);
@@ -61,20 +59,18 @@ public class ProfileEditActivity extends AppCompatActivity {
         txtDiagnosis = findViewById(R.id.indexDiagnosis);
         txtEmergencyContact = findViewById(R.id.emergencyContact);
 
-        if(userName == null){
-            Log.e("Google Account Error", "Display name is null");
+        if(userId == null){
+            Log.e("Google Account Error", "email/id is null");
             return;
         }
-        Log.e("PROFILE USERNAME", userName);
+        Log.e("PROFILE email/id", userId);
         FirebaseDatabase.getInstance().getReference()
-                .child("Circles")
-                .child(circle.getCircleName())
-                .child("Concerned")
-                .child(userName)
+                .child("users")
+                .child(userId)
                 .addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                User user = dataSnapshot.getValue(User.class);
+                user = dataSnapshot.getValue(User.class);
                 if(user != null) {
                     txtFirstName.setText(user.getFirstName());
                     txtLastName.setText(user.getLastName());
@@ -107,18 +103,22 @@ public class ProfileEditActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item){
         switch (item.getItemId()) {
             case R.id.action_save:
-                User user = new User(txtFirstName.getText().toString(),
-                        txtLastName.getText().toString(),
-                        txtPrefName.getText().toString(),
-                        txtAge.getText().toString(),
-                        txtGender.getText().toString(),
-                        txtDiagnosis.getText().toString(),
-                        txtEmergencyContact.getText().toString());
-                user.setUserName(mAcct.getDisplayName());
-                user.setStatus("Active");
-                mDatabase.child("Circles").child(circle.getCircleName()).child("Concerned").child(user.getUserName()).setValue(user);
-                Log.d("FirebaseSave", "Edited user data saved");
-                return true;
+                String userId = mAcct.getEmail();
+                if (userId != null) {
+                    user.setFirstName(txtFirstName.getText().toString());
+                    user.setLastName(txtLastName.getText().toString());
+                    user.setPreferredName(txtPrefName.getText().toString());
+                    user.setAge(txtAge.getText().toString());
+                    user.setGender(txtGender.getText().toString());
+                    user.setDiagnosis(txtDiagnosis.getText().toString());
+                    user.setEmergencyContact(txtEmergencyContact.getText().toString());
+                    mDatabase.child("users").child(userId).setValue(user);
+                    Log.d("FirebaseSave", "Edited user data saved");
+                    return true;
+                }
+                else{
+                    Log.e("Google Account Error", "email/id is null");
+                }
         }
         return super.onOptionsItemSelected(item);
     }

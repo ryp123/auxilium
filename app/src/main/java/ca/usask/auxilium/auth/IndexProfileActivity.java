@@ -16,14 +16,12 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-import ca.usask.auxilium.Circle;
 import ca.usask.auxilium.R;
 import ca.usask.auxilium.User;
 
 public class IndexProfileActivity extends AppCompatActivity {
 
     private GoogleSignInAccount mAcct;
-    Circle circle;
 
     //ImageView imgProfilePic;
     TextView txtFirstName;
@@ -41,9 +39,7 @@ public class IndexProfileActivity extends AppCompatActivity {
         setContentView(R.layout.index_profile_page);
 
         mAcct = GoogleSignIn.getLastSignedInAccount(this);
-        String userName = mAcct.getDisplayName();
-        circle = new Circle();
-        circle.setCircleName("JadenTestCircle");
+        String userId = mAcct.getEmail();
 
         //imgProfilePic = findViewById(R.id.profilePicture);
         txtFirstName = findViewById(R.id.indexFirstName);
@@ -54,16 +50,14 @@ public class IndexProfileActivity extends AppCompatActivity {
         txtDiagnosis = findViewById(R.id.indexDiagnosis);
         txtEmergencyContact = findViewById(R.id.emergencyContact);
 
-        if(userName == null){
-            Log.e("Google Account Error", "Display name is null");
+        if(userId == null){
+            Log.e("Google Account Error", "Users email/id is null");
             return;
         }
-        Log.e("PROFILE USERNAME", userName);
+        Log.d("PROFILE EMAIL/ID", userId);
         FirebaseDatabase.getInstance().getReference()
-                .child("Circles")
-                .child(circle.getCircleName())
-                .child("Concerned")
-                .child(userName)
+                .child("users")
+                .child(userId)
                 .addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {

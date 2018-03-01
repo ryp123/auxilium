@@ -43,14 +43,14 @@ public class ProfileFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
         myView = inflater.inflate(R.layout.index_profile_page, container,false);
-//        //imgProfilePic = findViewById(R.id.profilePicture);
-//        txtFirstName = myView.findViewById(R.id.indexFirstName);
-//        txtLastName = myView.findViewById(R.id.indexLastName);
-//        txtPrefName = myView.findViewById(R.id.indexPrefName);
-//        txtAge = myView.findViewById(R.id.indexAge);
-//        txtGender = myView.findViewById(R.id.indexGender);
-//        txtDiagnosis = myView.findViewById(R.id.indexDiagnosis);
-//        txtEmergencyContact = myView.findViewById(R.id.emergencyContact);
+        //imgProfilePic = findViewById(R.id.profilePicture);
+        txtFirstName = myView.findViewById(R.id.indexFirstName);
+        txtLastName = myView.findViewById(R.id.indexLastName);
+        txtPrefName = myView.findViewById(R.id.indexPrefName);
+        txtAge = myView.findViewById(R.id.indexAge);
+        txtGender = myView.findViewById(R.id.indexGender);
+        txtDiagnosis = myView.findViewById(R.id.indexDiagnosis);
+        txtEmergencyContact = myView.findViewById(R.id.emergencyContact);
         return myView;
     }
 
@@ -66,15 +66,6 @@ public class ProfileFragment extends Fragment {
             return;
         }
         String userId = fUser.getUid();
-
-        //imgProfilePic = findViewById(R.id.profilePicture);
-        txtFirstName = getActivity().findViewById(R.id.indexFirstName);
-        txtLastName = getActivity().findViewById(R.id.indexLastName);
-        txtPrefName = getActivity().findViewById(R.id.indexPrefName);
-        txtAge = getActivity().findViewById(R.id.indexAge);
-        txtGender = getActivity().findViewById(R.id.indexGender);
-        txtDiagnosis = getActivity().findViewById(R.id.indexDiagnosis);
-        txtEmergencyContact = getActivity().findViewById(R.id.emergencyContact);
 
         Log.d("PROFILE EMAIL/ID", userId);
         FirebaseDatabase.getInstance().getReference()

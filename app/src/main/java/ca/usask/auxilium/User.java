@@ -18,7 +18,17 @@ public class User {
     private String emergencyContact;
 
 
-    public User(){}
+    public User(){
+        this.mUserName = "";
+        this.mStatus = "";
+        this.firstName = "";
+        this.lastName = "";
+        this.preferredName = "";
+        this.age = "";
+        this.gender = "";
+        this.diagnosis = "";
+        this.emergencyContact = "";
+    }
 
     public User(String firstName, String lastName, String preferredName, String age, String gender, String diagnosis, String emergencyContact) {
         this.firstName = firstName;

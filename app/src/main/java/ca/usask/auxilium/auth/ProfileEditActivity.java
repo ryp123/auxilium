@@ -83,6 +83,8 @@ public class ProfileEditActivity extends AppCompatActivity {
                 }
                 else{
                     Log.e("FirebaseError", "User is null");
+                    user = new User();
+                    user.setStatus("Active");
                 }
             }
 

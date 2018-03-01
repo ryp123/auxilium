@@ -1,17 +1,20 @@
 package ca.usask.auxilium.auth;
 
+import android.app.Fragment;
 import android.content.Intent;
-import android.net.Uri;
+import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.google.android.gms.auth.api.signin.GoogleSignIn;
-import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -22,9 +25,10 @@ import com.google.firebase.database.ValueEventListener;
 import ca.usask.auxilium.R;
 import ca.usask.auxilium.User;
 
-public class IndexProfileActivity extends AppCompatActivity {
+public class ProfileFragment extends Fragment {
 
     private FirebaseUser fUser;
+    View myView;
 
     //ImageView imgProfilePic;
     TextView txtFirstName;
@@ -35,11 +39,26 @@ public class IndexProfileActivity extends AppCompatActivity {
     TextView txtDiagnosis;
     TextView txtEmergencyContact;
 
+    @Nullable
+    @Override
+    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
+        myView = inflater.inflate(R.layout.index_profile_page, container,false);
+//        //imgProfilePic = findViewById(R.id.profilePicture);
+//        txtFirstName = myView.findViewById(R.id.indexFirstName);
+//        txtLastName = myView.findViewById(R.id.indexLastName);
+//        txtPrefName = myView.findViewById(R.id.indexPrefName);
+//        txtAge = myView.findViewById(R.id.indexAge);
+//        txtGender = myView.findViewById(R.id.indexGender);
+//        txtDiagnosis = myView.findViewById(R.id.indexDiagnosis);
+//        txtEmergencyContact = myView.findViewById(R.id.emergencyContact);
+        return myView;
+    }
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.index_profile_page);
+        //setContentView(R.layout.index_profile_page);
+        setHasOptionsMenu(true);
 
         fUser = FirebaseAuth.getInstance().getCurrentUser();
         if (fUser == null){
@@ -49,13 +68,13 @@ public class IndexProfileActivity extends AppCompatActivity {
         String userId = fUser.getUid();
 
         //imgProfilePic = findViewById(R.id.profilePicture);
-        txtFirstName = findViewById(R.id.indexFirstName);
-        txtLastName = findViewById(R.id.indexLastName);
-        txtPrefName = findViewById(R.id.indexPrefName);
-        txtAge = findViewById(R.id.indexAge);
-        txtGender = findViewById(R.id.indexGender);
-        txtDiagnosis = findViewById(R.id.indexDiagnosis);
-        txtEmergencyContact = findViewById(R.id.emergencyContact);
+        txtFirstName = getActivity().findViewById(R.id.indexFirstName);
+        txtLastName = getActivity().findViewById(R.id.indexLastName);
+        txtPrefName = getActivity().findViewById(R.id.indexPrefName);
+        txtAge = getActivity().findViewById(R.id.indexAge);
+        txtGender = getActivity().findViewById(R.id.indexGender);
+        txtDiagnosis = getActivity().findViewById(R.id.indexDiagnosis);
+        txtEmergencyContact = getActivity().findViewById(R.id.emergencyContact);
 
         Log.d("PROFILE EMAIL/ID", userId);
         FirebaseDatabase.getInstance().getReference()
@@ -87,15 +106,20 @@ public class IndexProfileActivity extends AppCompatActivity {
     }
 
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.profile_menu, menu);
-        return true;
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        inflater.inflate(R.menu.profile_menu, menu);
     }
+
+//    @Override
+//    public boolean onCreateOptionsMenu(Menu menu) {
+//        getSupportMenuInflater.inflate(R.menu.profile_menu, menu);
+//        return true;
+//    }
 
     public boolean onOptionsItemSelected(MenuItem item){
         switch (item.getItemId()) {
             case R.id.action_edit:
-                startActivity(new Intent(getBaseContext(), ProfileEditActivity.class));
+                startActivity(new Intent(getContext(), ProfileEditActivity.class));
         }
         return super.onOptionsItemSelected(item);
     }

@@ -68,7 +68,10 @@ public class CreateRoomActivity extends AppCompatActivity {
 
      public void updateDatabase(){
 
-         mDatabase.child("Circles").child(mCircle.getCircleName()).setValue(mCircle);
+        // mDatabase.child("Circles").child(mCircle.getCircleName()).setValue(mCircle);
+         mDatabase.child("circles").child(mDatabase.push().getKey()).child("name").setValue(mCircle.getCircleName());
+
+
 
          if (mAcct != null) {
 
@@ -76,7 +79,8 @@ public class CreateRoomActivity extends AppCompatActivity {
              User user = new User();
              user.setUserName(mUserName);
              user.setStatus("Active");
-             mDatabase.child("Circles").child(mCircle.getCircleName()).child("Concerned").child(user.getUserName()).setValue(user);
+             mDatabase.child("circles").child(mDatabase.push().getKey()).child("name").child(mCircle.getCircleName());
+         //    mDatabase.child("circles").child(mCircle.getCircleName()).child("Concerned").child(user.getUserName()).setValue(user);
 
          }
 

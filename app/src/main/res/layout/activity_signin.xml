@@ -89,6 +89,15 @@
                 android:text="@string/create_room_or_join_room_button"
                 android:theme="@style/ThemeOverlay.MyDarkButton"/>
 
+            <Button
+                android:id="@+id/go_to_main_button"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:onClick="onMainActivityButtonClick"
+                android:text="MainActivity"
+                android:theme="@style/ThemeOverlay.MyDarkButton"/>
+
 
         </LinearLayout>
 

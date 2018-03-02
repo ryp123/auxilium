@@ -22,6 +22,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
 
+import ca.usask.auxilium.MainActivity;
 import ca.usask.auxilium.R;
 
 /**
@@ -219,6 +220,9 @@ public class SignInActivity extends BaseActivity implements View.OnClickListener
         startActivity(intent);
    }
 
+   public void onMainActivityButtonClick(View v){
+       startActivity(new Intent(getBaseContext(), MainActivity.class));
+   }
 
 
 }

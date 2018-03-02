@@ -45,6 +45,14 @@ test:
       paths:
         - app/build/reports/tests/testDebugUnitTest
 
+test-coverage-report:
+    stage: test
+    script:
+      - ./gradlew jacocoTestReport
+    artifacts:
+      when: on_success
+      paths:
+        - app/build/reports/jacoco/
 
 # The deployment stage is simply uploading the
 # apk file to gitlab. Depending on the situation this could

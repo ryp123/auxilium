@@ -1,24 +1,18 @@
 package ca.usask.auxilium;
 
-import android.content.DialogInterface;
-import android.content.Intent;
+
 import android.os.Bundle;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
-import android.widget.TextView;
 
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 
-import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
@@ -33,7 +27,7 @@ public class ChatLanding extends AppCompatActivity {
     private ListView listView;
     private ArrayAdapter<String> arrayAdapter;
     private DatabaseReference root = FirebaseDatabase.getInstance().getReference().getRoot();
-    private String chat_msg,chat_user_name;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -109,22 +103,6 @@ public class ChatLanding extends AppCompatActivity {
 
               message.setText("");
 
-                /**
-                Map<String,Object> map = new HashMap<String, Object>();
-                String newMessage = message.getText().toString();
-
-                //Post message to screen
-                arrayAdapter.add(newMessage);
-
-                //Add to database -- change later to make it adaptive.  Find a way to auto increment
-                root.child("Circles").child("Circle 2").child("Chat").child("Concerned Group").updateChildren(map);
-                root.child("Circles").child("Circle 2").child("Chat").child("Concerned Group").child(newMessage).setValue(newMessage);
-
-
-                //Clear the message box
-                message.setText(""); */
-
-
             }
         });
 
@@ -138,18 +116,6 @@ public class ChatLanding extends AppCompatActivity {
         Message m = dataSnapshot.getValue(Message.class);
 
         arrayAdapter.add(m.getSender() + " : " + m.getMessage());
-//        Iterator i = dataSnapshot.getChildren().iterator();
-//
-//        while (i.hasNext()){
-//
-//            chat_msg = (String) ((DataSnapshot)i.next()).getValue();
-//            //chat_user_name = (String) ((DataSnapshot)i.next()).getValue();
-//
-//            //chat_conversation.append(chat_user_name +" : "+chat_msg +" \n");
-//            arrayAdapter.add(chat_msg + "\n");
-//        }
-
-
 
     }
 }

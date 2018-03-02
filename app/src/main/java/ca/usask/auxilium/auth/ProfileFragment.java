@@ -3,7 +3,6 @@ package ca.usask.auxilium.auth;
 import android.app.Fragment;
 import android.content.Intent;
 import android.support.annotation.Nullable;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -12,7 +11,6 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -57,7 +55,6 @@ public class ProfileFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        //setContentView(R.layout.index_profile_page);
         setHasOptionsMenu(true);
 
         fUser = FirebaseAuth.getInstance().getCurrentUser();
@@ -100,12 +97,6 @@ public class ProfileFragment extends Fragment {
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         inflater.inflate(R.menu.profile_menu, menu);
     }
-
-//    @Override
-//    public boolean onCreateOptionsMenu(Menu menu) {
-//        getSupportMenuInflater.inflate(R.menu.profile_menu, menu);
-//        return true;
-//    }
 
     public boolean onOptionsItemSelected(MenuItem item){
         switch (item.getItemId()) {

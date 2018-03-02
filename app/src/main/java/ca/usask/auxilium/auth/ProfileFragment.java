@@ -27,6 +27,7 @@ public class ProfileFragment extends Fragment {
 
     private FirebaseUser fUser;
     View myView;
+    private String userId;
 
     //ImageView imgProfilePic;
     TextView txtFirstName;
@@ -62,9 +63,11 @@ public class ProfileFragment extends Fragment {
             Log.e("User Error", "user is not logged in");
             return;
         }
-        String userId = fUser.getUid();
+        userId = fUser.getUid();
+    }
 
-        Log.d("PROFILE EMAIL/ID", userId);
+
+    private void populateViewsFromDb(){
         FirebaseDatabase.getInstance().getReference()
                 .child("users")
                 .child(userId)
@@ -104,5 +107,11 @@ public class ProfileFragment extends Fragment {
                 startActivity(new Intent(getContext(), ProfileEditActivity.class));
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onResume() {
+        populateViewsFromDb();
+        super.onResume();
     }
 }

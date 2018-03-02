@@ -6,6 +6,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -111,7 +112,9 @@ public class ProfileEditActivity extends AppCompatActivity {
                 user.setDiagnosis(txtDiagnosis.getText().toString());
                 user.setEmergencyContact(txtEmergencyContact.getText().toString());
                 mDatabase.child("users").child(userId).setValue(user);
+                Toast.makeText(getBaseContext(), "Changes Saved", Toast.LENGTH_LONG).show();
                 Log.d("FirebaseSave", "Edited user data saved");
+                this.finish();
                 return true;
         }
         return super.onOptionsItemSelected(item);

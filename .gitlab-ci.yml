@@ -11,11 +11,11 @@ cache:
     - .gradle/wrapper
     - .gradle/caches
 
-
 stages:
   - build
   - code-analysis
   - test
+  - coverage-report
   - deploy
 
 build:
@@ -38,7 +38,13 @@ code-analysis:
 
 test:
     stage: test
-    script: ./gradlew test
+    script:
+      - ./gradlew test
+    artifacts:
+      when: on_failure
+      paths:
+        - app/build/reports/tests/testDebugUnitTest
+
 
 # The deployment stage is simply uploading the
 # apk file to gitlab. Depending on the situation this could

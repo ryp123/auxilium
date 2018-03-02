@@ -105,9 +105,11 @@ public class ProfileFragment extends Fragment {
         switch (item.getItemId()) {
             case R.id.action_edit:
                 startActivity(new Intent(getContext(), ProfileEditActivity.class));
+                break;
             default:
                 return super.onOptionsItemSelected(item);
         }
+        return super.onOptionsItemSelected(item);
     }
 
     @Override

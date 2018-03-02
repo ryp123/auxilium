@@ -63,13 +63,13 @@ public class ChatLanding extends AppCompatActivity {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
 
-                append_chat_conversation(dataSnapshot);
+                appendChatConversation(dataSnapshot);
             }
 
             @Override
             public void onChildChanged(DataSnapshot dataSnapshot, String s) {
 
-                append_chat_conversation(dataSnapshot);
+                appendChatConversation(dataSnapshot);
 
             }
 
@@ -111,7 +111,7 @@ public class ChatLanding extends AppCompatActivity {
 
         }
 
-    private void append_chat_conversation(DataSnapshot dataSnapshot) {
+    private void appendChatConversation(DataSnapshot dataSnapshot) {
 
         Message m = dataSnapshot.getValue(Message.class);
 

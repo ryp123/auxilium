@@ -46,7 +46,7 @@ test:
         - app/build/reports/tests/testDebugUnitTest
 
 test-coverage-report:
-    stage: test
+    stage: coverage-report
     script:
       - ./gradlew jacocoTestReport
     artifacts:

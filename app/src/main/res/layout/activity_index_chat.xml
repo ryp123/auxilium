@@ -10,10 +10,10 @@
     android:paddingTop="@dimen/activity_vertical_margin">
 
 
-
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:id="@+id/layout_msg_btns"
         android:orientation="horizontal"
         android:layout_alignParentBottom="true"
         android:layout_alignParentRight="true"
@@ -46,8 +46,10 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/listView"
+        android:layout_above="@+id/layout_msg_btns"
         android:layout_alignParentTop="true"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:layout_above="@+id/room_name_edittext" />
+        android:layout_alignParentEnd="true"/>
+
 </RelativeLayout>

@@ -158,6 +158,7 @@ public class DirectChat extends AppCompatActivity {
 
         arrayAdapter.add(m.getSender() + " : " + m.getMessage());
 
+        listView.setSelection(arrayAdapter.getCount() - 1);
     }
 }
 

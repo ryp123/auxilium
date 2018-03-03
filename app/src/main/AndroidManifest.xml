@@ -11,7 +11,7 @@
         android:theme="@style/AppTheme">
         <activity android:name=".auth.SignInActivity">
 
-        <intent-filter>
+            <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
@@ -26,6 +26,8 @@
         <activity android:name=".auth.IndexProfileActivity"/>
         <activity android:name=".auth.ProfileEditActivity"/>
         <activity android:name=".ChatLanding"/>
+        <activity android:name=".IndexChat"/>
+        <activity android:name=".DirectChat"/>
         <activity
             android:name=".MainActivity"
             android:label="@string/title_activity_main"

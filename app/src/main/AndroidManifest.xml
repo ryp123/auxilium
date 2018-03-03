@@ -28,6 +28,9 @@
         <activity android:name=".ChatLanding"/>
         <activity android:name=".IndexChat"/>
         <activity android:name=".DirectChat"/>
+        <activity android:name=".HelpScreen"
+            android:label="Help and Resources" />
+        />
         <activity
             android:name=".MainActivity"
             android:label="@string/title_activity_main"

@@ -59,7 +59,7 @@ public class ChatLanding extends AppCompatActivity {
         });
 
 
-        root.child("messages").child("testCircle").addChildEventListener(new ChildEventListener() {
+        root.child("concernedMessages").child("testCircle").addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
 
@@ -98,7 +98,7 @@ public class ChatLanding extends AppCompatActivity {
 
               Message newMessage = new Message(senderName, message.getText().toString());
 
-              root.child("messages").child("testCircle").push().setValue(newMessage);
+              root.child("concernedMessages").child("testCircle").push().setValue(newMessage);
 
 
               message.setText("");

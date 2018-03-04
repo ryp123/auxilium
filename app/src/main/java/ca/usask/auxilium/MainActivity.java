@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.util.Log;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -14,11 +15,26 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
+
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
 
 import ca.usask.auxilium.auth.ProfileFragment;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
+
+    String[] userNames;
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,6 +60,26 @@ public class MainActivity extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+
+        userNames= new String[5];
+
+        getAllUsersFromFirebase();
+
+        ListView lv =  findViewById(R.id.users_list_view);
+
+        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(
+                this,
+                android.R.layout.simple_list_item_1,
+                userNames);
+
+        userNames[0]= "sssssssssss";
+//        for(int i =0; i<1; i++){
+//            Log.d("user name", userNames[0]);
+//        }
+
+
+//        lv.setAdapter(arrayAdapter);
+
     }
 
     @Override
@@ -104,5 +140,56 @@ public class MainActivity extends AppCompatActivity
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+
+    public void getAllUsersFromFirebase() {
+
+
+        FirebaseDatabase.getInstance()
+                .getReference()
+                .child("Circles")
+                .child(getIntent().getStringExtra("CircleName"))
+                .child("Concerned")
+                .addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        Iterator<DataSnapshot> dataSnapshots = dataSnapshot.getChildren()
+                                .iterator();
+
+                        final List<User>  users = new ArrayList<>();
+
+                        while (dataSnapshots.hasNext()) {
+                            DataSnapshot dataSnapshotChild = dataSnapshots.next();
+                            User user = dataSnapshotChild.getValue(User.class);
+                            users.add(user);
+                        }
+                        // All users are retrieved except the one who is currently logged
+                        // in device.
+
+
+                        for (User user : users) {
+                            Log.d("*** USER NAME: ", user.getUserName());
+                        }
+
+//                        for(int i=0; i<users.size();i++){
+//                            userNames[i] = users.get(i).getUserName();
+//                        }
+
+
+
+
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+                        // Unable to retrieve the users.
+                    }
+
+                });
+
+
+
+
     }
 }

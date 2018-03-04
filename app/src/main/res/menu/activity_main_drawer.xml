@@ -27,7 +27,18 @@
                 android:icon="?android:attr/listChoiceIndicatorSingle"
                 android:title="Users List" />
         </menu>
+
+        <ListView android:id="@+id/users_list_view"
+                  android:layout_height="match_parent"
+                  android:layout_width="match_parent">
+
+        </ListView>
+
     </item>
+
+
+
+
     <item
         android:id="@+id/app_bar_search"
         android:icon="@drawable/ic_search_black_24dp"

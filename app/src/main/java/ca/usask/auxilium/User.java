@@ -7,7 +7,6 @@ package ca.usask.auxilium;
 public class User {
 
 
-    private String mUserName;
     private String mStatus;
     private String firstName;
     private String lastName;
@@ -19,7 +18,6 @@ public class User {
 
 
     public User(){
-        this.mUserName = "";
         this.mStatus = "";
         this.firstName = "";
         this.lastName = "";
@@ -38,14 +36,6 @@ public class User {
         this.gender = gender;
         this.diagnosis = diagnosis;
         this.emergencyContact = emergencyContact;
-    }
-
-    public String getUserName() {
-        return mUserName;
-    }
-
-    public void setUserName(String userName) {
-        mUserName = userName;
     }
 
 

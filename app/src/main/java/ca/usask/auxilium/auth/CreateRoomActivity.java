@@ -22,7 +22,6 @@ public class CreateRoomActivity extends AppCompatActivity {
     private DatabaseReference mDatabase;
 
     private Circle mCircle;
-    private String mUserName;
 
     GoogleSignInAccount mAcct;
 
@@ -75,9 +74,7 @@ public class CreateRoomActivity extends AppCompatActivity {
 
          if (mAcct != null) {
 
-             mUserName = mAcct.getDisplayName();
              User user = new User();
-             user.setUserName(mUserName);
              user.setStatus("Active");
              mDatabase.child("circles").child(mDatabase.push().getKey()).child("name").child(mCircle.getCircleName());
          //    mDatabase.child("circles").child(mCircle.getCircleName()).child("Concerned").child(user.getUserName()).setValue(user);

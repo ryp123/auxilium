@@ -169,7 +169,7 @@ public class MainActivity extends AppCompatActivity
 
 
                         for (User user : users) {
-                            Log.d("*** USER NAME: ", user.getUserName());
+                            Log.d("*** USER NAME: ", user.getLastName());
                         }
 
 //                        for(int i=0; i<users.size();i++){

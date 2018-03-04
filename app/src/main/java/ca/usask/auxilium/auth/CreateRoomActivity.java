@@ -115,8 +115,7 @@ public class CreateRoomActivity extends AppCompatActivity {
 
     private boolean isEmailTheDefaultValue(String email) {
         String defaultValue = "Email address";
-        return email == defaultValue;
+        return email.equals(defaultValue);
     }
-
 
 }

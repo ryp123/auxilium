@@ -1,7 +1,9 @@
 package ca.usask.auxilium.auth;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.text.TextUtils;
 import android.util.Log;
 import android.util.Patterns;
 import android.view.View;
@@ -11,13 +13,22 @@ import android.widget.Spinner;
 
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
 
 import java.util.regex.Pattern;
 
 import ca.usask.auxilium.Circle;
 import ca.usask.auxilium.Invitations;
+import ca.usask.auxilium.MainActivity;
 import ca.usask.auxilium.R;
 import ca.usask.auxilium.Services.InvitationService;
 import ca.usask.auxilium.User;
@@ -92,6 +103,11 @@ public class CreateRoomActivity extends AppCompatActivity {
 
         updateDatabase();
 
+        Intent intent = new Intent(getBaseContext(), MainActivity.class);
+        intent.putExtra("CircleName", mCircle.getCircleName());
+
+        startActivity(intent);
+
     }
 
      public void updateDatabase(){
@@ -116,6 +132,9 @@ public class CreateRoomActivity extends AppCompatActivity {
     private boolean isEmailTheDefaultValue(String email) {
         String defaultValue = "Email address";
         return email.equals(defaultValue);
+
     }
+
+
 
 }

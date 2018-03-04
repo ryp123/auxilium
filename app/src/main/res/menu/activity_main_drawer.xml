@@ -20,14 +20,26 @@
 
     </group>
 
-    <item android:title="Users">
-        <menu>
+
+    <group android:title="Users"
+           android:id="@+id/users">
             <item
                 android:id="@+id/nav_share"
                 android:icon="?android:attr/listChoiceIndicatorSingle"
                 android:title="Users List" />
-        </menu>
-    </item>
+
+
+        <!--<ListView android:id="@+id/users_list_view"-->
+                  <!--android:layout_height="match_parent"-->
+                  <!--android:layout_width="match_parent">-->
+
+        <!--</ListView>-->
+
+    </group>
+
+
+
+
     <item
         android:id="@+id/app_bar_search"
         android:icon="@drawable/ic_search_black_24dp"

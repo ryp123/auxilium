@@ -1,6 +1,8 @@
 package ca.usask.auxilium;
 
 import org.joda.time.DateTime;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 /**
  * Created by rpiper on 3/3/18.
@@ -10,6 +12,7 @@ public class Invitations {
 
     private String circleId;
     private String email;
+    private String senderEmail;
     private boolean sentDynamicLink;
     private Long expirationDate;
 
@@ -17,6 +20,7 @@ public class Invitations {
         this.circleId = circleId;
         this.email = email;
         this.sentDynamicLink = false;
+        this.senderEmail = this.getCurrentUsersEmail();
         // get expiration date as unix timestamp
         this.expirationDate = DateTime.now().plusMonths(1).getMillis() / 1000L;
     }
@@ -53,5 +57,9 @@ public class Invitations {
         this.expirationDate = newExpirationDate;
     }
 
-
+    private String getCurrentUsersEmail() {
+      FirebaseAuth mAuth = FirebaseAuth.getInstance();
+      FirebaseUser user = mAuth.getCurrentUser();
+      return user.getEmail();
+    }
 }

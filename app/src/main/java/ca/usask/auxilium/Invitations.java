@@ -57,6 +57,10 @@ public class Invitations {
         this.expirationDate = newExpirationDate;
     }
 
+    private String getSenderEmail() {
+      return this.senderEmail; 
+    }
+
     private String getCurrentUsersEmail() {
       FirebaseAuth mAuth = FirebaseAuth.getInstance();
       FirebaseUser user = mAuth.getCurrentUser();

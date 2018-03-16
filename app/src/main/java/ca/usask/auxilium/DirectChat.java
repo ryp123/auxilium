@@ -50,6 +50,7 @@ public class DirectChat extends Fragment {
 
             roomType1 = fUser.getUid() + "_" + value;
             roomType2 = value + "_" + fUser.getUid();
+
         }
 
         send = (Button) myView.findViewById(R.id.btn_add_room);
@@ -173,8 +174,9 @@ public class DirectChat extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
     }
+
+
 
     private void appendChatConversation(DataSnapshot dataSnapshot) {
 

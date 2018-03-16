@@ -44,6 +44,10 @@ public class MainActivity extends AppCompatActivity
     NavigationView navigationView;
 
     ArrayList<MenuItem> mMenuItems = new ArrayList<>();
+<<<<<<< HEAD
+=======
+    // 20 is temporary number for the assumed number of list users
+>>>>>>> feat(*):make the user list on the drawer clickable and leads to right fragment to chat
 
     ArrayList<String> mUsers = new ArrayList<>();
 
@@ -138,7 +142,10 @@ public class MainActivity extends AppCompatActivity
         // Handle navigation view item clicks here.
         Log.d("groupid: ", Integer.toString(item.getGroupId()));
         Log.d("item: ", Integer.toString(item.getItemId()));
+<<<<<<< HEAD
 
+=======
+>>>>>>> feat(*):make the user list on the drawer clickable and leads to right fragment to chat
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setVisibility(View.VISIBLE);
         int id = item.getItemId();
@@ -154,9 +161,12 @@ public class MainActivity extends AppCompatActivity
             mDirectChat.setArguments(args);
             fragmentManager.beginTransaction().replace(R.id.content_frame, mDirectChat).commit();
         }
+<<<<<<< HEAD
 
 
 
+=======
+>>>>>>> feat(*):make the user list on the drawer clickable and leads to right fragment to chat
         FragmentManager fragmentManager2 = getFragmentManager();
         if (id == R.id.nav_profile_page) {
             fragmentManager2.beginTransaction().replace(R.id.content_frame, new ProfileFragment()).commit();

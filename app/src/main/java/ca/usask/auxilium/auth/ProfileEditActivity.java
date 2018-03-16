@@ -111,6 +111,17 @@ public class ProfileEditActivity extends AppCompatActivity {
                 user.setGender(txtGender.getText().toString());
                 user.setDiagnosis(txtDiagnosis.getText().toString());
                 user.setEmergencyContact(txtEmergencyContact.getText().toString());
+
+                if(user.getFirstName().equals("") || user.getLastName().equals("") ||
+                        user.getAge().equals("") || user.getGender().equals("")){
+                    Toast.makeText(getBaseContext(), "Error: please fill out the required fields", Toast.LENGTH_LONG).show();
+                    return true;
+                }
+
+                if(user.getPreferredName().equals("")){
+                    user.setPreferredName(user.getFirstName());
+                }
+
                 mDatabase.child("users").child(userId).setValue(user);
                 Toast.makeText(getBaseContext(), "Changes Saved", Toast.LENGTH_LONG).show();
                 Log.d("FirebaseSave", "Edited user data saved");

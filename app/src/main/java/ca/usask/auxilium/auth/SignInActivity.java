@@ -142,6 +142,7 @@ public class SignInActivity extends BaseActivity implements View.OnClickListener
                         // [START_EXCLUDE]
                         hideProgressDialog();
                         // [END_EXCLUDE]
+                        checkFirstTimeLogin();
                     }
                 });
     }

@@ -21,6 +21,11 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import ca.usask.auxilium.MainActivity;
 import ca.usask.auxilium.R;
@@ -80,6 +85,9 @@ public class SignInActivity extends BaseActivity implements View.OnClickListener
         // Check if user is signed in (non-null) and update UI accordingly.
         FirebaseUser currentUser = mAuth.getCurrentUser();
         updateUI(currentUser);
+        if(currentUser != null){
+            checkFirstTimeLogin();
+        }
     }
     // [END on_start_check_user]
 
@@ -95,6 +103,7 @@ public class SignInActivity extends BaseActivity implements View.OnClickListener
                 // Google Sign In was successful, authenticate with Firebase
                 GoogleSignInAccount account = task.getResult(ApiException.class);
                 firebaseAuthWithGoogle(account);
+                checkFirstTimeLogin();
             } catch (ApiException e) {
                 // Google Sign In failed, update UI appropriately
                 Log.w(TAG, "Google sign in failed", e);
@@ -176,11 +185,12 @@ public class SignInActivity extends BaseActivity implements View.OnClickListener
     private void updateUI(FirebaseUser user) {
         hideProgressDialog();
         if (user != null) {
-            mStatusTextView.setText(getString(R.string.google_status_fmt, user.getEmail()));
-            mDetailTextView.setText(getString(R.string.firebase_status_fmt, user.getUid()));
+            //mStatusTextView.setText(getString(R.string.google_status_fmt, user.getEmail()));
+            //mDetailTextView.setText(getString(R.string.firebase_status_fmt, user.getUid()));
+            mStatusTextView.setText(null);
 
             findViewById(R.id.sign_in_button).setVisibility(View.GONE);
-            findViewById(R.id.sign_out_and_disconnect).setVisibility(View.VISIBLE);
+            //findViewById(R.id.sign_out_and_disconnect).setVisibility(View.VISIBLE);
         } else {
             mStatusTextView.setText(R.string.signed_out);
             mDetailTextView.setText(null);
@@ -224,5 +234,27 @@ public class SignInActivity extends BaseActivity implements View.OnClickListener
        startActivity(new Intent(getBaseContext(), MainActivity.class));
    }
 
+
+   public void checkFirstTimeLogin(){
+       FirebaseUser user = mAuth.getCurrentUser();
+       if(user != null) {
+           DatabaseReference db = FirebaseDatabase.getInstance().getReference();
+           db.child("users").child(user.getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
+               @Override
+               public void onDataChange(DataSnapshot dataSnapshot) {
+                   if(dataSnapshot.exists()){
+                       startActivity(new Intent(getBaseContext(), MainActivity.class));
+                   } else {
+                       startActivity(new Intent(getBaseContext(), ProfileEditActivity.class));
+                   }
+               }
+
+               @Override
+               public void onCancelled(DatabaseError databaseError) {
+
+               }
+           });
+       }
+   }
 
 }

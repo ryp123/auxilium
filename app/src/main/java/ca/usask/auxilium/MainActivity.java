@@ -32,7 +32,6 @@ import ca.usask.auxilium.auth.ProfileFragment;
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
-    String[] userNames;
     NavigationView navigationView;
 
 
@@ -62,26 +61,8 @@ public class MainActivity extends AppCompatActivity
         navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
-        userNames = new String[5];
 
         getAllUsersFromFirebase();
-
-//        ListView lv =  findViewById(R.id.users_list_view);
-
-//
-//        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(
-//                this,
-//                android.R.layout.simple_list_item_1,
-//                userNames);
-//
-//        userNames[0]= "sssssssssss";
-//        for(int i =0; i<1; i++){
-//            Log.d("user name", userNames[0]);
-//        }
-
-
-//        lv.setAdapter(arrayAdapter);
-
 
     }
 
@@ -152,7 +133,6 @@ public class MainActivity extends AppCompatActivity
         FirebaseDatabase.getInstance()
                 .getReference()
                 .child("users")
-
                 .addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
@@ -169,18 +149,10 @@ public class MainActivity extends AppCompatActivity
                         // All users are retrieved except the one who is currently logged
                         // in device.
 
-
                         for (User user : users) {
                             Log.d("*** USER NAME: ", user.getPreferredName());
                             addNewItem(user.getPreferredName());
-
                         }
-
-//                        for(int i=0; i<users.size();i++){
-//                            userNames[i] = users.get(i).getUserName();
-//                        }
-
-
 
                     }
 
@@ -190,7 +162,6 @@ public class MainActivity extends AppCompatActivity
                     }
 
                 });
-
 
 
 

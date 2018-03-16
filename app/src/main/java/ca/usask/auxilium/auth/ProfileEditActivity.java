@@ -112,13 +112,12 @@ public class ProfileEditActivity extends AppCompatActivity {
                 user.setDiagnosis(txtDiagnosis.getText().toString());
                 user.setEmergencyContact(txtEmergencyContact.getText().toString());
 
-                if(user.getFirstName().equals("") || user.getLastName().equals("") ||
-                        user.getAge().equals("") || user.getGender().equals("")){
+                if(!user.isValid()){
                     Toast.makeText(getBaseContext(), "Error: please fill out the required fields", Toast.LENGTH_LONG).show();
                     return true;
                 }
 
-                if(user.getPreferredName().equals("")){
+                if(user.getPreferredName().isEmpty()){
                     user.setPreferredName(user.getFirstName());
                 }
 

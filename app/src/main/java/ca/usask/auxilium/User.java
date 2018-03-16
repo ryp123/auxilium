@@ -38,6 +38,10 @@ public class User {
         this.emergencyContact = emergencyContact;
     }
 
+    public boolean isValid(){
+        return !(this.getFirstName().isEmpty() || this.getLastName().isEmpty() ||
+                this.getAge().isEmpty() || this.getGender().isEmpty());
+    }
 
 
     public String getStatus() {

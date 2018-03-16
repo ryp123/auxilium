@@ -42,12 +42,14 @@ public class DirectChat extends Fragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
         myView = inflater.inflate(R.layout.activity_chat_landing, container,false);
 
+
         FirebaseUser fUser = FirebaseAuth.getInstance().getCurrentUser();
         if(fUser != null){
             Bundle args = getArguments();
             String value = args.getString("USER_ID");
+
             roomType1 = fUser.getUid() + "_" + value;
-            roomType1 = value + "_" + fUser.getUid();
+            roomType2 = value + "_" + fUser.getUid();
         }
 
         send = (Button) myView.findViewById(R.id.btn_add_room);

@@ -138,6 +138,7 @@ public class MainActivity extends AppCompatActivity
         // Handle navigation view item clicks here.
         Log.d("groupid: ", Integer.toString(item.getGroupId()));
         Log.d("item: ", Integer.toString(item.getItemId()));
+
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setVisibility(View.VISIBLE);
         int id = item.getItemId();
@@ -153,6 +154,9 @@ public class MainActivity extends AppCompatActivity
             mDirectChat.setArguments(args);
             fragmentManager.beginTransaction().replace(R.id.content_frame, mDirectChat).commit();
         }
+
+
+
         FragmentManager fragmentManager2 = getFragmentManager();
         if (id == R.id.nav_profile_page) {
             fragmentManager2.beginTransaction().replace(R.id.content_frame, new ProfileFragment()).commit();

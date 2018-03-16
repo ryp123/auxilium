@@ -36,6 +36,7 @@ public class MainActivity extends AppCompatActivity
     NavigationView navigationView;
 
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -58,21 +59,15 @@ public class MainActivity extends AppCompatActivity
         drawer.addDrawerListener(toggle);
         toggle.syncState();
 
-         navigationView = (NavigationView) findViewById(R.id.nav_view);
+        navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
-        userNames= new String[5];
+        userNames = new String[5];
 
         getAllUsersFromFirebase();
 
 //        ListView lv =  findViewById(R.id.users_list_view);
 
-        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(
-                this,
-                android.R.layout.simple_list_item_1,
-                userNames);
-
-        userNames[0]= "sssssssssss";
 //
 //        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(
 //                this,
@@ -86,7 +81,6 @@ public class MainActivity extends AppCompatActivity
 
 
 //        lv.setAdapter(arrayAdapter);
-
 
 
     }
@@ -158,6 +152,7 @@ public class MainActivity extends AppCompatActivity
         FirebaseDatabase.getInstance()
                 .getReference()
                 .child("users")
+
                 .addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
@@ -178,11 +173,13 @@ public class MainActivity extends AppCompatActivity
                         for (User user : users) {
                             Log.d("*** USER NAME: ", user.getPreferredName());
                             addNewItem(user.getPreferredName());
+
                         }
 
 //                        for(int i=0; i<users.size();i++){
 //                            userNames[i] = users.get(i).getUserName();
 //                        }
+
 
 
                     }
@@ -198,6 +195,7 @@ public class MainActivity extends AppCompatActivity
 
 
     }
+
 
 
     public boolean addNewItem(String itemName){

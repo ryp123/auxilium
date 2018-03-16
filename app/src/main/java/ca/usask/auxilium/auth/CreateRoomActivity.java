@@ -28,6 +28,8 @@ import java.util.regex.Pattern;
 
 import ca.usask.auxilium.Circle;
 import ca.usask.auxilium.Invitations;
+
+import ca.usask.auxilium.Circle;
 import ca.usask.auxilium.MainActivity;
 import ca.usask.auxilium.R;
 import ca.usask.auxilium.Services.InvitationService;
@@ -134,6 +136,10 @@ public class CreateRoomActivity extends AppCompatActivity {
         return email.equals(defaultValue);
 
     }
+
+
+
+
 
 
 

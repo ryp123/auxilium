@@ -1,15 +1,20 @@
 package ca.usask.auxilium;
 
 
+import android.app.Fragment;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 
@@ -19,7 +24,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 
-public class DirectChat extends AppCompatActivity {
+public class DirectChat extends Fragment {
 
     private Button send;
     private EditText message;
@@ -30,15 +35,25 @@ public class DirectChat extends AppCompatActivity {
     private String roomType1 = "5t1zId575gYA1sjpSIFUy3M42fn2" + "_" + "zDESySWUskPLODDtoGLnOtJ8o8J3";
     private String roomType2 = "zDESySWUskPLODDtoGLnOtJ8o8J3" + "_" + "5t1zId575gYA1sjpSIFUy3M42fn2";
 
+    private View myView;
 
+    @Nullable
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_chat_landing);
-        send = (Button) findViewById(R.id.btn_add_room);
-        message = (EditText) findViewById(R.id.room_name_edittext);
-        listView = (ListView) findViewById(R.id.listView);
-        arrayAdapter = new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1);
+    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
+        myView = inflater.inflate(R.layout.activity_chat_landing, container,false);
+
+        FirebaseUser fUser = FirebaseAuth.getInstance().getCurrentUser();
+        if(fUser != null){
+            Bundle args = getArguments();
+            String value = args.getString("USER_ID");
+            roomType1 = fUser.getUid() + "_" + value;
+            roomType1 = value + "_" + fUser.getUid();
+        }
+
+        send = (Button) myView.findViewById(R.id.btn_add_room);
+        message = (EditText) myView.findViewById(R.id.room_name_edittext);
+        listView = (ListView) myView.findViewById(R.id.listView);
+        arrayAdapter = new ArrayAdapter<String>(this.getActivity(),android.R.layout.simple_list_item_1);
         listView.setAdapter(arrayAdapter);
 
 
@@ -48,9 +63,9 @@ public class DirectChat extends AppCompatActivity {
                 .addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
-                        User user = dataSnapshot.getValue(User.class);
-                        if(user.getPreferredName()  != null)
+                        if(dataSnapshot.exists())
                         {
+                            User user = dataSnapshot.getValue(User.class);
                             senderName = user.getPreferredName();
                         }
 
@@ -76,34 +91,34 @@ public class DirectChat extends AppCompatActivity {
                         .child(roomId)
                         .addChildEventListener(new ChildEventListener() {
 
-                    @Override
-                    public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                            @Override
+                            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
 
-                        appendChatConversation(dataSnapshot);
-                    }
+                                appendChatConversation(dataSnapshot);
+                            }
 
-                    @Override
-                    public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+                            @Override
+                            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
 
-                        appendChatConversation(dataSnapshot);
+                                appendChatConversation(dataSnapshot);
 
-                    }
+                            }
 
-                    @Override
-                    public void onChildRemoved(DataSnapshot dataSnapshot) {
+                            @Override
+                            public void onChildRemoved(DataSnapshot dataSnapshot) {
 
-                    }
+                            }
 
-                    @Override
-                    public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+                            @Override
+                            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
 
-                    }
+                            }
 
-                    @Override
-                    public void onCancelled(DatabaseError databaseError) {
+                            @Override
+                            public void onCancelled(DatabaseError databaseError) {
 
-                    }
-                });
+                            }
+                        });
             }
 
             @Override
@@ -148,7 +163,14 @@ public class DirectChat extends AppCompatActivity {
         });
 
 
+         return myView;
 
+    }
+
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
 
     }
 

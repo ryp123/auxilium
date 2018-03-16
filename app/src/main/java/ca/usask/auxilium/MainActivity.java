@@ -42,6 +42,12 @@ public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
     NavigationView navigationView;
+
+    ArrayList<MenuItem> mMenuItems = new ArrayList<>();
+    // 20 is temporary number for the assumed number of list users
+
+    ArrayList<String> mUsers = new ArrayList<>();
+
     private GoogleSignInClient mGoogleSignInClient;
 
     @Override
@@ -131,9 +137,23 @@ public class MainActivity extends AppCompatActivity
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
         // Handle navigation view item clicks here.
+        Log.d("groupid: ", Integer.toString(item.getGroupId()));
+        Log.d("item: ", Integer.toString(item.getItemId()));
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setVisibility(View.VISIBLE);
         int id = item.getItemId();
+        FragmentManager fragmentManager = getFragmentManager();
+
+
+        if(item.getGroupId() == R.id.users){
+            String userId = mUsers.get(id);
+            // To pass some value from FragmentA
+            DirectChat mDirectChat = new DirectChat();
+            Bundle args = new Bundle();
+            args.putString("USER_ID", userId);
+            mDirectChat.setArguments(args);
+            fragmentManager.beginTransaction().replace(R.id.content_frame, mDirectChat).commit();
+        }
         FragmentManager fragmentManager2 = getFragmentManager();
         if (id == R.id.nav_profile_page) {
             fragmentManager2.beginTransaction().replace(R.id.content_frame, new ProfileFragment()).commit();
@@ -185,18 +205,21 @@ public class MainActivity extends AppCompatActivity
                                 .iterator();
 
                         final List<User>  users = new ArrayList<>();
+                        ArrayList<String> userIds = new ArrayList<>();
 
                         while (dataSnapshots.hasNext()) {
                             DataSnapshot dataSnapshotChild = dataSnapshots.next();
                             User user = dataSnapshotChild.getValue(User.class);
                             users.add(user);
+                            userIds.add(dataSnapshotChild.getKey());
                         }
                         // All users are retrieved except the one who is currently logged
                         // in device.
 
-                        for (User user : users) {
-                            Log.d("*** USER NAME: ", user.getPreferredName());
-                            addNewItem(user.getPreferredName());
+                        for (int i = 0; i < users.size(); i++) {
+                            Log.d("*** USER NAME: ", users.get(i).getPreferredName());
+                            Log.d("*** USER ID: ", userIds.get(i));
+                            addNewUser(users.get(i), userIds.get(i));
                         }
 
                     }
@@ -213,10 +236,14 @@ public class MainActivity extends AppCompatActivity
     }
 
 
-
-    public boolean addNewItem(String itemName){
+    public boolean addNewUser(User user, String userId){
         Menu menu = navigationView.getMenu();
-        menu.add(R.id.users,Menu.NONE,Menu.NONE,itemName);
+        MenuItem menuItem;
+        menuItem = menu.add(R.id.users,mMenuItems.size(),mMenuItems.size(),user.getPreferredName());
+        mMenuItems.add(menuItem);
+
+        mUsers.add(userId);
+
         return true;
     }
 

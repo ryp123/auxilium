@@ -44,7 +44,6 @@ public class MainActivity extends AppCompatActivity
     NavigationView navigationView;
 
     ArrayList<MenuItem> mMenuItems = new ArrayList<>();
-    // 20 is temporary number for the assumed number of list users
 
     ArrayList<String> mUsers = new ArrayList<>();
 

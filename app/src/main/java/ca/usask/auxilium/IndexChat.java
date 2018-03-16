@@ -1,9 +1,15 @@
 package ca.usask.auxilium;
 
 
+import android.app.Fragment;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
+import android.support.v4.app.FragmentActivity;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -19,34 +25,37 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 
-public class IndexChat extends AppCompatActivity {
+public class IndexChat extends Fragment {
 
     private Button btnMsg1, btnMsg2, btnMsg3;
     private String senderName = "null";
     private ListView listView;
     private ArrayAdapter<String> arrayAdapter;
     private DatabaseReference root = FirebaseDatabase.getInstance().getReference().getRoot();
-
-    /** Need these for next deliverable
-     private EditText message;
-
-     private String con_inq1 = "How are you doing?";
+    private View myView;
+    private String con_inq1 = "How are you doing?";
     private String con_inq2 = "Wishing you the best";
     private String con_inq3 = "I am worried about you";
+    /** Need these for next deliverable
+     private EditText message;
+     private String index_msg1 = "I'm not doing well";
+     private String index_msg2 = "Doing fine";
+     **/
 
-    private String index_msg1 = "I'm not doing well";
-    private String index_msg2 = "Doing fine";
-    **/
+    @Nullable
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_index_chat);
-        btnMsg1 = (Button) findViewById(R.id.btn_msg1);
-        btnMsg2 = (Button) findViewById(R.id.btn_msg2);
-        btnMsg3 = (Button) findViewById(R.id.btn_msg3);
+    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
+        myView = inflater.inflate(R.layout.activity_index_chat, container,false);
+        getActivity().setTitle("Index Chat");
+        btnMsg1 = (Button) myView.findViewById(R.id.btn_msg1);
+        btnMsg2 = (Button) myView.findViewById(R.id.btn_msg2);
+        btnMsg3 = (Button) myView.findViewById(R.id.btn_msg3);
+        btnMsg1.setText(con_inq1);
+        btnMsg2.setText(con_inq2);
+        btnMsg3.setText(con_inq3);
         //message = (EditText) findViewById(R.id.room_name_edittext);
-        listView = (ListView) findViewById(R.id.listView);
-        arrayAdapter = new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1);
+        listView = (ListView) myView.findViewById(R.id.chat_listView);
+        arrayAdapter = new ArrayAdapter<String>(this.getActivity(),android.R.layout.simple_list_item_1);
         listView.setAdapter(arrayAdapter);
 
 
@@ -145,8 +154,12 @@ public class IndexChat extends AppCompatActivity {
         });
 
 
+        return myView;
+    }
 
-
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
     }
 
     private void appendChatConversation(DataSnapshot dataSnapshot) {
@@ -158,9 +171,3 @@ public class IndexChat extends AppCompatActivity {
         listView.setSelection(arrayAdapter.getCount() - 1);
     }
 }
-
-
-
-
-
-

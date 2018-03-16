@@ -1,9 +1,12 @@
 package ca.usask.auxilium;
 
-
+import android.app.Fragment;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -19,45 +22,64 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 
-public class ChatLanding extends AppCompatActivity {
+public class ChatLanding extends Fragment {
 
+    private View myView;
     private Button send;
     private EditText message;
     private String senderName = "null";
     private ListView listView;
     private ArrayAdapter<String> arrayAdapter;
     private DatabaseReference root = FirebaseDatabase.getInstance().getReference().getRoot();
+    // Needed for D5 private String circleID;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_chat_landing);
-        send = (Button) findViewById(R.id.btn_add_room);
-        message = (EditText) findViewById(R.id.room_name_edittext);
-        listView = (ListView) findViewById(R.id.listView);
-        arrayAdapter = new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1);
+    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
+
+        getActivity().setTitle("Concerned Members");
+        myView = inflater.inflate(R.layout.activity_chat_landing, container, false);
+        send = (Button) myView.findViewById(R.id.btn_add_room);
+        message = (EditText) myView.findViewById(R.id.room_name_edittext);
+        listView = (ListView) myView.findViewById(R.id.listView);
+        arrayAdapter = new ArrayAdapter<String>(this.getActivity(),android.R.layout.simple_list_item_1);
         listView.setAdapter(arrayAdapter);
 
+        // This is needed once we have the circle creation caught up to the database refactoring
+        /*root.child("users")
+                .child(FirebaseAuth.getInstance().getCurrentUser().getUid())
+                .addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        User user = dataSnapshot.getValue(User.class);
+                        if (user.getPreferredName() != null) {
+                            circleID = user.getCicleID;
+                        }
+
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+
+                    }
+                });*/
 
         root.child("users")
                 .child(FirebaseAuth.getInstance().getCurrentUser().getUid())
                 .addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                User user = dataSnapshot.getValue(User.class);
-                if(user.getPreferredName()  != null)
-                {
-                    senderName = user.getPreferredName();
-                }
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        User user = dataSnapshot.getValue(User.class);
+                        if (user.getPreferredName() != null) {
+                            senderName = user.getPreferredName();
+                        }
 
-            }
+                    }
 
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
 
-            }
-        });
-
+                    }
+                });
 
         root.child("concernedMessages").child("testCircle").addChildEventListener(new ChildEventListener() {
             @Override
@@ -90,26 +112,28 @@ public class ChatLanding extends AppCompatActivity {
         });
 
 
-
         send.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
 
-              Message newMessage = new Message(senderName, message.getText().toString());
+                Message newMessage = new Message(senderName, message.getText().toString());
 
-              root.child("concernedMessages").child("testCircle").push().setValue(newMessage);
+                root.child("concernedMessages").child("testCircle").push().setValue(newMessage);
 
 
-              message.setText("");
+                message.setText("");
 
             }
         });
 
+        return myView;
+    }
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
 
-
-
-        }
+    }
 
     private void appendChatConversation(DataSnapshot dataSnapshot) {
 

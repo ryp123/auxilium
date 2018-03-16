@@ -17,6 +17,15 @@
             android:id="@+id/nav_helpscreen"
             android:icon="@android:drawable/ic_menu_help"
             android:title="Help Information" />
+        <item
+            android:id="@+id/nav_indexchat"
+            android:icon="@android:drawable/ic_menu_send"
+            android:title="Index Chat" />
+        <item
+        android:id="@+id/nav_concernchat"
+        android:icon="@android:drawable/ic_menu_send"
+        android:title="Concerned Chat" />
+
 
     </group>
 

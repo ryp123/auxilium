@@ -72,6 +72,9 @@ public class MainActivity extends AppCompatActivity
 
         getAllUsersFromFirebase();
 
+        fab.setVisibility(View.GONE);
+        FragmentManager fragmentManager = getFragmentManager();
+        fragmentManager.beginTransaction().replace(R.id.content_frame, new IndexChat()).commit();
     }
 
     @Override
@@ -128,20 +131,30 @@ public class MainActivity extends AppCompatActivity
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
         // Handle navigation view item clicks here.
+        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        fab.setVisibility(View.VISIBLE);
         int id = item.getItemId();
-        FragmentManager fragmentManager = getFragmentManager();
+        FragmentManager fragmentManager2 = getFragmentManager();
         if (id == R.id.nav_profile_page) {
-            fragmentManager.beginTransaction().replace(R.id.content_frame, new ProfileFragment()).commit();
+            fragmentManager2.beginTransaction().replace(R.id.content_frame, new ProfileFragment()).commit();
             // Handle the camera action
         } else if (id == R.id.nav_indexstatus) {
-            fragmentManager.beginTransaction().replace(R.id.content_frame, new SecondFragment()).commit();
+            fragmentManager2.beginTransaction().replace(R.id.content_frame, new SecondFragment()).commit();
 
         } else if (id == R.id.nav_helpscreen) {
-            fragmentManager.beginTransaction().replace(R.id.content_frame, new ThirdFragment()).commit();
+            fab.setVisibility(View.GONE);
+            fragmentManager2.beginTransaction().replace(R.id.content_frame, new HelpScreen()).commit();
 
         } else if (id == R.id.nav_share) {
 
+        } else if (id == R.id.nav_indexchat){
+            fab.setVisibility(View.GONE);
+            fragmentManager2.beginTransaction().replace(R.id.content_frame, new IndexChat()).commit();
+        } else if (id == R.id.nav_concernchat){
+            fab.setVisibility(View.GONE);
+            fragmentManager2.beginTransaction().replace(R.id.content_frame, new ChatLanding()).commit();
         }
+
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;

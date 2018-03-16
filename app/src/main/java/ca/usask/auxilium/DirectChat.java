@@ -32,8 +32,8 @@ public class DirectChat extends Fragment {
     private ListView listView;
     private ArrayAdapter<String> arrayAdapter;
     private DatabaseReference root = FirebaseDatabase.getInstance().getReference().getRoot();
-    private String roomType1 = "5t1zId575gYA1sjpSIFUy3M42fn2" + "_" + "zDESySWUskPLODDtoGLnOtJ8o8J3";
-    private String roomType2 = "zDESySWUskPLODDtoGLnOtJ8o8J3" + "_" + "5t1zId575gYA1sjpSIFUy3M42fn2";
+    private String roomType1 ;
+    private String roomType2 ;
 
     private View myView;
 
@@ -42,12 +42,14 @@ public class DirectChat extends Fragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
         myView = inflater.inflate(R.layout.activity_chat_landing, container,false);
 
+
         FirebaseUser fUser = FirebaseAuth.getInstance().getCurrentUser();
         if(fUser != null){
             Bundle args = getArguments();
             String value = args.getString("USER_ID");
+
             roomType1 = fUser.getUid() + "_" + value;
-            roomType1 = value + "_" + fUser.getUid();
+            roomType2 = value + "_" + fUser.getUid();
         }
 
         send = (Button) myView.findViewById(R.id.btn_add_room);

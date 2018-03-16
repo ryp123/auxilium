@@ -42,14 +42,13 @@ public class DirectChat extends Fragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
         myView = inflater.inflate(R.layout.activity_chat_landing, container,false);
 
-
         FirebaseUser fUser = FirebaseAuth.getInstance().getCurrentUser();
         if(fUser != null){
             Bundle args = getArguments();
             String value = args.getString("USER_ID");
-
             roomType1 = fUser.getUid() + "_" + value;
             roomType2 = value + "_" + fUser.getUid();
+
 
         }
 
@@ -57,6 +56,10 @@ public class DirectChat extends Fragment {
         message = (EditText) myView.findViewById(R.id.room_name_edittext);
         listView = (ListView) myView.findViewById(R.id.listView);
         arrayAdapter = new ArrayAdapter<String>(this.getActivity(),android.R.layout.simple_list_item_1);
+
+
+
+
         listView.setAdapter(arrayAdapter);
 
 

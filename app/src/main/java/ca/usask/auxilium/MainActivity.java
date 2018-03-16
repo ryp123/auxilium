@@ -159,11 +159,7 @@ public class MainActivity extends AppCompatActivity
             fragmentManager.beginTransaction().replace(R.id.content_frame, mDirectChat).commit();
         }
 
-<<<<<<< HEAD
-=======
 
-
->>>>>>> feat(*):make the user list on the drawer clickable and leads to right fragment to chat
         FragmentManager fragmentManager2 = getFragmentManager();
         if (id == R.id.nav_profile_page) {
             fragmentManager2.beginTransaction().replace(R.id.content_frame, new ProfileFragment()).commit();

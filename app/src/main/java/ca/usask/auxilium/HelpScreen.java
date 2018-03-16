@@ -47,7 +47,7 @@ public class HelpScreen extends Fragment {
                         User user = dataSnapshot.getValue(User.class);
                         if (user.getPreferredName() != null) {
                             condition = user.getDiagnosis();
-                            if(condition.equals(null)){
+                            if(condition == null){
                                 condition = "Other";
                             }
                         }

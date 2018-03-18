@@ -143,8 +143,6 @@ public class MainActivity extends AppCompatActivity
         Log.d("groupid: ", Integer.toString(item.getGroupId()));
         Log.d("item: ", Integer.toString(item.getItemId()));
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setVisibility(View.VISIBLE);
         int id = item.getItemId();
         FragmentManager fragmentManager = getFragmentManager();
 
@@ -168,16 +166,13 @@ public class MainActivity extends AppCompatActivity
             fragmentManager2.beginTransaction().replace(R.id.content_frame, new SecondFragment()).commit();
 
         } else if (id == R.id.nav_helpscreen) {
-            fab.setVisibility(View.GONE);
             fragmentManager2.beginTransaction().replace(R.id.content_frame, new HelpScreen()).commit();
 
         } else if (id == R.id.nav_share) {
 
         } else if (id == R.id.nav_indexchat){
-            fab.setVisibility(View.GONE);
             fragmentManager2.beginTransaction().replace(R.id.content_frame, new IndexChat()).commit();
         } else if (id == R.id.nav_concernchat){
-            fab.setVisibility(View.GONE);
             fragmentManager2.beginTransaction().replace(R.id.content_frame, new ChatLanding()).commit();
         }
 

@@ -32,9 +32,9 @@ public class DirectChat extends Fragment {
     private ListView listView;
     private ArrayAdapter<String> arrayAdapter;
     private DatabaseReference root = FirebaseDatabase.getInstance().getReference().getRoot();
-    private String roomType1 ;
-    private String roomType2 ;
-
+    private String roomType1;
+    private String roomType2;
+    private String talkingTo;
     private View myView;
 
     @Nullable
@@ -50,6 +50,23 @@ public class DirectChat extends Fragment {
 
             roomType1 = fUser.getUid() + "_" + value;
             roomType2 = value + "_" + fUser.getUid();
+            root.child("users").child(value).addListenerForSingleValueEvent(new ValueEventListener(){
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    if(dataSnapshot.exists())
+                    {
+                        User user = dataSnapshot.getValue(User.class);
+                        talkingTo = user.getPreferredName();
+                        getActivity().setTitle(talkingTo);
+                    }
+
+                }
+
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+
+                }
+            });
+
 
         }
 
@@ -57,13 +74,7 @@ public class DirectChat extends Fragment {
         message = (EditText) myView.findViewById(R.id.room_name_edittext);
         listView = (ListView) myView.findViewById(R.id.listView);
         arrayAdapter = new ArrayAdapter<String>(this.getActivity(),android.R.layout.simple_list_item_1);
-
-
-
-
         listView.setAdapter(arrayAdapter);
-
-
 
         root.child("users")
                 .child(FirebaseAuth.getInstance().getCurrentUser().getUid())

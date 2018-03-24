@@ -5,6 +5,7 @@ import android.app.Fragment;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -63,7 +64,7 @@ public class DirectChat extends Fragment {
 
                 @Override
                 public void onCancelled(DatabaseError databaseError) {
-
+                    Log.e("FirebaseError", databaseError.getDetails());
                 }
             });
 
@@ -181,7 +182,7 @@ public class DirectChat extends Fragment {
         });
 
 
-         return myView;
+        return myView;
 
     }
 
@@ -202,9 +203,4 @@ public class DirectChat extends Fragment {
         listView.setSelection(arrayAdapter.getCount() - 1);
     }
 }
-
-
-
-
-
 

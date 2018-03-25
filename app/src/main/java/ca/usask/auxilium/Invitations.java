@@ -57,8 +57,8 @@ public class Invitations {
         this.expirationDate = newExpirationDate;
     }
 
-    private String getSenderEmail() {
-      return this.senderEmail; 
+    public String getSenderEmail() {
+      return this.senderEmail;
     }
 
     private String getCurrentUsersEmail() {

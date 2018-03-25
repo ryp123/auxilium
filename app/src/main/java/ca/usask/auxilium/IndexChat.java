@@ -89,7 +89,6 @@ public class IndexChat extends Fragment {
             @Override
             public void onChildChanged(DataSnapshot dataSnapshot, String s) {
 
-                appendChatConversation(dataSnapshot);
 
             }
 

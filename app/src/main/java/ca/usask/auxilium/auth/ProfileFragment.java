@@ -50,6 +50,7 @@ public class ProfileFragment extends Fragment {
         txtGender = myView.findViewById(R.id.indexGender);
         txtDiagnosis = myView.findViewById(R.id.indexDiagnosis);
         txtEmergencyContact = myView.findViewById(R.id.emergencyContact);
+        getActivity().setTitle("Profile");
         return myView;
     }
 

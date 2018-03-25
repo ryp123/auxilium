@@ -16,6 +16,7 @@ public class SecondFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
         myView = inflater.inflate(R.layout.index_status_page,container,false);
+        getActivity().setTitle("Index Status");
         return myView;
     }
 }

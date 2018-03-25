@@ -42,7 +42,7 @@ public class ProfileEditActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_profile);
-
+        setTitle("Edit Profile");
         mDatabase = FirebaseDatabase.getInstance().getReference();
         fUser = FirebaseAuth.getInstance().getCurrentUser();
         if (fUser == null){

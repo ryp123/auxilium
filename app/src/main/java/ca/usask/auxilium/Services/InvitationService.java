@@ -2,6 +2,16 @@ package ca.usask.auxilium.Services;
 
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import android.net.Uri;
+import java.lang.RuntimeException;
+import java.util.HashMap;
+import org.joda.time.DateTime;
+import com.google.firebase.firestore.Transaction;
+import Firebase.Database.MutableData;
+
+
 
 import ca.usask.auxilium.Invitations;
 
@@ -14,5 +24,144 @@ public class InvitationService {
 
     public void createNewInvitations(Invitations invite) {
         root.child("invitations").push().setValue(invite);
+    }
+
+    public TransactionResult processInvitationEmail(String dynamicLink) {
+      Uri deepLink = Uri.parse(dynamicLink);
+      String invitationId = deepLink.getQueryParameter("invitationId");
+
+      return this.root.runTransaction(new Transaction.Handler() {
+
+        @Override
+        public Transaction.Result doTransaction(MutableData dbRef) {
+          if (this.doesInvitationExist(dbRef, invitationId)) {
+            Log.d("invitations", "Mapping the invitation to a object.");
+            Invitations invite = this.getInvitation(dbRef, invitationId);
+            FirebaseUser currentUser = FirebaseAuth.getCurrentUser();
+            String currentUserId = currentUser.getUid();
+            Log.d("invitations",
+                  "Got user info\n uid: " + currentUserId + "\nemail: " +
+                  currentUser.getEmail());
+            if (this.isInvitationValid(dbRef, invite, invitationId, currentUser.getEmail())) {
+              Log.d("invitations",
+                    "Adding user to the index's circle with\n circleId: " +
+                    circleId + "\nuserId: " + currentUserId);
+              this.updateUserWithCircleId(dbRef, circleId, currentUserId);
+              this.updateCircleMembers(dbRef, circleId, currentUserId);
+              Log.d("invitations", "Adding user to the index's concerned party chat.");
+              String concernedChatId = this.getConcernedChatId();
+              if (concernedChatId == null) {
+                Log.e("invitations", "This shouldn't happen because if a circle" +
+                                      "is made then a corresponding concerned" +
+                                      "chat should have been made as well.");
+                return Transaction.abort();
+              } else {
+                  Log.d("invitations",
+                        "Adding user to the index's concerned party chat with\n" +
+                        "concernedPartyId: " + concernedPartyId "\nuserId: " + currentUserId);
+                  this.updateUserWithConcernedChatId(dbRef, concernedPartyId, currentUserId);
+                  this.updateConcernedPartyMembers(dbRef, concernedPartyId, currentUserId);
+                  Log.d("invitations", "Deleting invitation with id: " + invitationId); 
+                  this.deleteUsedInvitation(dbRef, invitationId);
+                  return Transaction.success(dbRef);
+              }
+            }
+          } else {
+            Log.d("invitations", "The invitation wasn't processed because it" +
+                                  "was used or is after the expiration date");
+            return Transaction.abort();
+          }
+        }
+
+        @Override
+        public void onComplete(DatabaseError dbError, boolean b, DataSnapshot snapShot) {
+          Log.d("invitations", dbError.getDetails());
+        }
+      });
+    }
+
+    private void updateUserWithCircleId(MutableData dbRef,
+                                        String circleId,
+                                        String currentUserId) {
+      HashMap<String, HashMap<String, String>> userCircleListing = new HashMap();
+      HashMap<String, String> circleRole = new HashMap();
+      circleRole.put("role", "Concerned");
+      userCircleListing.put(circleId, circleRole);
+      dbRef.child("users")
+           .child(currentUserId)
+           .child("circles")
+           .setValue(userCircleListing);
+    }
+
+    private void updateUserWithConcernedChatId(MutableData dbRef,
+                                               String concernedPartyId,
+                                               String currentUserId) {
+        HashMap<String, Boolean> concernedChat = new HashMap();
+        concernedChat.put(concernedPartyId, true);
+        dbRef.child("users")
+             .child(currentUserId)
+             .child("concernedChat")
+             .setValue(concernedChat);
+    }
+
+    private void updateCircleMembers(MutableData dbRef,
+                                     String circleId,
+                                     String currentUserId) {
+      HashMap<String, HashMap<String, String>> circleMember = new HashMap();
+      HashMap<String, String> circleMemberRole = new HashMap();
+      circleMemberRole.put("role", "Concerned");
+      circleMemberRole.put("status", "Active");
+      circleMember.put(currentUserId, circleMemberRole);
+      dbRef.child("circleMembers")
+           .child(circleId)
+           .setValue(circleMember);
+    }
+
+    private void updateConcernedPartyMembers(MutableData dbRef,
+                                            String concernedChatId,
+                                            String currentUserId) {
+      HashMap<String, Boolean> concernedPartyMember = new HashMap();
+      circleMemberRole.put(currentUserId, true);
+      dbRef.child("concernedPartyMember")
+           .child(concernedChatId)
+           .setValue(concernedPartyMember);
+    }
+
+    private String getConcernedChatId(MutableData dbRef,
+                                      String circleId) {
+        for (MutableData children: dbRef.child("concernedCircle").getChildren()) {
+          if (children.child("relatedTo").child(circleId).exists()) {
+            return children.getKey();
+          }
+        }
+        return null;
+    }
+
+    private void deleteUsedInvitation(MutableData dbRef, String invitationId) {
+      dbRef.child("invitations").child(invitationId).setValue(null);
+    }
+
+    private Invitations getInvitation(MutableData dbRef, String invitationId) {
+        return dbRef.child("invitations")
+                    .child(invitationId)
+                    .getValue(Invitations.class);
+    }
+
+    private boolean invitationExists(MutableData dbRef, String invitationId) {
+      return dbRef.child("invitations").children(invitationId).exists();
+    }
+
+    private boolean isInvitationValid(MutableData dbRef,
+                                      Invitations invite,
+                                      String invitationId,
+                                      String currentUsersEmail) {
+      DateTime expirationDate = new DateTime(invite.getExpirationDate());
+      if (!invite.getSenderEmail().equals(currentUsersEmail)) {
+        return false;
+      } else if (!expirationDate.isAfterNow()) {
+        return false;
+      } else {
+        return true;
+      }
     }
 }

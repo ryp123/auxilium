@@ -197,10 +197,11 @@ public class DirectChat extends Fragment {
     private void appendChatConversation(DataSnapshot dataSnapshot) {
 
         Message m = dataSnapshot.getValue(Message.class);
-
-        arrayAdapter.add(m.getSender() + " : " + m.getMessage());
-
-        listView.setSelection(arrayAdapter.getCount() - 1);
+        if(m.getMessage() != null && m.getMessage().trim().length() != 0)
+        {
+            arrayAdapter.add(m.getSender() + " : " + m.getMessage());
+            listView.setSelection(arrayAdapter.getCount() - 1);
+        }
     }
 }
 

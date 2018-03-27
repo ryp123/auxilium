@@ -138,7 +138,7 @@ public class InvitationService {
                                       String circleId) {
         for (MutableData children: dbRef.child("concernedCircle").getChildren()) {
            // if the concerned chat is related to the given circle id we want that cp chat id.
-          if (children.child("relatedTo").getValue() == circleId) {
+          if (children.child("relatedTo").getValue().equals(circleId)) {
             // get the concerned chat id.
             return children.getKey();
           }
@@ -158,7 +158,7 @@ public class InvitationService {
 
     private boolean invitationExists(MutableData dbRef, String invitationId) {
       for (MutableData dbChild: dbRef.child("invitations").getChildren()) {
-          if (dbChild.getKey() == invitationId) {
+          if (dbChild.getKey().equals(invitationId)) {
               return true;
           }
       }

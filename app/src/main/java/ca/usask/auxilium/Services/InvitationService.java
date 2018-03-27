@@ -1,15 +1,18 @@
 package ca.usask.auxilium.Services;
 
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import android.net.Uri;
-import java.lang.RuntimeException;
+import android.util.Log;
+
 import java.util.HashMap;
 import org.joda.time.DateTime;
-import com.google.firebase.firestore.Transaction;
-import Firebase.Database.MutableData;
+import com.google.firebase.database.Transaction;
+import com.google.firebase.database.MutableData;
 
 
 
@@ -26,30 +29,31 @@ public class InvitationService {
         root.child("invitations").push().setValue(invite);
     }
 
-    public TransactionResult processInvitationEmail(String dynamicLink) {
+    public void processInvitationEmail(String dynamicLink) {
       Uri deepLink = Uri.parse(dynamicLink);
-      String invitationId = deepLink.getQueryParameter("invitationId");
-
-      return this.root.runTransaction(new Transaction.Handler() {
+      final String invitationId = deepLink.getQueryParameter("invitationId");
+      this.root.runTransaction(new Transaction.Handler() {
 
         @Override
         public Transaction.Result doTransaction(MutableData dbRef) {
-          if (this.doesInvitationExist(dbRef, invitationId)) {
+          if (invitationExists(dbRef, invitationId)) {
             Log.d("invitations", "Mapping the invitation to a object.");
-            Invitations invite = this.getInvitation(dbRef, invitationId);
-            FirebaseUser currentUser = FirebaseAuth.getCurrentUser();
+            Invitations invite = getInvitation(dbRef, invitationId);
+            String circleId = invite.getCircleId();
+            FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
             String currentUserId = currentUser.getUid();
             Log.d("invitations",
                   "Got user info\n uid: " + currentUserId + "\nemail: " +
                   currentUser.getEmail());
-            if (this.isInvitationValid(dbRef, invite, invitationId, currentUser.getEmail())) {
+            if (isInvitationValid(invite, currentUser.getEmail())) {
               Log.d("invitations",
                     "Adding user to the index's circle with\n circleId: " +
                     circleId + "\nuserId: " + currentUserId);
-              this.updateUserWithCircleId(dbRef, circleId, currentUserId);
-              this.updateCircleMembers(dbRef, circleId, currentUserId);
+              updateUserWithCircleId(dbRef, circleId, currentUserId);
+              updateCircleMembers(dbRef, circleId, currentUserId);
+              updateLastViewedCircle(dbRef, currentUserId, circleId);
               Log.d("invitations", "Adding user to the index's concerned party chat.");
-              String concernedChatId = this.getConcernedChatId();
+              String concernedChatId = getConcernedChatId(dbRef, circleId);
               if (concernedChatId == null) {
                 Log.e("invitations", "This shouldn't happen because if a circle" +
                                       "is made then a corresponding concerned" +
@@ -58,14 +62,17 @@ public class InvitationService {
               } else {
                   Log.d("invitations",
                         "Adding user to the index's concerned party chat with\n" +
-                        "concernedPartyId: " + concernedPartyId "\nuserId: " + currentUserId);
-                  this.updateUserWithConcernedChatId(dbRef, concernedPartyId, currentUserId);
-                  this.updateConcernedPartyMembers(dbRef, concernedPartyId, currentUserId);
-                  Log.d("invitations", "Deleting invitation with id: " + invitationId); 
-                  this.deleteUsedInvitation(dbRef, invitationId);
+                        "concernedPartyId: " + concernedChatId + "\nuserId: " + currentUserId);
+                  updateUserWithConcernedChatId(dbRef, concernedChatId, currentUserId);
+                  updateConcernedPartyMembers(dbRef, concernedChatId, currentUserId);
+                  Log.d("invitations", "Deleting invitation with id: " + invitationId);
+                  deleteUsedInvitation(dbRef, invitationId);
                   return Transaction.success(dbRef);
               }
+            } else {
+                return Transaction.abort();
             }
+
           } else {
             Log.d("invitations", "The invitation wasn't processed because it" +
                                   "was used or is after the expiration date");
@@ -121,7 +128,7 @@ public class InvitationService {
                                             String concernedChatId,
                                             String currentUserId) {
       HashMap<String, Boolean> concernedPartyMember = new HashMap();
-      circleMemberRole.put(currentUserId, true);
+      concernedPartyMember.put(currentUserId, true);
       dbRef.child("concernedPartyMember")
            .child(concernedChatId)
            .setValue(concernedPartyMember);
@@ -130,7 +137,9 @@ public class InvitationService {
     private String getConcernedChatId(MutableData dbRef,
                                       String circleId) {
         for (MutableData children: dbRef.child("concernedCircle").getChildren()) {
-          if (children.child("relatedTo").child(circleId).exists()) {
+           // if the concerned chat is related to the given circle id we want that cp chat id.
+          if (children.child("relatedTo").getValue() == circleId) {
+            // get the concerned chat id.
             return children.getKey();
           }
         }
@@ -148,12 +157,25 @@ public class InvitationService {
     }
 
     private boolean invitationExists(MutableData dbRef, String invitationId) {
-      return dbRef.child("invitations").children(invitationId).exists();
+      for (MutableData dbChild: dbRef.child("invitations").getChildren()) {
+          if (dbChild.getKey() == invitationId) {
+              return true;
+          }
+      }
+      return false;
     }
 
-    private boolean isInvitationValid(MutableData dbRef,
-                                      Invitations invite,
-                                      String invitationId,
+    private void updateLastViewedCircle(MutableData dbRef, String userId, String circleID) {
+        MutableData dbChild = dbRef.child("users")
+                                   .child(userId)
+                                   .child("lastViewedCircle");
+
+        if (dbChild.getValue() == null) {
+            dbChild.setValue(circleID);
+        }
+    }
+
+    private boolean isInvitationValid(Invitations invite,
                                       String currentUsersEmail) {
       DateTime expirationDate = new DateTime(invite.getExpirationDate());
       if (!invite.getSenderEmail().equals(currentUsersEmail)) {

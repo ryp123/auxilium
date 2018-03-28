@@ -168,8 +168,6 @@ public class MainActivity extends AppCompatActivity
         } else if (id == R.id.nav_helpscreen) {
             fragmentManager2.beginTransaction().replace(R.id.content_frame, new HelpScreen()).commit();
 
-        } else if (id == R.id.nav_share) {
-
         } else if (id == R.id.nav_indexchat){
             fragmentManager2.beginTransaction().replace(R.id.content_frame, new IndexChat()).commit();
         } else if (id == R.id.nav_concernchat){

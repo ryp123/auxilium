@@ -64,7 +64,18 @@ public class ProfileFragment extends Fragment {
             Log.e("User Error", "user is not logged in");
             return;
         }
-        userId = fUser.getUid();
+
+        // get the user Id whose profile we are going to view
+        Bundle args = getArguments();
+        if(args != null) {
+            userId = args.getString("USER_ID");
+            if (userId == null) {
+                userId = fUser.getUid();
+            }
+        } else {
+            userId = fUser.getUid();
+        }
+
     }
 
 
@@ -99,7 +110,10 @@ public class ProfileFragment extends Fragment {
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        inflater.inflate(R.menu.profile_menu, menu);
+        if(userId.equals(fUser.getUid())){
+            // add the edit option to the menu
+            inflater.inflate(R.menu.profile_menu, menu);
+        }
     }
 
     public boolean onOptionsItemSelected(MenuItem item){

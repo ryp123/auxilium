@@ -112,8 +112,18 @@ public class MainActivity extends AppCompatActivity
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_profile){
+            // pass in the fuid of the user you are chatting with
+            int userId = getCheckedUserNavItem();
+            ProfileFragment profileFragment = new ProfileFragment();
+            if(userId != -1) {
+                // pass to fragment the fuid of the users profile we are direct chatting with
+                Bundle args = new Bundle();
+                args.putString("USER_ID", mUsers.get(userId));
+                profileFragment.setArguments(args);
+            }
+
             FragmentManager fragmentManager = getFragmentManager();
-            fragmentManager.beginTransaction().replace(R.id.content_frame, new ProfileFragment()).commit();
+            fragmentManager.beginTransaction().replace(R.id.content_frame, profileFragment).commit();
             return true;
         }
         else if (id == R.id.action_settings) {
@@ -239,11 +249,24 @@ public class MainActivity extends AppCompatActivity
         Menu menu = navigationView.getMenu();
         MenuItem menuItem;
         menuItem = menu.add(R.id.users,mMenuItems.size(),mMenuItems.size(),user.getPreferredName());
+        menuItem.setCheckable(true);
         mMenuItems.add(menuItem);
 
         mUsers.add(userId);
 
         return true;
+    }
+
+    /* Returns index of checked user item, or -1 if none is selected*/
+    private int getCheckedUserNavItem(){
+        Menu menu = navigationView.getMenu();
+        for (int i = 0; i < menu.size(); i++) {
+            MenuItem item = menu.getItem(i);
+            if (item.getGroupId() == R.id.users && item.isChecked()) {
+                return item.getItemId();
+            }
+        }
+        return -1;
     }
 
 

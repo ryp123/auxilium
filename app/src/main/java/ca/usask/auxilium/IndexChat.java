@@ -10,6 +10,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -31,6 +32,7 @@ public class IndexChat extends Fragment {
 
     private Button btnMsg1, btnMsg2, btnMsg3;
     private String senderName = "null";
+    private String senderFUid = "null";
     private ListView listView;
     //private ArrayAdapter<String> arrayAdapter;
     private IndexAdapter arrayAdapter;
@@ -75,7 +77,7 @@ public class IndexChat extends Fragment {
                         {
                             senderName = user.getPreferredName();
                         }
-
+                        senderFUid = dataSnapshot.getKey();
                     }
 
                     @Override
@@ -121,7 +123,7 @@ public class IndexChat extends Fragment {
             public void onClick(View view) {
 
 
-                Message newMessage = new Message(senderName, btnMsg1.getText().toString());
+                Message newMessage = new Message(senderName, senderFUid, btnMsg1.getText().toString());
 
                 root.child("messages").child("testCircle").push().setValue(newMessage);
 
@@ -135,7 +137,7 @@ public class IndexChat extends Fragment {
             public void onClick(View view) {
 
 
-                Message newMessage = new Message(senderName, btnMsg2.getText().toString());
+                Message newMessage = new Message(senderName, senderFUid, btnMsg2.getText().toString());
 
                 root.child("messages").child("testCircle").push().setValue(newMessage);
 
@@ -149,7 +151,7 @@ public class IndexChat extends Fragment {
             public void onClick(View view) {
 
 
-                Message newMessage = new Message(senderName, btnMsg3.getText().toString());
+                Message newMessage = new Message(senderName, senderFUid, btnMsg3.getText().toString());
 
                 root.child("messages").child("testCircle").push().setValue(newMessage);
 
@@ -158,6 +160,14 @@ public class IndexChat extends Fragment {
             }
         });
 
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                IndexListItem item = (IndexListItem) listView.getItemAtPosition(i);
+                item.expanded = !item.expanded;
+                arrayAdapter.notifyDataSetChanged();
+            }
+        });
 
         return myView;
     }
@@ -172,15 +182,16 @@ public class IndexChat extends Fragment {
         Message m = dataSnapshot.getValue(Message.class);
 
         boolean msgInList = false;
+        // check if someone already sent the message
         for(IndexListItem item : arrayList){
-            if(item.getMsg().split(" : ")[1].equals(m.getMessage())){
-                item.addCount();
+            if(item.getMsg().equals(m.getMessage())){
+                item.addCount(m.getSender(), m.getSenderFUid());
                 msgInList = true;
                 break;
             }
         }
         if(!msgInList) {
-            arrayList.add(new IndexListItem(m.getSender() + " : " + m.getMessage()));
+            arrayList.add(new IndexListItem(m.getMessage(), m.getSender(), m.getSenderFUid()));
         }
 
         arrayAdapter.notifyDataSetChanged();

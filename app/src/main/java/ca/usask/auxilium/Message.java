@@ -8,13 +8,20 @@ public class Message {
 
     private String id;
     private String sender;
+    private String senderFUid;
     private String message;
 
     public Message() { }
 
+    public Message(String Sender, String senderFUid, String Message)
+    {
+        this.sender = Sender;
+        this.senderFUid = senderFUid;
+        this.message = Message;
+    }
+
     public Message(String Sender, String Message)
     {
-
         this.sender = Sender;
         this.message = Message;
     }
@@ -44,6 +51,14 @@ public class Message {
     public void setMessage(String newMessage)
     {
         this.message = newMessage;
+    }
+
+    public String getSenderFUid() {
+        return senderFUid;
+    }
+
+    public void setSenderFUid(String senderFUid) {
+        this.senderFUid = senderFUid;
     }
 
 }

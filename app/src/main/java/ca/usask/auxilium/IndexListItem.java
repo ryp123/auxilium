@@ -1,5 +1,9 @@
 package ca.usask.auxilium;
 
+import android.util.Log;
+
+import java.util.ArrayList;
+
 /**
  * Created by jadenball on 2018-03-28.
  */
@@ -7,11 +11,19 @@ package ca.usask.auxilium;
 public class IndexListItem {
 
     private String msg;
+    private ArrayList<String> users;
+    private ArrayList<String> fusers;
     private int count;
+    public boolean expanded;
 
-    public IndexListItem(String msg){
+    public IndexListItem(String msg, String user, String fuser){
         this.msg = msg;
-        count = 1;
+        this.users = new ArrayList<>();
+        this.fusers = new ArrayList<>();
+        this.users.add(user);
+        this.fusers.add(fuser);
+        this.count = 1;
+        this.expanded = false;
     }
 
     public String getMsg() {
@@ -30,7 +42,28 @@ public class IndexListItem {
         this.count = count;
     }
 
-    public void addCount(){
-        count += 1;
+    public void addCount(String user, String fuser){
+        if(!this.fusers.contains(fuser)) {
+            count += 1;
+            addUser(user);
+            addFUser(fuser);
+        }
+    }
+
+    public void addUser(String user){
+        this.users.add(user);
+    }
+
+    public void addFUser(String fuser){
+        this.fusers.add(fuser);
+    }
+
+    public String getUsers(){
+        StringBuilder allUsers = new StringBuilder();
+        for(String u : this.users){
+            allUsers.append("\n");
+            allUsers.append(u);
+        }
+        return allUsers.toString();
     }
 }

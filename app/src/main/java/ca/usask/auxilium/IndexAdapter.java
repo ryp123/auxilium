@@ -38,9 +38,15 @@ public class IndexAdapter extends ArrayAdapter<IndexListItem> {
 
         TextView msgView = (TextView) itemView.findViewById(R.id.msg);
         TextView msgCount = (TextView) itemView.findViewById(R.id.msg_count);
+        TextView msgUsers = (TextView) itemView.findViewById(R.id.msg_users);
 
         msgView.setText(item.getMsg());
         msgCount.setText(String.valueOf(item.getCount()));
+        if(item.expanded) {
+            msgUsers.setText(item.getUsers());
+        } else {
+            msgUsers.setText("");
+        }
 
         return itemView;
     }

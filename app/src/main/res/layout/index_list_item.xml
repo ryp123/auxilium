@@ -21,6 +21,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="respond"
+        android:focusable="false"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/msg_count"
         app:layout_constraintHorizontal_bias="0.5"
@@ -37,5 +38,14 @@
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toEndOf="@+id/btn_respond"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/msg_users"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text=""
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/msg_count"
+        app:layout_constraintTop_toBottomOf="@+id/msg_count" />
 
 </android.support.constraint.ConstraintLayout>

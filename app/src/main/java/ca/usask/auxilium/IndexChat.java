@@ -24,13 +24,17 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.ArrayList;
+
 
 public class IndexChat extends Fragment {
 
     private Button btnMsg1, btnMsg2, btnMsg3;
     private String senderName = "null";
     private ListView listView;
-    private ArrayAdapter<String> arrayAdapter;
+    //private ArrayAdapter<String> arrayAdapter;
+    private IndexAdapter arrayAdapter;
+    private ArrayList<IndexListItem> arrayList;
     private DatabaseReference root = FirebaseDatabase.getInstance().getReference().getRoot();
     private View myView;
     private String con_inq1 = "How are you doing?";
@@ -55,7 +59,9 @@ public class IndexChat extends Fragment {
         btnMsg3.setText(con_inq3);
         //message = (EditText) findViewById(R.id.room_name_edittext);
         listView = (ListView) myView.findViewById(R.id.chat_listView);
-        arrayAdapter = new ArrayAdapter<String>(this.getActivity(),android.R.layout.simple_list_item_1);
+        //arrayAdapter = new ArrayAdapter<String>(this.getActivity(),android.R.layout.simple_list_item_1);
+        arrayList = new ArrayList<>();
+        arrayAdapter = new IndexAdapter(this.getActivity(), arrayList);
         listView.setAdapter(arrayAdapter);
 
 
@@ -165,8 +171,19 @@ public class IndexChat extends Fragment {
 
         Message m = dataSnapshot.getValue(Message.class);
 
-        arrayAdapter.add(m.getSender() + " : " + m.getMessage());
+        boolean msgInList = false;
+        for(IndexListItem item : arrayList){
+            if(item.getMsg().split(" : ")[1].equals(m.getMessage())){
+                item.addCount();
+                msgInList = true;
+                break;
+            }
+        }
+        if(!msgInList) {
+            arrayList.add(new IndexListItem(m.getSender() + " : " + m.getMessage()));
+        }
 
+        arrayAdapter.notifyDataSetChanged();
         listView.setSelection(arrayAdapter.getCount() - 1);
     }
 }

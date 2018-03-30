@@ -42,11 +42,8 @@ public class IndexChat extends Fragment {
     private String con_inq1 = "How are you doing?";
     private String con_inq2 = "Wishing you the best";
     private String con_inq3 = "I am worried about you";
-    /** Need these for next deliverable
-     private EditText message;
-     private String index_msg1 = "I'm not doing well";
-     private String index_msg2 = "Doing fine";
-     **/
+    private String currentCircle;
+
 
     @Nullable
     @Override
@@ -85,7 +82,53 @@ public class IndexChat extends Fragment {
 
                     }
                 });
+        root.child("users")
+                .child(FirebaseAuth.getInstance().getCurrentUser().getUid())
+                .child("lastOpenCircle")
+                .addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        String curCircle = dataSnapshot.getValue(String.class);
+                        currentCircle = curCircle;
+                        root.child("messages")
+                                .child(currentCircle).addChildEventListener(new ChildEventListener() {
+                                    @Override
+                                    public void onChildAdded(DataSnapshot dataSnapshot, String s) {
 
+                                        appendChatConversation(dataSnapshot);
+                                    }
+
+                                    @Override
+                                    public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+
+                                    appendChatConversation(dataSnapshot);
+
+                                    }
+
+                                    @Override
+                                    public void onChildRemoved(DataSnapshot dataSnapshot) {
+
+                                    }
+
+                                    @Override
+                                    public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+
+                                    }
+
+                                    @Override
+                                    public void onCancelled(DatabaseError databaseError) {
+
+                                    }
+                                });
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+                        Log.d("Firebase Error", "user doesn't have a current circle");
+                    }
+                });
+
+/*
 
         root.child("messages").child("testCircle").addChildEventListener(new ChildEventListener() {
             @Override
@@ -115,6 +158,7 @@ public class IndexChat extends Fragment {
 
             }
         });
+*/
 
 
 
@@ -125,7 +169,7 @@ public class IndexChat extends Fragment {
 
                 Message newMessage = new Message(senderName, senderFUid, btnMsg1.getText().toString());
 
-                root.child("messages").child("testCircle").push().setValue(newMessage);
+                root.child("messages").child(currentCircle).push().setValue(newMessage);
 
 
 
@@ -139,7 +183,7 @@ public class IndexChat extends Fragment {
 
                 Message newMessage = new Message(senderName, senderFUid, btnMsg2.getText().toString());
 
-                root.child("messages").child("testCircle").push().setValue(newMessage);
+                root.child("messages").child(currentCircle).push().setValue(newMessage);
 
 
 
@@ -153,7 +197,7 @@ public class IndexChat extends Fragment {
 
                 Message newMessage = new Message(senderName, senderFUid, btnMsg3.getText().toString());
 
-                root.child("messages").child("testCircle").push().setValue(newMessage);
+                root.child("messages").child(currentCircle).push().setValue(newMessage);
 
 
 

@@ -1,6 +1,8 @@
 package ca.usask.auxilium;
 
 import org.joda.time.DateTime;
+import org.joda.time.DateTimeZone;
+
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
@@ -16,13 +18,17 @@ public class Invitations {
     private boolean sentDynamicLink;
     private Long expirationDate;
 
+    public Invitations() {}
+
     public Invitations(String circleId,String email) {
         this.circleId = circleId;
         this.email = email;
         this.sentDynamicLink = false;
         this.senderEmail = this.getCurrentUsersEmail();
         // get expiration date as unix timestamp
-        this.expirationDate = DateTime.now().plusMonths(1).getMillis() / 1000L;
+        this.expirationDate = DateTime.now()
+                                      .toDateTime(DateTimeZone.UTC)
+                                      .plusMonths(1).getMillis() / 1000L;
     }
 
     public String getCircleId() {

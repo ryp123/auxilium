@@ -253,7 +253,7 @@ public class SignInActivity extends BaseActivity implements View.OnClickListener
 
                @Override
                public void onCancelled(DatabaseError databaseError) {
-
+                   Log.e("FirebaseError", databaseError.getDetails());
                }
            });
        }

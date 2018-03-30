@@ -4,6 +4,7 @@ import android.app.Fragment;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -28,10 +29,10 @@ public class ChatLanding extends Fragment {
     private Button send;
     private EditText message;
     private String senderName = "null";
+    private String currentCircle = "null";
     private ListView listView;
     private ArrayAdapter<String> arrayAdapter;
     private DatabaseReference root = FirebaseDatabase.getInstance().getReference().getRoot();
-    // Needed for D5 private String circleID;
 
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
@@ -44,24 +45,52 @@ public class ChatLanding extends Fragment {
         arrayAdapter = new ArrayAdapter<String>(this.getActivity(),android.R.layout.simple_list_item_1);
         listView.setAdapter(arrayAdapter);
 
-        // This is needed once we have the circle creation caught up to the database refactoring
-        /*root.child("users")
+        root.child("users")
                 .child(FirebaseAuth.getInstance().getCurrentUser().getUid())
+                .child("lastOpenCircle")
                 .addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
-                        User user = dataSnapshot.getValue(User.class);
-                        if (user.getPreferredName() != null) {
-                            circleID = user.getCicleID;
-                        }
+                        String curCircle = dataSnapshot.getValue(String.class);
+                        currentCircle = curCircle;
+                        root.child("concernedMessages")
+                                .child(currentCircle).addChildEventListener(new ChildEventListener() {
+                                    @Override
+                                    public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+
+                                        appendChatConversation(dataSnapshot);
+                                    }
+
+                                    @Override
+                                    public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+
+                                        appendChatConversation(dataSnapshot);
+
+                                    }
+
+                                    @Override
+                                    public void onChildRemoved(DataSnapshot dataSnapshot) {
+
+                                    }
+
+                                    @Override
+                                    public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+
+                                    }
+
+                                    @Override
+                                    public void onCancelled(DatabaseError databaseError) {
+
+                                    }
+                                 });
 
                     }
 
                     @Override
                     public void onCancelled(DatabaseError databaseError) {
-
+                        Log.d("Firebase Error", "user doesn't have a current circle");
                     }
-                });*/
+                });
 
         root.child("users")
                 .child(FirebaseAuth.getInstance().getCurrentUser().getUid())
@@ -77,51 +106,17 @@ public class ChatLanding extends Fragment {
 
                     @Override
                     public void onCancelled(DatabaseError databaseError) {
-
+                        Log.d("Firebase Error", "user doesn't have a preffered name");
                     }
                 });
-
-        root.child("concernedMessages").child("testCircle").addChildEventListener(new ChildEventListener() {
-            @Override
-            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-
-                appendChatConversation(dataSnapshot);
-            }
-
-            @Override
-            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
-
-                appendChatConversation(dataSnapshot);
-
-            }
-
-            @Override
-            public void onChildRemoved(DataSnapshot dataSnapshot) {
-
-            }
-
-            @Override
-            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
-
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-        });
 
 
         send.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
-
                 Message newMessage = new Message(senderName, message.getText().toString());
-
-                root.child("concernedMessages").child("testCircle").push().setValue(newMessage);
-
-
+                root.child("concernedMessages").child(currentCircle).push().setValue(newMessage);
                 message.setText("");
 
             }

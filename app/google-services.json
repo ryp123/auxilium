@@ -15,6 +15,30 @@
       },
       "oauth_client": [
         {
+          "client_id": "973402036675-e2qdc299pequd7csliuu6pptr9ntbpjg.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "ca.usask.auxilium",
+            "certificate_hash": "4b562326b165c2ec5f154500d3f68daedf9f2fad"
+          }
+        },
+        {
+          "client_id": "973402036675-k6ai3q3tn3cc817ig710ko74mu4b26s0.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "ca.usask.auxilium",
+            "certificate_hash": "2fc25e551a2099b7f13d962d7913969a03f76c35"
+          }
+        },
+        {
+          "client_id": "973402036675-3jm5k42mvorpuhd4cm1jjoinjlicfimo.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "ca.usask.auxilium",
+            "certificate_hash": "426d63e41ba98f19ec53b47ff61ddf2f337f6aea"
+          }
+        },
+        {
           "client_id": "973402036675-vhev8at4dfcrt5bi0nhhhom0e1a796vt.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
@@ -47,7 +71,6 @@
           }
         },
         {
-
           "client_id": "973402036675-1t8ek72k2j301i4a2m3rsigosbtlq8u4.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
@@ -64,7 +87,6 @@
           }
         },
         {
-
           "client_id": "973402036675-dnp8s19cc0qd8m31jord4pndhp4162sc.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {

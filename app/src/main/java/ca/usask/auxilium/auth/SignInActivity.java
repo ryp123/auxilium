@@ -114,6 +114,7 @@ public class SignInActivity extends BaseActivity implements View.OnClickListener
             }
         }
         else if(requestCode == RC_CREATE_PROFILE && resultCode == RESULT_OK){
+            // user registered on the registration screen
             checkCircleInvitesAndStatus();
         }
     }
@@ -264,6 +265,7 @@ public class SignInActivity extends BaseActivity implements View.OnClickListener
 
            // TODO: CHECK FOR PENDING INVITES HERE
 
+           // check if user is a part of any circles
            DatabaseReference db = FirebaseDatabase.getInstance().getReference();
            db.child("users").child(user.getUid()).child("circles")
                    .addListenerForSingleValueEvent(new ValueEventListener() {

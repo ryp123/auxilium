@@ -21,10 +21,12 @@ import android.widget.ListView;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import android.widget.Toast;
@@ -44,17 +46,11 @@ public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
     NavigationView navigationView;
-
-
-
-
     ArrayList<MenuItem> mMenuItems = new ArrayList<>();
-
-
     ArrayList<String> mUsers = new ArrayList<>();
-
+    private String currentCircle = "null";
     private GoogleSignInClient mGoogleSignInClient;
-
+    private DatabaseReference root = FirebaseDatabase.getInstance().getReference().getRoot();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -81,9 +77,47 @@ public class MainActivity extends AppCompatActivity
         navigationView.setNavigationItemSelectedListener(this);
 
 
+        root.child("users")
+                .child(FirebaseAuth.getInstance().getCurrentUser().getUid())
+                .child("lastOpenCircle")
+                .addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        String curCircle = dataSnapshot.getValue(String.class);
+                        currentCircle = curCircle;
+                        root.child("users")
+                                .child(FirebaseAuth.getInstance().getCurrentUser().getUid())
+                                .child("circles")
+                                .child(curCircle)
+                                .child("role")
+                                .addListenerForSingleValueEvent(new ValueEventListener() {
+                                    @Override
+                                    public void onDataChange(DataSnapshot dataSnapshot) {
+                                        String userType = dataSnapshot.getValue(String.class);
+                                        if(userType.equals("index")){
+                                            String timeStamp = new SimpleDateFormat("yyyy/MM/dd @ HH:mm:ss").format(Calendar.getInstance().getTime());
+                                            root.child(currentCircle)
+                                                    .child("lastUsed")
+                                                    .setValue(timeStamp);
+                                        }
+                                    }
+
+                                    @Override
+                                    public void onCancelled(DatabaseError databaseError) {
+                                        Log.d("Firebase Error", "Current Circle doesn't exist");
+                                    }
+                                });
+
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+
+                    }
+                });
 
         getAllUsersFromFirebase();
-        updateIndexTime();
+       // updateIndexTime();
 
 
         fab.setVisibility(View.GONE);
@@ -253,11 +287,13 @@ public class MainActivity extends AppCompatActivity
         String timeStamp = new SimpleDateFormat("yyyy/MM/dd @ HH:mm:ss").format(Calendar.getInstance().getTime());
         FirebaseDatabase.getInstance()
                 .getReference()
-                .child("TestIndex")
+                .child(currentCircle)
                 .child("lastUsed")
                 .setValue(timeStamp);
 
     }
+
+
 
     public boolean addNewUser(User user, String userId){
         Menu menu = navigationView.getMenu();

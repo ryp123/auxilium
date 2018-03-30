@@ -117,7 +117,6 @@ public class MainActivity extends AppCompatActivity
                 });
 
         getAllUsersFromFirebase();
-       // updateIndexTime();
 
 
         fab.setVisibility(View.GONE);
@@ -283,15 +282,6 @@ public class MainActivity extends AppCompatActivity
 
     }
 
-    public void updateIndexTime(){
-        String timeStamp = new SimpleDateFormat("yyyy/MM/dd @ HH:mm:ss").format(Calendar.getInstance().getTime());
-        FirebaseDatabase.getInstance()
-                .getReference()
-                .child(currentCircle)
-                .child("lastUsed")
-                .setValue(timeStamp);
-
-    }
 
 
 

@@ -15,6 +15,7 @@ public class IndexListItem {
     private ArrayList<String> fusers;
     private int count;
     public boolean expanded;
+    public boolean respondedTo;
 
     public IndexListItem(String msg, String user, String fuser){
         this.msg = msg;
@@ -24,6 +25,7 @@ public class IndexListItem {
         this.fusers.add(fuser);
         this.count = 1;
         this.expanded = false;
+        respondedTo = false;
     }
 
     public String getMsg() {

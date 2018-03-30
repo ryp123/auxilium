@@ -49,6 +49,9 @@ public class IndexStatusActivity extends Fragment {
     private FirebaseUser fUser;
     private String userId;
     private IndexStatus indexStatus;
+    private String currentCircle;
+    private DatabaseReference root = FirebaseDatabase.getInstance().getReference().getRoot();
+
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
         myView = inflater.inflate(R.layout.index_status_page, container,false);
         lastSeenBy= myView.findViewById(R.id.indexLastSeenBy);
@@ -57,6 +60,51 @@ public class IndexStatusActivity extends Fragment {
         assesment = myView.findViewById(R.id.indexLastAssessment);
         lastUsed = myView.findViewById(R.id.indexLastTimeUsed);
         getActivity().setTitle("Index Status");
+
+
+        root.child("users")
+                .child(FirebaseAuth.getInstance().getCurrentUser().getUid())
+                .child("lastOpenCircle")
+                .addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        String curCircle = dataSnapshot.getValue(String.class);
+                        currentCircle = curCircle;
+                        root.child(currentCircle)
+                                .addListenerForSingleValueEvent(new ValueEventListener() {
+                                    @Override
+                                    public void onDataChange(DataSnapshot dataSnapshot) {
+                                        indexStatus = dataSnapshot.getValue(IndexStatus.class);
+                                        if (indexStatus != null) {
+                                            lastUsed.setText(indexStatus.getLastUsed());
+                                            lastSeenBy.setText(indexStatus.getLastSeenBy());
+                                            lastType.setText(indexStatus.getLastSeenVia());
+                                            assesment.setText(indexStatus.getReportedAssessment());
+                                        } else {
+                                            Log.e("Firebase Error", "Index status is null");
+                                            indexStatus = new IndexStatus();
+                                        }
+                                    }
+
+                                    @Override
+                                    public void onCancelled(DatabaseError databaseError) {
+                                        Log.d("Firebase Error", "Current Circle doesn't exist");
+                                    }
+                                });
+
+
+
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+                        throw databaseError.toException();
+                    }
+                });
+
+
+
+
         return myView;
     }
 
@@ -99,38 +147,10 @@ public class IndexStatusActivity extends Fragment {
         }
         return super.onOptionsItemSelected(item);
     }
-    // Will need to update the query later to reflect an updated schema / storage location
-    private void populateViewsFromDb(){
-        FirebaseDatabase.getInstance().getReference()
-                .child("TestIndex")
-                .addListenerForSingleValueEvent(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(DataSnapshot dataSnapshot) {
-                        indexStatus = dataSnapshot.getValue(IndexStatus.class);
-                        if(indexStatus!=null) {
-                            lastUsed.setText(indexStatus.getLastUsed());
-                            lastSeenBy.setText(indexStatus.getLastSeenBy());
-                            lastType.setText(indexStatus.getLastSeenVia());
-                            assesment.setText(indexStatus.getReportedAssessment());
-                        }
-                        else{
-                            Log.e("FirebaseError", "User is null");
-                            indexStatus = new IndexStatus();
-                        }
 
-
-                    }
-
-                    @Override
-                    public void onCancelled(DatabaseError databaseError) {
-                        throw databaseError.toException();
-                    }
-                });
-    }
 
     @Override
     public void onResume() {
-        populateViewsFromDb();
         super.onResume();
     }
 

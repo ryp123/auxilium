@@ -35,6 +35,9 @@ public class EditIndexStatusActivity extends AppCompatActivity {
     EditText lastSeenBy;
     EditText lastType;
     EditText assesment;
+    private DatabaseReference root = FirebaseDatabase.getInstance().getReference().getRoot();
+    private String currentCircle;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,25 +57,36 @@ public class EditIndexStatusActivity extends AppCompatActivity {
         lastType = findViewById(R.id.indexLastSeenVia);
         assesment = findViewById(R.id.indexLastAssessment);
 
-        Log.d("PROFILE email/id", userId);
-        FirebaseDatabase.getInstance().getReference()
-                .child("TestIndex")
+
+        root.child("users")
+                .child(FirebaseAuth.getInstance().getCurrentUser().getUid())
+                .child("lastOpenCircle")
                 .addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
-                        indexStatus = dataSnapshot.getValue(IndexStatus.class);
-                        if(indexStatus!=null) {
-                            lastUsed.setText(indexStatus.getLastUsed());
-                            lastSeenBy.setText(indexStatus.getLastSeenBy());
-                            lastType.setText(indexStatus.getLastSeenVia());
-                            assesment.setText(indexStatus.getReportedAssessment());
-                        }
-                        else{
-                            Log.e("FirebaseError", "EditindexStatus -- Index is null");
-                            indexStatus = new IndexStatus();
-                        }
+                        String curCircle = dataSnapshot.getValue(String.class);
+                        currentCircle = curCircle;
+                        root.child(currentCircle)
+                                .addListenerForSingleValueEvent(new ValueEventListener() {
+                                    @Override
+                                    public void onDataChange(DataSnapshot dataSnapshot) {
+                                        indexStatus = dataSnapshot.getValue(IndexStatus.class);
+                                        if (indexStatus != null) {
+                                            lastUsed.setText(indexStatus.getLastUsed());
+                                            lastSeenBy.setText(indexStatus.getLastSeenBy());
+                                            lastType.setText(indexStatus.getLastSeenVia());
+                                            assesment.setText(indexStatus.getReportedAssessment());
+                                        } else {
+                                            Log.e("Firebase Error", "Index status is null");
+                                            indexStatus = new IndexStatus();
+                                        }
+                                    }
 
-
+                                    @Override
+                                    public void onCancelled(DatabaseError databaseError) {
+                                        Log.d("Firebase Error", "Current Circle doesn't exist");
+                                    }
+                                });
                     }
 
                     @Override
@@ -91,14 +105,12 @@ public class EditIndexStatusActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item){
         switch (item.getItemId()) {
             case R.id.action_save:
-                //String userId = fUser.getUid();
                 indexStatus.setLastSeenBy(lastSeenBy.getText().toString());
                 indexStatus.setLastSeenVia(lastType.getText().toString());;
                 indexStatus.setReportedAssessment(assesment.getText().toString());
-                //Change later
-                mDatabase.child("TestIndex").setValue(indexStatus);
+                mDatabase.child(currentCircle).setValue(indexStatus);
                 Toast.makeText(getBaseContext(), "Changes Saved", Toast.LENGTH_LONG).show();
-                Log.d("FirebaseSave", "Update Saved");
+                Log.d("Firebase Save", "Update Saved");
                 this.finish();
                 return true;
         }

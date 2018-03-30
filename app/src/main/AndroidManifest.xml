@@ -22,7 +22,7 @@
         <activity android:name=".auth.JoinActivity"/>
         <activity android:name=".auth.WelcomeJoinCreateActivity"/>
         <activity android:name="DrawerCircleActivity"/>
-
+        <activity android:name=".EditIndexStatusActivity"/>
         <activity android:name=".auth.ProfileEditActivity"/>
         <activity android:name=".ChatLanding"/>
         <activity android:name=".IndexChat"/>
@@ -34,6 +34,7 @@
             android:name=".MainActivity"
             android:label="@string/title_activity_main"
             android:theme="@style/AppTheme.NoActionBar"></activity>
+
     </application>
 
 </manifest>

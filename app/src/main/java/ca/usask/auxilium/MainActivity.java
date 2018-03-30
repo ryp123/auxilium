@@ -37,6 +37,8 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 
 import ca.usask.auxilium.auth.ProfileFragment;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -79,7 +81,10 @@ public class MainActivity extends AppCompatActivity
         navigationView.setNavigationItemSelectedListener(this);
 
 
+
         getAllUsersFromFirebase();
+        updateIndexTime();
+
 
         fab.setVisibility(View.GONE);
         FragmentManager fragmentManager = getFragmentManager();
@@ -173,7 +178,7 @@ public class MainActivity extends AppCompatActivity
             fragmentManager2.beginTransaction().replace(R.id.content_frame, new ProfileFragment()).commit();
             // Handle the camera action
         } else if (id == R.id.nav_indexstatus) {
-            fragmentManager2.beginTransaction().replace(R.id.content_frame, new SecondFragment()).commit();
+            fragmentManager2.beginTransaction().replace(R.id.content_frame, new IndexStatusActivity()).commit();
 
         } else if (id == R.id.nav_helpscreen) {
             fragmentManager2.beginTransaction().replace(R.id.content_frame, new HelpScreen()).commit();
@@ -244,6 +249,15 @@ public class MainActivity extends AppCompatActivity
 
     }
 
+    public void updateIndexTime(){
+        String timeStamp = new SimpleDateFormat("yyyy/MM/dd @ HH:mm:ss").format(Calendar.getInstance().getTime());
+        FirebaseDatabase.getInstance()
+                .getReference()
+                .child("TestIndex")
+                .child("lastUsed")
+                .setValue(timeStamp);
+
+    }
 
     public boolean addNewUser(User user, String userId){
         Menu menu = navigationView.getMenu();

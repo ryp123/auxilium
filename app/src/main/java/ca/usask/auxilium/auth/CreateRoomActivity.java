@@ -21,6 +21,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 
@@ -110,11 +111,18 @@ public class CreateRoomActivity extends AppCompatActivity {
 
      public void updateDatabase(){
          String circleId= mDatabase.push().getKey();
+         String userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
          mDatabase.child("circles").child(circleId).child("name").setValue(mCircle.getCircleName());
-         mDatabase.child("users").child(FirebaseAuth.getInstance().getCurrentUser().getUid())
+         mDatabase.child("users").child(userId)
                  .child("circles").child(circleId).child("role").setValue("Index");
-         mDatabase.child("users").child(FirebaseAuth.getInstance().getCurrentUser().getUid())
+         mDatabase.child("users").child(userId)
                  .child("lastCircleOpen").setValue(circleId);
+         HashMap<String, HashMap<String, String>> member = new HashMap<>();
+         HashMap <String, String> memberDetails = new HashMap<>();
+         memberDetails.put("role", "Index");
+         memberDetails.put("status", "Active");
+         member.put(userId, memberDetails);
+         mDatabase.child("circleMembers").child(circleId).setValue(member);
          InvitationService service = new InvitationService();
          if (this.firstInviteEmail != null) {
              Invitations invite = new Invitations(circleId, this.firstInviteEmail);

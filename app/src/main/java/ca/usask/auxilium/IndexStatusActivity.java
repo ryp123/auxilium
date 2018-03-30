@@ -45,6 +45,7 @@ public class IndexStatusActivity extends Fragment {
     private TextView lastSeenBy;
     private TextView lastType;
     private TextView assesment;
+    private DatabaseReference root = FirebaseDatabase.getInstance().getReference().getRoot();
     private View myView;
     private FirebaseUser fUser;
     private String userId;

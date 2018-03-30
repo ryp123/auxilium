@@ -50,7 +50,6 @@ public class EditIndexStatusActivity extends AppCompatActivity {
             Log.e("User Error", "user is not logged in");
             return;
         }
-        String userId = fUser.getUid();
 
         lastUsed = findViewById(R.id.indexLastTimeUsed);
         lastSeenBy = findViewById(R.id.indexLastSeenBy);

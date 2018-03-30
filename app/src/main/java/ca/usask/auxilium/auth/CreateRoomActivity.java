@@ -105,6 +105,8 @@ public class CreateRoomActivity extends AppCompatActivity {
 
         updateDatabase();
 
+        finish();
+
         Intent intent = new Intent(getBaseContext(), MainActivity.class);
         intent.putExtra("CircleName", mCircle.getCircleName());
 
@@ -115,6 +117,10 @@ public class CreateRoomActivity extends AppCompatActivity {
      public void updateDatabase(){
          String circleId= mDatabase.push().getKey();
          mDatabase.child("circles").child(circleId).child("name").setValue(mCircle.getCircleName());
+         mDatabase.child("users").child(FirebaseAuth.getInstance().getCurrentUser().getUid())
+                 .child("circles").child(circleId).child("role").setValue("Index");
+         mDatabase.child("users").child(FirebaseAuth.getInstance().getCurrentUser().getUid())
+                 .child("lastCircleOpen").setValue(circleId);
          InvitationService service = new InvitationService();
          if (this.firstInviteEmail != null) {
              Invitations invite = new Invitations(circleId, this.firstInviteEmail);

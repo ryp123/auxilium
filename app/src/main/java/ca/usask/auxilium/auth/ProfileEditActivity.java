@@ -124,11 +124,16 @@ public class ProfileEditActivity extends AppCompatActivity {
                 mDatabase.child("users").child(userId).setValue(user);
                 Toast.makeText(getBaseContext(), "Changes Saved", Toast.LENGTH_LONG).show();
                 Log.d("FirebaseSave", "Edited user data saved");
+                setResult(RESULT_OK);
                 this.finish();
                 return true;
         }
         return super.onOptionsItemSelected(item);
     }
-    
-    
+
+    @Override
+    public void onBackPressed() {
+        setResult(RESULT_CANCELED);
+        super.onBackPressed();
+    }
 }

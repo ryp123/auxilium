@@ -37,6 +37,7 @@ import ca.usask.auxilium.R;
 public class SignInActivity extends BaseActivity implements View.OnClickListener {
     private static final String TAG = "GoogleActivity";
     private static final int RC_SIGN_IN = 9001;
+    private static final int RC_CREATE_PROFILE = 42;
 
     // [START declare_auth]
     private FirebaseAuth mAuth;
@@ -111,6 +112,9 @@ public class SignInActivity extends BaseActivity implements View.OnClickListener
                 updateUI(null);
                 // [END_EXCLUDE]
             }
+        }
+        else if(requestCode == RC_CREATE_PROFILE && resultCode == RESULT_OK){
+            checkCircleInvitesAndStatus();
         }
     }
     // [END onactivityresult]
@@ -239,10 +243,38 @@ public class SignInActivity extends BaseActivity implements View.OnClickListener
            db.child("users").child(user.getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
                @Override
                public void onDataChange(DataSnapshot dataSnapshot) {
+                   if(!dataSnapshot.exists()){
+                       startActivityForResult(new Intent(getBaseContext(), ProfileEditActivity.class), RC_CREATE_PROFILE);
+                   } else {
+                       checkCircleInvitesAndStatus();
+                   }
+               }
+
+               @Override
+               public void onCancelled(DatabaseError databaseError) {
+
+               }
+           });
+       }
+   }
+
+   public void checkCircleInvitesAndStatus(){
+       FirebaseUser user = mAuth.getCurrentUser();
+       if(user != null) {
+
+           // TODO: CHECK FOR PENDING INVITES HERE
+
+           DatabaseReference db = FirebaseDatabase.getInstance().getReference();
+           db.child("users").child(user.getUid()).child("circles")
+                   .addListenerForSingleValueEvent(new ValueEventListener() {
+               @Override
+               public void onDataChange(DataSnapshot dataSnapshot) {
                    if(dataSnapshot.exists()){
+                       // user is already a part of a circle
                        startActivity(new Intent(getBaseContext(), MainActivity.class));
                    } else {
-                       startActivity(new Intent(getBaseContext(), ProfileEditActivity.class));
+                       // user is not a part of any circle
+                       startActivity(new Intent(getBaseContext(), CreateRoomActivity.class));
                    }
                }
 

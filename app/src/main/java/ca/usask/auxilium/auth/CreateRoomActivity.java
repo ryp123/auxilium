@@ -106,12 +106,6 @@ public class CreateRoomActivity extends AppCompatActivity {
         updateDatabase();
 
         finish();
-
-        Intent intent = new Intent(getBaseContext(), MainActivity.class);
-        intent.putExtra("CircleName", mCircle.getCircleName());
-
-        startActivity(intent);
-
     }
 
      public void updateDatabase(){

@@ -57,7 +57,7 @@ public class HelpScreen extends Fragment {
                                         String curDiagnosis = dataSnapshot.getValue(String.class);
                                         condition = curDiagnosis;
                                         if(curDiagnosis == null){
-                                            Log.d("string is null", "string is null");
+                                            Log.d("HelpScreen:createView", "circle diagnosis is null");
                                         }
                                         root.child("conditions")
                                                 .child(condition)
@@ -87,6 +87,7 @@ public class HelpScreen extends Fragment {
 
                                                     @Override
                                                     public void onCancelled(DatabaseError databaseError) {
+                                                        Log.d("HelpScreen:createView", "resources not found");
 
                                                     }
                                                 });
@@ -94,7 +95,7 @@ public class HelpScreen extends Fragment {
 
                                     @Override
                                     public void onCancelled(DatabaseError databaseError) {
-
+                                        Log.d("HelpScreen:createView", "error querying diagnosis");
                                     }
                                 });
                     }

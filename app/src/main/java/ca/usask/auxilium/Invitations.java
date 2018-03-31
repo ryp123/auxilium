@@ -3,9 +3,6 @@ package ca.usask.auxilium;
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
 
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
-
 /**
  * Created by rpiper on 3/3/18.
  */
@@ -20,11 +17,11 @@ public class Invitations {
 
     public Invitations() {}
 
-    public Invitations(String circleId,String email) {
+    public Invitations(String circleId,String email, String currentUserEmail) {
         this.circleId = circleId;
         this.email = email;
         this.sentDynamicLink = false;
-        this.senderEmail = this.getCurrentUsersEmail();
+        this.senderEmail = currentUserEmail;
         // get expiration date as unix timestamp
         this.expirationDate = DateTime.now()
                                       .toDateTime(DateTimeZone.UTC)
@@ -67,9 +64,8 @@ public class Invitations {
       return this.senderEmail;
     }
 
-    private String getCurrentUsersEmail() {
-      FirebaseAuth mAuth = FirebaseAuth.getInstance();
-      FirebaseUser user = mAuth.getCurrentUser();
-      return user.getEmail();
+    public void setSenderEmail(String newEmail) {
+        this.senderEmail = newEmail;
     }
+
 }

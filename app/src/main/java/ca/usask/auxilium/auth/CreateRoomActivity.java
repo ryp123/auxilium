@@ -131,6 +131,9 @@ public class CreateRoomActivity extends AppCompatActivity {
                  mDatabase.child("invitations").push().setValue(invite);
                  Invitations secondInvite = new Invitations(circleId, this.secondInviteEmail, currentEmail);
                  mDatabase.child("invitations").push().setValue(secondInvite);
+             } else {
+                 Invitations invite = new Invitations(circleId, this.firstInviteEmail, currentEmail);
+                 mDatabase.child("invitations").push().setValue(invite);
              }
          } else if(this.firstInviteEmail != null && this.secondInviteEmail == null) {
              Invitations invite = new Invitations(circleId, this.firstInviteEmail, currentEmail);

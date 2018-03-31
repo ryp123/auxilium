@@ -361,9 +361,13 @@ public class MainActivity extends AppCompatActivity
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        MainActivity.isAppRunning = false;
+        MainActivity.setAppRunningFalse();
     }
     //-------notification stuff ends--------------------------------------
+
+    public static void setAppRunningFalse(){
+        MainActivity.isAppRunning = false;
+    }
 
 
 

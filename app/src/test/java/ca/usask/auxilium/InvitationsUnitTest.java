@@ -15,9 +15,10 @@ public class InvitationsUnitTest {
 
     String testCircleID = "1";
     String testEmail = "test@test.com";
+    String currentUserEmail = "fake@gmail.com";
     Long testLong = 123L;
 
-    Invitations i = new Invitations(testCircleID, testEmail);
+    Invitations i = new Invitations(testCircleID, testEmail, currentUserEmail);
 
     @Test
     public void setCircleId_and_getCircleId_test() throws Exception {
@@ -33,6 +34,14 @@ public class InvitationsUnitTest {
         i.setEmail("testEmail");
         assertNotNull(i.getCircleId());
         assertSame("testEmail", i.getEmail());
+    }
+
+    @Test
+    public void setCurrentUserEmail_and_getCurrentUserEmail_test() throws Exception {
+        assertSame("fake@gmail.com", i.getSenderEmail());
+        i.setSenderEmail("testEmail");
+        assertNotNull(i.getCircleId());
+        assertSame("testEmail", i.getSenderEmail());
     }
 
     @Test

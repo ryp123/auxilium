@@ -113,6 +113,7 @@ public class CreateRoomActivity extends AppCompatActivity {
          String circleId= mDatabase.push().getKey();
          String userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
          mDatabase.child("circles").child(circleId).child("name").setValue(mCircle.getCircleName());
+         mDatabase.child("circles").child(circleId).child("diagnosis").setValue(mCircle.getAilment());
          mDatabase.child("users").child(userId)
                  .child("circles").child(circleId).child("role").setValue("Index");
          mDatabase.child("users").child(userId)

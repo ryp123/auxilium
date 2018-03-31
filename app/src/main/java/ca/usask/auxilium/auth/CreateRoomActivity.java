@@ -45,8 +45,6 @@ public class CreateRoomActivity extends AppCompatActivity {
     private String firstInviteEmail;
     private String secondInviteEmail;
 
-    GoogleSignInAccount mAcct;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -62,7 +60,7 @@ public class CreateRoomActivity extends AppCompatActivity {
 
     public void  onCreateButtonClick(View v) {
         EditText edt = (EditText) findViewById(R.id.roomNameText);
-
+        String circleCreatorEmail = FirebaseAuth.getInstance().getCurrentUser().getEmail();
         String circleName = edt.getText().toString();
         Log.d("the name of circle being created",circleName);
         mCircle = new Circle();
@@ -81,7 +79,9 @@ public class CreateRoomActivity extends AppCompatActivity {
         } else if (!this.isEmailValid(email)) {
             emailInput.setError("Invalid email");
             return;
-        } else {
+        } else if(email.equals(circleCreatorEmail)) {
+            emailInput.setError("Cannot send invitation to yourself.");
+        }  else {
             this.firstInviteEmail = email;
         }
         emailInput = (EditText) findViewById(R.id.friendEmail2);
@@ -91,7 +91,9 @@ public class CreateRoomActivity extends AppCompatActivity {
         } else if (!this.isEmailValid(email)) {
             emailInput.setError("Invalid email");
             return;
-        } else {
+        } else if(email.equals(circleCreatorEmail)) {
+            emailInput.setError("Cannot send invitation to yourself.");
+        }  else {
             this.secondInviteEmail = email;
         }
 
@@ -101,7 +103,6 @@ public class CreateRoomActivity extends AppCompatActivity {
         mCircle.setCircleInfo(circleInfoTxt);
 
         // get db/account info reference
-        mAcct = GoogleSignIn.getLastSignedInAccount(this);
         mDatabase = FirebaseDatabase.getInstance().getReference();
 
         updateDatabase();

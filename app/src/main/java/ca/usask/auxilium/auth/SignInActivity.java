@@ -1,7 +1,14 @@
 package ca.usask.auxilium.auth;
 
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
+import android.content.Context;
 import android.content.Intent;
+
 import android.net.Uri;
+
+import android.graphics.Color;
+
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
@@ -32,12 +39,16 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.Transaction;
 import com.google.firebase.database.ValueEventListener;
+
 import com.google.firebase.dynamiclinks.FirebaseDynamicLinks;
 import com.google.firebase.dynamiclinks.PendingDynamicLinkData;
 
 import org.joda.time.DateTime;
 
 import java.util.HashMap;
+
+import com.google.firebase.messaging.FirebaseMessaging;
+
 
 import ca.usask.auxilium.Invitations;
 import ca.usask.auxilium.MainActivity;
@@ -60,10 +71,45 @@ public class SignInActivity extends BaseActivity implements View.OnClickListener
     private TextView mStatusTextView;
     private TextView mDetailTextView;
 
+    public static boolean isAppRunning;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_signin);
+
+        //notification stuff march 29--------------------------------------------
+        FirebaseMessaging.getInstance().subscribeToTopic("all");
+
+
+        NotificationManager notificationManager =
+                (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+
+        String channelId = "1";
+        String channel2 = "2";
+
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+            NotificationChannel notificationChannel = new NotificationChannel(channelId,
+                    "Channel 1", NotificationManager.IMPORTANCE_HIGH);
+
+            notificationChannel.setDescription("This is BNT");
+            notificationChannel.setLightColor(Color.RED);
+            notificationChannel.enableVibration(true);
+            notificationChannel.setShowBadge(true);
+            notificationManager.createNotificationChannel(notificationChannel);
+
+            NotificationChannel notificationChannel2 = new NotificationChannel(channel2,
+                    "Channel 2", NotificationManager.IMPORTANCE_MIN);
+
+            notificationChannel.setDescription("This is bTV");
+            notificationChannel.setLightColor(Color.RED);
+            notificationChannel.enableVibration(true);
+            notificationChannel.setShowBadge(true);
+            notificationManager.createNotificationChannel(notificationChannel2);
+        }
+
+        //notification ends  -----------------------------------------------
 
         // Views
         mStatusTextView = findViewById(R.id.status);
@@ -448,5 +494,13 @@ public class SignInActivity extends BaseActivity implements View.OnClickListener
 
 
 
+
+    //-------notification stuff------------------------------------------
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        isAppRunning = false;
+    }
+    //-------notification stuff ends--------------------------------------
 
 }

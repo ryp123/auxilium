@@ -1,7 +1,11 @@
 package ca.usask.auxilium;
 
 import android.app.FragmentManager;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
+import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
@@ -37,6 +41,7 @@ import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.messaging.FirebaseMessaging;
 
 import ca.usask.auxilium.auth.ProfileFragment;
 import java.text.SimpleDateFormat;
@@ -44,6 +49,10 @@ import java.util.Calendar;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
+
+
+    public static boolean isAppRunning;
+
 
     NavigationView navigationView;
     ArrayList<MenuItem> mMenuItems = new ArrayList<>();
@@ -55,6 +64,41 @@ public class MainActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+
+        //notification stuff march 29--------------------------------------------
+
+        FirebaseMessaging.getInstance().subscribeToTopic("all");
+
+        NotificationManager notificationManager =
+                (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+
+        String channelId = "1";
+        String channel2 = "2";
+
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+            NotificationChannel notificationChannel = new NotificationChannel(channelId,
+                    "Channel 1", NotificationManager.IMPORTANCE_HIGH);
+
+            notificationChannel.setDescription("This is BNT");
+            notificationChannel.setLightColor(Color.RED);
+            notificationChannel.enableVibration(true);
+            notificationChannel.setShowBadge(true);
+            notificationManager.createNotificationChannel(notificationChannel);
+
+            NotificationChannel notificationChannel2 = new NotificationChannel(channel2,
+                    "Channel 2", NotificationManager.IMPORTANCE_MIN);
+
+            notificationChannel.setDescription("This is bTV");
+            notificationChannel.setLightColor(Color.RED);
+            notificationChannel.enableVibration(true);
+            notificationChannel.setShowBadge(true);
+            notificationManager.createNotificationChannel(notificationChannel2);
+        }
+
+            //notification ends  -----------------------------------------------
+
+
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
@@ -124,7 +168,8 @@ public class MainActivity extends AppCompatActivity
         fab.setVisibility(View.GONE);
         FragmentManager fragmentManager = getFragmentManager();
         fragmentManager.beginTransaction().replace(R.id.content_frame, new IndexChat()).commit();
-    }
+
+        }
 
     @Override
     public void onBackPressed() {
@@ -310,6 +355,16 @@ public class MainActivity extends AppCompatActivity
         }
         return -1;
     }
+
+
+    //-------notification stuff------------------------------------------
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        isAppRunning = false;
+    }
+    //-------notification stuff ends--------------------------------------
+
 
 
 }

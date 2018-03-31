@@ -54,7 +54,7 @@ public class CreateRoomActivity extends AppCompatActivity {
 
         //Set the default items for the ailment drop down
         Spinner spinner = (Spinner) findViewById(R.id.ailmentSpinner);
-        String[] spinItems = new String[]{"Alcoholic", "Depression", "Drug Addiction"};
+        String[] spinItems = new String[]{"Alcoholism", "Depression", "Drug Addiction"};
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
                 android.R.layout.simple_spinner_dropdown_item, spinItems);
         spinner.setAdapter(adapter);

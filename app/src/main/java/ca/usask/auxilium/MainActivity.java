@@ -94,9 +94,10 @@ public class MainActivity extends AppCompatActivity
                                     @Override
                                     public void onDataChange(DataSnapshot dataSnapshot) {
                                         String userType = dataSnapshot.getValue(String.class);
-                                        if(userType.equals("index")){
+                                        if(userType.equals("Index")){
                                             String timeStamp = new SimpleDateFormat("yyyy/MM/dd @ HH:mm:ss").format(Calendar.getInstance().getTime());
-                                            root.child(currentCircle)
+                                            root.child("circles")
+                                                    .child(currentCircle)
                                                     .child("lastUsed")
                                                     .setValue(timeStamp);
                                         }

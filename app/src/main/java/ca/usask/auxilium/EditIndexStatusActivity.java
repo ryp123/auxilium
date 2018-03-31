@@ -59,13 +59,14 @@ public class EditIndexStatusActivity extends AppCompatActivity {
 
         root.child("users")
                 .child(FirebaseAuth.getInstance().getCurrentUser().getUid())
-                .child("lastOpenCircle")
+                .child("lastCircleOpen")
                 .addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
                         String curCircle = dataSnapshot.getValue(String.class);
                         currentCircle = curCircle;
-                        root.child(currentCircle)
+                        root.child("circles")
+                                .child(currentCircle)
                                 .addListenerForSingleValueEvent(new ValueEventListener() {
                                     @Override
                                     public void onDataChange(DataSnapshot dataSnapshot) {
@@ -107,7 +108,7 @@ public class EditIndexStatusActivity extends AppCompatActivity {
                 indexStatus.setLastSeenBy(lastSeenBy.getText().toString());
                 indexStatus.setLastSeenVia(lastType.getText().toString());;
                 indexStatus.setReportedAssessment(assesment.getText().toString());
-                mDatabase.child(currentCircle).setValue(indexStatus);
+                mDatabase.child("circles").child(currentCircle).setValue(indexStatus);
                 Toast.makeText(getBaseContext(), "Changes Saved", Toast.LENGTH_LONG).show();
                 Log.d("Firebase Save", "Update Saved");
                 this.finish();

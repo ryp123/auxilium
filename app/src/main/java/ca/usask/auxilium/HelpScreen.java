@@ -29,6 +29,7 @@ public class HelpScreen extends Fragment {
     private DatabaseReference root = FirebaseDatabase.getInstance().getReference().getRoot();
     private View myView;
     private String condition;
+    private String currentCircle;
 
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
@@ -41,56 +42,67 @@ public class HelpScreen extends Fragment {
 
         root.child("users")
                 .child(FirebaseAuth.getInstance().getCurrentUser().getUid())
+                .child("lastCircleOpen")
                 .addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
-                        User user = dataSnapshot.getValue(User.class);
-                        if (user.getPreferredName() != null) {
-                            condition = user.getDiagnosis();
-                            if(condition == null){
-                                condition = "Other";
-                            }
-                        }
-                        root.child("conditions").child(condition).child("resources").addChildEventListener(new ChildEventListener() {
-                            @Override
-                            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                        String curCircle = dataSnapshot.getValue(String.class);
+                        currentCircle = curCircle;
+                        root.child("circles")
+                                .child(currentCircle)
+                                .child("diagnosis")
+                                .addListenerForSingleValueEvent(new ValueEventListener() {
+                                    @Override
+                                    public void onDataChange(DataSnapshot dataSnapshot) {
+                                        String curDiagnosis = dataSnapshot.getValue(String.class);
+                                        condition = curDiagnosis;
+                                        if(curDiagnosis == null){
+                                            Log.d("string is null", "string is null");
+                                        }
+                                        root.child("conditions")
+                                                .child(condition)
+                                                .child("resources")
+                                                .addChildEventListener(new ChildEventListener() {
+                                                    @Override
+                                                    public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                                                        appendResource(dataSnapshot);
+                                                    }
 
-                                appendResource(dataSnapshot);
-                            }
 
-                            @Override
-                            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+                                                    @Override
+                                                    public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+                                                        appendResource(dataSnapshot);
+                                                    }
 
-                                appendResource(dataSnapshot);
 
-                            }
+                                                    @Override
+                                                    public void onChildRemoved(DataSnapshot dataSnapshot) {
 
-                            @Override
-                            public void onChildRemoved(DataSnapshot dataSnapshot) {
+                                                    }
 
-                            }
+                                                    @Override
+                                                    public void onChildMoved(DataSnapshot dataSnapshot, String s) {
 
-                            @Override
-                            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+                                                    }
 
-                            }
+                                                    @Override
+                                                    public void onCancelled(DatabaseError databaseError) {
 
-                            @Override
-                            public void onCancelled(DatabaseError databaseError) {
+                                                    }
+                                                });
+                                    }
 
-                            }
-                        });
+                                    @Override
+                                    public void onCancelled(DatabaseError databaseError) {
+
+                                    }
+                                });
                     }
-
                     @Override
                     public void onCancelled(DatabaseError databaseError) {
-
+                        throw databaseError.toException();
                     }
                 });
-
-
-
-
         return myView;
     }
 

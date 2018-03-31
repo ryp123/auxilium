@@ -64,13 +64,14 @@ public class IndexStatusActivity extends Fragment {
 
         root.child("users")
                 .child(FirebaseAuth.getInstance().getCurrentUser().getUid())
-                .child("lastOpenCircle")
+                .child("lastCircleOpen")
                 .addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
                         String curCircle = dataSnapshot.getValue(String.class);
                         currentCircle = curCircle;
-                        root.child(currentCircle)
+                        root.child("circles")
+                                .child(currentCircle)
                                 .addListenerForSingleValueEvent(new ValueEventListener() {
                                     @Override
                                     public void onDataChange(DataSnapshot dataSnapshot) {

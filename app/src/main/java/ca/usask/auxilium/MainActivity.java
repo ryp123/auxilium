@@ -51,7 +51,7 @@ public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
 
-    public static boolean isAppRunning;
+    public static volatile boolean isAppRunning;
 
 
     NavigationView navigationView;

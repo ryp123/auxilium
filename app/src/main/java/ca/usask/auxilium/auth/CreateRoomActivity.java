@@ -14,6 +14,7 @@ import android.widget.Spinner;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -123,18 +124,19 @@ public class CreateRoomActivity extends AppCompatActivity {
          memberDetails.put("status", "Active");
          member.put(userId, memberDetails);
          mDatabase.child("circleMembers").child(circleId).setValue(member);
+         String currentEmail = FirebaseAuth.getInstance().getCurrentUser().getEmail();
          if (this.firstInviteEmail != null && this.secondInviteEmail != null) {
              if (!this.firstInviteEmail.equals(this.secondInviteEmail)) {
-                 Invitations invite = new Invitations(circleId, this.firstInviteEmail);
+                 Invitations invite = new Invitations(circleId, this.firstInviteEmail, currentEmail);
                  mDatabase.child("invitations").push().setValue(invite);
-                 Invitations secondInvite = new Invitations(circleId, this.secondInviteEmail);
+                 Invitations secondInvite = new Invitations(circleId, this.secondInviteEmail, currentEmail);
                  mDatabase.child("invitations").push().setValue(secondInvite);
              }
          } else if(this.firstInviteEmail != null && this.secondInviteEmail == null) {
-             Invitations invite = new Invitations(circleId, this.firstInviteEmail);
+             Invitations invite = new Invitations(circleId, this.firstInviteEmail, currentEmail);
              mDatabase.child("invitations").push().setValue(invite);
          } else if(this.firstInviteEmail == null && this.secondInviteEmail != null) {
-             Invitations secondInvite = new Invitations(circleId, this.secondInviteEmail);
+             Invitations secondInvite = new Invitations(circleId, this.secondInviteEmail, currentEmail);
              mDatabase.child("invitations").push().setValue(secondInvite);
          } else {
              // both are null thus no invites need to be sent.

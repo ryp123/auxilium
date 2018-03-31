@@ -80,7 +80,7 @@ public class MainActivity extends AppCompatActivity
             NotificationChannel notificationChannel = new NotificationChannel(channelId,
                     "Channel 1", NotificationManager.IMPORTANCE_HIGH);
 
-            notificationChannel.setDescription("This is BNT");
+            notificationChannel.setDescription("This is Auxilium");
             notificationChannel.setLightColor(Color.RED);
             notificationChannel.enableVibration(true);
             notificationChannel.setShowBadge(true);
@@ -89,7 +89,7 @@ public class MainActivity extends AppCompatActivity
             NotificationChannel notificationChannel2 = new NotificationChannel(channel2,
                     "Channel 2", NotificationManager.IMPORTANCE_MIN);
 
-            notificationChannel.setDescription("This is bTV");
+            notificationChannel.setDescription("This is Auxilium");
             notificationChannel.setLightColor(Color.RED);
             notificationChannel.enableVibration(true);
             notificationChannel.setShowBadge(true);

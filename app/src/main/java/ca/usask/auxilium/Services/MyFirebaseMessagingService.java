@@ -47,19 +47,14 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
     public void onMessageReceived(RemoteMessage remoteMessage) {
 
         Intent notificationIntent = new Intent(this, MainActivity.class);
-        if(MainActivity.isAppRunning){
-            //Some action
-        }else{
-            //Show notification as usual
-        }
+
 
         notificationIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 
         final PendingIntent pendingIntent = PendingIntent.getActivity(this,
-                0 /* Request code */, notificationIntent,
+                0 , notificationIntent,
                 PendingIntent.FLAG_ONE_SHOT);
 
-        //You should use an actual ID instead
         int notificationId = new Random().nextInt(60000);
 
 

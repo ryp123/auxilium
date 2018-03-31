@@ -55,7 +55,7 @@ public class CreateRoomUnitTests {
             //Test 4: invalid email
             String email4 = "email@.gmail.com";
             result = (boolean) emailMethod.invoke(mRoom, email4);
-            assertEquals(true, result);
+            assertEquals(false, result);
             System.out.println("checkValidEmailTest: Test 4 passed");
 
             emailMethod.setAccessible(false);

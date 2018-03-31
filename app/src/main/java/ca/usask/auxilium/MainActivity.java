@@ -77,7 +77,7 @@ public class MainActivity extends AppCompatActivity
         navigationView.setNavigationItemSelectedListener(this);
 
 
-        root.child("users")
+          root.child("users")
                 .child(FirebaseAuth.getInstance().getCurrentUser().getUid())
                 .child("lastCircleOpen")
                 .addListenerForSingleValueEvent(new ValueEventListener() {
@@ -98,6 +98,7 @@ public class MainActivity extends AppCompatActivity
                                             String timeStamp = new SimpleDateFormat("yyyy/MM/dd @ HH:mm:ss").format(Calendar.getInstance().getTime());
                                             root.child("circles")
                                                     .child(currentCircle)
+                                                    .child("indexStatus")
                                                     .child("lastUsed")
                                                     .setValue(timeStamp);
                                         }

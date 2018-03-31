@@ -72,6 +72,7 @@ public class IndexStatusActivity extends Fragment {
                         currentCircle = curCircle;
                         root.child("circles")
                                 .child(currentCircle)
+                                .child("indexStatus")
                                 .addListenerForSingleValueEvent(new ValueEventListener() {
                                     @Override
                                     public void onDataChange(DataSnapshot dataSnapshot) {

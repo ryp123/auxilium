@@ -79,7 +79,7 @@ public class MainActivity extends AppCompatActivity
 
         root.child("users")
                 .child(FirebaseAuth.getInstance().getCurrentUser().getUid())
-                .child("lastOpenCircle")
+                .child("lastCircleOpen")
                 .addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
@@ -88,7 +88,7 @@ public class MainActivity extends AppCompatActivity
                         root.child("users")
                                 .child(FirebaseAuth.getInstance().getCurrentUser().getUid())
                                 .child("circles")
-                                .child(curCircle)
+                                .child(currentCircle)
                                 .child("role")
                                 .addListenerForSingleValueEvent(new ValueEventListener() {
                                     @Override

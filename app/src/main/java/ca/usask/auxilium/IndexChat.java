@@ -84,7 +84,7 @@ public class IndexChat extends Fragment {
                 });
         root.child("users")
                 .child(FirebaseAuth.getInstance().getCurrentUser().getUid())
-                .child("lastOpenCircle")
+                .child("lastCircleOpen")
                 .addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {

@@ -281,6 +281,8 @@ public class SignInActivity extends BaseActivity implements View.OnClickListener
                        @Override
                        public void onSuccess(PendingDynamicLinkData pendingDynamicLinkData) {
                            Uri deepLink = null;
+                           final DatabaseReference db = FirebaseDatabase.getInstance()
+                                   .getReference();
                            if (pendingDynamicLinkData != null) {
                                deepLink = pendingDynamicLinkData.getLink();
                                Toast.makeText(getBaseContext(),
@@ -288,39 +290,44 @@ public class SignInActivity extends BaseActivity implements View.OnClickListener
                                        Toast.LENGTH_LONG).show();
                                final String invitationId = deepLink.getQueryParameter("invitationId");
                                Log.d("invitations", "Id:" + invitationId);
-                               final DatabaseReference db = FirebaseDatabase.getInstance()
-                                                                            .getReference();
                                db.addListenerForSingleValueEvent(new ValueEventListener() {
                                            @Override
-                                           public void onDataChange(DataSnapshot dbRef) {
+                                           public void onDataChange(final DataSnapshot dbRef) {
                                                Invitations invitation = dbRef.child("invitations")
-                                                       .child(invitationId)
-                                                       .getValue(Invitations.class);
-                                               Log.d("invitations", "Proof not null: " + invitation.getEmail());
+                                                                             .child(invitationId)
+                                                                             .getValue(Invitations.class);
+                                               Toast.makeText(getBaseContext(), "Processing Invitation", Toast.LENGTH_LONG);
                                                if (invitation == null) {
                                                    Toast.makeText(getBaseContext(),
-                                                           "Failed to process invitation.",
-                                                           Toast.LENGTH_LONG).show();
-                                                   redirectToActivity(db);
+                                                             "The invitation no longer exists.",
+                                                                   Toast.LENGTH_LONG).show();
+                                                   activityCallback(dbRef, user.getUid());
                                                } else {
-                                                   if (isInvitationValid(invitation, invitation.getSenderEmail())) {
+                                                   if (isInvitationValid(invitation, user.getEmail(), invitationId)) {
                                                        String circleId = invitation.getCircleId();
-                                                       Log.d("invitations", "circle:" + circleId);
                                                        String userId = user.getUid();
-                                                       Log.d("invitations", "userId:" + userId);
-                                                       String concernedChatId = getConcernedChatId(dbRef, circleId);
-                                                       Log.d("invitations", "concernedChat:" + concernedChatId);
-                                                       updateUserWithCircleId(db,circleId, userId);
-                                                       updateCircleMembers(db,circleId, userId);
-                                                       updateConcernedPartyMembers(db,concernedChatId, userId);
-                                                       updateUserWithConcernedChatId(db, concernedChatId, userId);
-                                                       if (!islastOpenedCircleSet(dbRef,userId)) {
-                                                           updateLastOpenedCircle(db,userId,circleId);
+                                                       Log.d("invitations", "Adding user" + userId  + "to circle " + circleId);
+                                                       // update tasks is being used for batch writes.
+                                                       HashMap<String, Object> updateTasks = new HashMap<>();
+                                                       updateUserWithCircleId(updateTasks,circleId, userId);
+                                                       updateCircleMembers(updateTasks,circleId, userId);
+                                                       if (!isLastOpenedCircleSet(dbRef,userId)) {
+                                                           updateLastOpenedCircle(updateTasks,userId,circleId);
                                                        }
-                                                       deleteUsedInvitation(db, invitationId);
-                                                       redirectToActivity(db);
+                                                       db.updateChildren(updateTasks).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                                           @Override
+                                                           public void onComplete(@NonNull Task<Void> task) {
+                                                               if (task.isSuccessful()) {
+                                                                   Log.d("invitations", "Success!");
+                                                                   deleteUsedInvitation(db, invitationId);
+                                                                   activityCallback(dbRef, user.getUid());
+                                                               } else {
+                                                                   Log.d("invitations", "Failure");
+                                                               }
+                                                           }
+                                                       });
                                                    } else {
-                                                       redirectToActivity(db);
+                                                       activityCallback(dbRef, user.getUid());
                                                    }
                                                }
                                            }
@@ -330,13 +337,16 @@ public class SignInActivity extends BaseActivity implements View.OnClickListener
                                                 Log.e("invitations", databaseError.getDetails());
                                            }
                                        });
+                           } else {
+                               Log.d("invitations", "got here!");
+                               redirectToActivity(db);
                            }
                        }
                    })
                    .addOnFailureListener(this, new OnFailureListener() {
                        @Override
                        public void onFailure(@NonNull Exception e) {
-                           Log.w(TAG, "getDynamicLink:onFailure", e);
+                           Log.d("invitations", "getDynamicLink:onFailure", e);
                            DatabaseReference db = FirebaseDatabase.getInstance().getReference();
                            redirectToActivity(db);
                        }
@@ -345,11 +355,10 @@ public class SignInActivity extends BaseActivity implements View.OnClickListener
    }
 
     private boolean isInvitationValid(Invitations invite,
-                                      String currentUsersEmail) {
-        Log.d("invitations", "got here 101");
+                                      String currentUsersEmail,
+                                      String invitationId) {
         DateTime expirationDate = new DateTime(invite.getExpirationDate());
-        Log.d("invitations", "date:" + expirationDate.toString());
-        if (!invite.getSenderEmail().equals(currentUsersEmail)) {
+        if (!invite.getEmail().equals(currentUsersEmail)) {
             Toast.makeText(getBaseContext(),
                     "Failed to process invitation email. Invalid email detected.",
                     Toast.LENGTH_LONG).show();
@@ -358,39 +367,25 @@ public class SignInActivity extends BaseActivity implements View.OnClickListener
             Toast.makeText(getBaseContext(),
                     "Failed to process invitation email. Past expiration date.",
                     Toast.LENGTH_LONG).show();
+            deleteUsedInvitation(FirebaseDatabase.getInstance().getReference(), invitationId);
             return false;
         } else {
-            Log.d("invitations", "Got here!");
             return true;
         }
     }
 
-    private void updateUserWithCircleId(DatabaseReference dbRef,
+    private void updateUserWithCircleId(HashMap<String, Object> updateTasks,
                                         String circleId,
                                         String currentUserId) {
         HashMap<String, HashMap<String, String>> userCircleListing = new HashMap();
         HashMap<String, String> circleRole = new HashMap();
         circleRole.put("role", "Concerned");
         userCircleListing.put(circleId, circleRole);
-
-        dbRef.child("users")
-                .child(currentUserId)
-                .child("circles")
-                .setValue(userCircleListing);
+        updateTasks.put("/users/" + currentUserId + "/circles", userCircleListing);
     }
 
-    private void updateUserWithConcernedChatId(DatabaseReference dbRef,
-                                               String concernedPartyId,
-                                               String currentUserId) {
-        HashMap<String, Boolean> concernedChat = new HashMap();
-        concernedChat.put(concernedPartyId, true);
-        dbRef.child("users")
-                .child(currentUserId)
-                .child("concernedChat")
-                .setValue(concernedChat);
-    }
 
-    private void updateCircleMembers(DatabaseReference dbRef,
+    private void updateCircleMembers(HashMap<String, Object> updateTasks,
                                      String circleId,
                                      String currentUserId) {
         HashMap<String, HashMap<String, String>> circleMember = new HashMap();
@@ -398,55 +393,33 @@ public class SignInActivity extends BaseActivity implements View.OnClickListener
         circleMemberRole.put("role", "Concerned");
         circleMemberRole.put("status", "Active");
         circleMember.put(currentUserId, circleMemberRole);
-        dbRef.child("circleMembers")
-                .child(circleId)
-                .setValue(circleMember);
-    }
-
-    private void updateConcernedPartyMembers(DatabaseReference dbRef,
-                                             String concernedChatId,
-                                             String currentUserId) {
-        HashMap<String, Boolean> concernedPartyMember = new HashMap();
-        concernedPartyMember.put(currentUserId, true);
-        dbRef.child("concernedPartyMember")
-                .child(concernedChatId)
-                .setValue(concernedPartyMember);
-    }
-
-    private String getConcernedChatId(DataSnapshot dbRef,
-                                      String circleId) {
-        for (DataSnapshot children: dbRef.child("concernedCircle").getChildren()) {
-            // if the concerned chat is related to the given circle id we want that cp chat id.
-            if (children.child("relatedTo").getValue().equals(circleId)) {
-                // get the concerned chat id.
-                return children.getKey();
-            }
-        }
-        return null;
+        updateTasks.put("/circleMembers/" + circleId, circleMember);
     }
 
     private void deleteUsedInvitation(DatabaseReference dbRef, String invitationId) {
         dbRef.child("invitations").child(invitationId).setValue(null);
     }
 
-    private boolean islastOpenedCircleSet(DataSnapshot dbRef, String userId) {
+    private boolean isLastOpenedCircleSet(DataSnapshot dbRef, String userId) {
         return dbRef.child("users")
                 .child(userId)
                 .child("lastCircleOpen").exists();
     }
 
-    private void updateLastOpenedCircle(DatabaseReference db, String userId, String circleId) {
-       db.child("users").child(userId).child("lastCircleOpen").setValue(circleId);
+    private void updateLastOpenedCircle(HashMap<String, Object> updateTasks, String userId, String circleId) {
+       updateTasks.put("/users/" + userId + "/lastCircleOpen", circleId);
     }
 
     private void redirectToActivity(DatabaseReference db) {
        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        Log.d("invitations", user.getUid());
         db.child("users").child(user.getUid()).child("circles")
                 .addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
                         if(dataSnapshot.exists()){
                             // user is already a part of a circle
+                            Log.d("invitations", "just before main");
                             startActivity(new Intent(getBaseContext(), MainActivity.class));
                         } else {
                             // user is not a part of any circle
@@ -456,9 +429,21 @@ public class SignInActivity extends BaseActivity implements View.OnClickListener
 
                     @Override
                     public void onCancelled(DatabaseError databaseError) {
-
+                        Log.e("invitations", databaseError.getDetails());
                     }
                 });
+    }
+
+
+    private void activityCallback(DataSnapshot dbRef, String userId) {
+        DataSnapshot dataSnapshot = dbRef.child("users").child(userId).child("circles");
+        if(dataSnapshot.exists()){
+            // user is already a part of a circle
+            startActivity(new Intent(getBaseContext(), MainActivity.class));
+        } else {
+            // user is not a part of any circle
+            startActivity(new Intent(getBaseContext(), CreateRoomActivity.class));
+        }
     }
 
 

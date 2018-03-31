@@ -33,7 +33,6 @@ import ca.usask.auxilium.Invitations;
 import ca.usask.auxilium.Circle;
 import ca.usask.auxilium.MainActivity;
 import ca.usask.auxilium.R;
-import ca.usask.auxilium.Services.InvitationService;
 import ca.usask.auxilium.User;
 
 public class CreateRoomActivity extends AppCompatActivity {
@@ -84,7 +83,7 @@ public class CreateRoomActivity extends AppCompatActivity {
         } else {
             this.firstInviteEmail = email;
         }
-        emailInput = (EditText) findViewById(R.id.friendEmail1);
+        emailInput = (EditText) findViewById(R.id.friendEmail2);
         email = emailInput.getText().toString();
         if (this.isEmailTheDefaultValue(email)) {
             this.secondInviteEmail = null;
@@ -124,14 +123,22 @@ public class CreateRoomActivity extends AppCompatActivity {
          memberDetails.put("status", "Active");
          member.put(userId, memberDetails);
          mDatabase.child("circleMembers").child(circleId).setValue(member);
-         InvitationService service = new InvitationService();
-         if (this.firstInviteEmail != null) {
+         if (this.firstInviteEmail != null && this.secondInviteEmail != null) {
+             if (!this.firstInviteEmail.equals(this.secondInviteEmail)) {
+                 Invitations invite = new Invitations(circleId, this.firstInviteEmail);
+                 mDatabase.child("invitations").push().setValue(invite);
+                 Invitations secondInvite = new Invitations(circleId, this.secondInviteEmail);
+                 mDatabase.child("invitations").push().setValue(secondInvite);
+             }
+         } else if(this.firstInviteEmail != null && this.secondInviteEmail == null) {
              Invitations invite = new Invitations(circleId, this.firstInviteEmail);
-             service.createNewInvitations(invite);
-         }
-         if (this.secondInviteEmail != null) {
-             Invitations invite = new Invitations(circleId, this.secondInviteEmail);
-             service.createNewInvitations(invite);
+             mDatabase.child("invitations").push().setValue(invite);
+         } else if(this.firstInviteEmail == null && this.secondInviteEmail != null) {
+             Invitations secondInvite = new Invitations(circleId, this.secondInviteEmail);
+             mDatabase.child("invitations").push().setValue(secondInvite);
+         } else {
+             // both are null thus no invites need to be sent.
+             return;
          }
     }
 

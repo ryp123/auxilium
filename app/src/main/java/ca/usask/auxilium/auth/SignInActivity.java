@@ -323,7 +323,7 @@ public class SignInActivity extends BaseActivity implements View.OnClickListener
                                                    if (isInvitationValid(invitation, user.getEmail(), invitationId)) {
                                                        String circleId = invitation.getCircleId();
                                                        String userId = user.getUid();
-                                                       Log.d("invitations", "Adding user" + userId  + "to circle " + circleId);
+                                                       Log.d("invitations", "Adding user " + userId  + "to circle " + circleId);
                                                        // update tasks is being used for batch writes.
                                                        HashMap<String, Object> updateTasks = new HashMap<>();
                                                        updateUserWithCircleId(updateTasks,circleId, userId);
@@ -355,7 +355,7 @@ public class SignInActivity extends BaseActivity implements View.OnClickListener
                                            }
                                        });
                            } else {
-                               Log.d("invitations", "got here!");
+                               Log.d("invitations", "No link redirecting to activity!");
                                redirectToActivity(db);
                            }
                        }
@@ -394,26 +394,23 @@ public class SignInActivity extends BaseActivity implements View.OnClickListener
     private void updateUserWithCircleId(HashMap<String, Object> updateTasks,
                                         String circleId,
                                         String currentUserId) {
-        HashMap<String, HashMap<String, String>> userCircleListing = new HashMap();
         HashMap<String, String> circleRole = new HashMap();
         circleRole.put("role", "Concerned");
-        userCircleListing.put(circleId, circleRole);
-        updateTasks.put("/users/" + currentUserId + "/circles", userCircleListing);
+        updateTasks.put("/users/" + currentUserId + "/circles/" + circleId, circleRole);
     }
 
 
     private void updateCircleMembers(HashMap<String, Object> updateTasks,
                                      String circleId,
                                      String currentUserId) {
-        HashMap<String, HashMap<String, String>> circleMember = new HashMap();
         HashMap<String, String> circleMemberRole = new HashMap();
         circleMemberRole.put("role", "Concerned");
         circleMemberRole.put("status", "Active");
-        circleMember.put(currentUserId, circleMemberRole);
-        updateTasks.put("/circleMembers/" + circleId, circleMember);
+        updateTasks.put("/circleMembers/" + circleId + "/" + currentUserId, circleMemberRole);
     }
 
     private void deleteUsedInvitation(DatabaseReference dbRef, String invitationId) {
+        Log.d("invitations", "deleted the invitation");
         dbRef.child("invitations").child(invitationId).setValue(null);
     }
 
@@ -430,16 +427,17 @@ public class SignInActivity extends BaseActivity implements View.OnClickListener
     private void redirectToActivity(DatabaseReference db) {
        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         Log.d("invitations", user.getUid());
-        db.child("users").child(user.getUid()).child("circles")
+        db.child("users").child(user.getUid())
                 .addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
-                        if(dataSnapshot.exists()){
+                        if(dataSnapshot.child("circles").exists()){
                             // user is already a part of a circle
-                            Log.d("invitations", "just before main");
+                            Log.d("invitations", "starting main activity");
                             startActivity(new Intent(getBaseContext(), MainActivity.class));
                         } else {
                             // user is not a part of any circle
+                            Log.d("invitations", "starting create room activity");
                             startActivity(new Intent(getBaseContext(), CreateRoomActivity.class));
                         }
                     }
@@ -454,11 +452,14 @@ public class SignInActivity extends BaseActivity implements View.OnClickListener
 
     private void activityCallback(DataSnapshot dbRef, String userId) {
         DataSnapshot dataSnapshot = dbRef.child("users").child(userId).child("circles");
+
         if(dataSnapshot.exists()){
+            Log.d("invitations", "callback: starting main activity!");
             // user is already a part of a circle
             startActivity(new Intent(getBaseContext(), MainActivity.class));
         } else {
             // user is not a part of any circle
+            Log.d("invitations", "callback: starting create room activity");
             startActivity(new Intent(getBaseContext(), CreateRoomActivity.class));
         }
     }

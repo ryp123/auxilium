@@ -54,6 +54,8 @@ import ca.usask.auxilium.Invitations;
 import ca.usask.auxilium.MainActivity;
 import ca.usask.auxilium.R;
 
+import static ca.usask.auxilium.R.id.textView;
+
 /**
  * Created by gongcheng on 2018-01-29.
  */
@@ -70,7 +72,6 @@ public class SignInActivity extends BaseActivity implements View.OnClickListener
     private GoogleSignInClient mGoogleSignInClient;
     private TextView mStatusTextView;
     private TextView mDetailTextView;
-
 
 
     @Override
@@ -107,6 +108,9 @@ public class SignInActivity extends BaseActivity implements View.OnClickListener
         // [START initialize_auth]
         mAuth = FirebaseAuth.getInstance();
         // [END initialize_auth]
+
+
+
     }
 
     // [START on_start_check_user]

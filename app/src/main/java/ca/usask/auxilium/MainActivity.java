@@ -196,7 +196,7 @@ public class MainActivity extends AppCompatActivity
 
         // set profile picture and text on the drawer-------------------------
         mGoogleSignInAccount = GoogleSignIn.getLastSignedInAccount(this);
-        TextView mDisplayname = (TextView) navigationView.getHeaderView(0).findViewById(R.id.textView);
+        final TextView mDisplayname = (TextView) navigationView.getHeaderView(0).findViewById(R.id.textView);
         mDisplayname.setText(mGoogleSignInAccount.getDisplayName());
         ImageView mImageView = (ImageView) navigationView.getHeaderView(0).findViewById(R.id.imageView);
 
@@ -209,6 +209,25 @@ public class MainActivity extends AppCompatActivity
         }catch (IOException e){
                  e.printStackTrace();
         }
+
+
+        root.child("users")
+                .child(FirebaseAuth.getInstance().getCurrentUser().getUid())
+                .addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        User user = dataSnapshot.getValue(User.class);
+                        if(user.getPreferredName()  != null)
+                        {
+                            mDisplayname.setText(user.getPreferredName());
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+
+                    }
+                });
         //----------------------------------------------------------------
 
     }

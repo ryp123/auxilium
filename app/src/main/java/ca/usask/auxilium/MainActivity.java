@@ -72,7 +72,6 @@ public class MainActivity extends AppCompatActivity
 
     public static volatile boolean isAppRunning;
     GoogleSignInAccount mGoogleSignInAccount;
-    FirebaseAuth mFirebaseAuth;
 
     NavigationView navigationView;
     ArrayList<MenuItem> mMenuItems = new ArrayList<>();
@@ -196,7 +195,6 @@ public class MainActivity extends AppCompatActivity
 
 
         // set profile picture and text on the drawer-------------------------
-        mFirebaseAuth = FirebaseAuth.getInstance();
         mGoogleSignInAccount = GoogleSignIn.getLastSignedInAccount(this);
         TextView mDisplayname = (TextView) navigationView.getHeaderView(0).findViewById(R.id.textView);
         mDisplayname.setText(mGoogleSignInAccount.getDisplayName());

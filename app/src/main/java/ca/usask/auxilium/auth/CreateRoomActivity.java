@@ -1,7 +1,9 @@
 package ca.usask.auxilium.auth;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.util.Log;
@@ -10,9 +12,12 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -47,6 +52,7 @@ public class CreateRoomActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        Log.d("CircleActivity", "new instance created!");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_room);
 
@@ -104,48 +110,48 @@ public class CreateRoomActivity extends AppCompatActivity {
 
         // get db/account info reference
         mDatabase = FirebaseDatabase.getInstance().getReference();
+        Log.d("CircleActivity", "About to update DB.");
 
-        updateDatabase();
+        final Activity createRoomActivity = this;
+        final String circleId = mDatabase.push().getKey();
+        Log.d("CircleActivity", "The circle id is: " + circleId);
+        Log.d("CircleActivity", "The user id is: " + FirebaseAuth.getInstance().getCurrentUser().getUid());
+        Toast.makeText(this.getBaseContext(), "Creating your circle!", Toast.LENGTH_SHORT);
+        mDatabase.updateChildren(getUpdateTasks(circleId)).addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+                if (task.isSuccessful()) {
+                    Log.d("CircleActivity", "Created new circle!");
+                    processInvitations(circleId);
+                } else {
+                    Log.d("CircleActivity", "Failed to create new circle!");
+                }
+                createRoomActivity.finish();
+            }
+        });
 
-        finish();
     }
 
-     public void updateDatabase(){
-         String circleId= mDatabase.push().getKey();
+     private HashMap<String, Object> getUpdateTasks(String circleId){
          String userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
-         mDatabase.child("circles").child(circleId).child("name").setValue(mCircle.getCircleName());
-         mDatabase.child("circles").child(circleId).child("diagnosis").setValue(mCircle.getAilment());
-         mDatabase.child("users").child(userId)
-                 .child("circles").child(circleId).child("role").setValue("Index");
-         mDatabase.child("users").child(userId)
-                 .child("lastCircleOpen").setValue(circleId);
-         HashMap<String, HashMap<String, String>> member = new HashMap<>();
+         HashMap<String, Object> updateTasks = new HashMap();
+         String circlePath = "/circles/" + circleId;
+         String userPath = "/users/" + userId;
+         HashMap<String, String> userCircleDetails =  new HashMap<>();
+         userCircleDetails.put("role", "Index");
          HashMap <String, String> memberDetails = new HashMap<>();
          memberDetails.put("role", "Index");
          memberDetails.put("status", "Active");
-         member.put(userId, memberDetails);
-         mDatabase.child("circleMembers").child(circleId).setValue(member);
-         String currentEmail = FirebaseAuth.getInstance().getCurrentUser().getEmail();
-         if (this.firstInviteEmail != null && this.secondInviteEmail != null) {
-             if (!this.firstInviteEmail.equals(this.secondInviteEmail)) {
-                 Invitations invite = new Invitations(circleId, this.firstInviteEmail, currentEmail);
-                 mDatabase.child("invitations").push().setValue(invite);
-                 Invitations secondInvite = new Invitations(circleId, this.secondInviteEmail, currentEmail);
-                 mDatabase.child("invitations").push().setValue(secondInvite);
-             } else {
-                 Invitations invite = new Invitations(circleId, this.firstInviteEmail, currentEmail);
-                 mDatabase.child("invitations").push().setValue(invite);
-             }
-         } else if(this.firstInviteEmail != null && this.secondInviteEmail == null) {
-             Invitations invite = new Invitations(circleId, this.firstInviteEmail, currentEmail);
-             mDatabase.child("invitations").push().setValue(invite);
-         } else if(this.firstInviteEmail == null && this.secondInviteEmail != null) {
-             Invitations secondInvite = new Invitations(circleId, this.secondInviteEmail, currentEmail);
-             mDatabase.child("invitations").push().setValue(secondInvite);
-         } else {
-             // both are null thus no invites need to be sent.
-             return;
-         }
+         HashMap <String, String> circleDetails = new HashMap<>();
+         circleDetails.put("name", mCircle.getCircleName());
+         circleDetails.put("diagnosis", mCircle.getAilment());
+         circleDetails.put("role", "Index");
+         updateTasks.put(circlePath, circleDetails);
+         updateTasks.put(userPath + "/lastCircleOpen", circleId);
+         updateTasks.put(userPath + "/circles/" + circleId, circleDetails);
+         updateTasks.put("/circleMembers/" + circleId + "/" + userId, memberDetails);
+         return updateTasks;
+
     }
 
     private boolean isEmailValid(String email) {
@@ -157,6 +163,31 @@ public class CreateRoomActivity extends AppCompatActivity {
         String defaultValue = "Email address";
         return email.equals(defaultValue);
 
+    }
+
+
+    private void processInvitations(String circleId) {
+        String currentEmail = FirebaseAuth.getInstance().getCurrentUser().getEmail();
+        if (this.firstInviteEmail != null && this.secondInviteEmail != null) {
+            if (!this.firstInviteEmail.equals(this.secondInviteEmail)) {
+                Invitations invite = new Invitations(circleId, this.firstInviteEmail, currentEmail);
+                mDatabase.child("invitations").push().setValue(invite);
+                Invitations secondInvite = new Invitations(circleId, this.secondInviteEmail, currentEmail);
+                mDatabase.child("invitations").push().setValue(secondInvite);
+            } else {
+                Invitations invite = new Invitations(circleId, this.firstInviteEmail, currentEmail);
+                mDatabase.child("invitations").push().setValue(invite);
+            }
+        } else if(this.firstInviteEmail != null && this.secondInviteEmail == null) {
+            Invitations invite = new Invitations(circleId, this.firstInviteEmail, currentEmail);
+            mDatabase.child("invitations").push().setValue(invite);
+        } else if(this.firstInviteEmail == null && this.secondInviteEmail != null) {
+            Invitations secondInvite = new Invitations(circleId, this.secondInviteEmail, currentEmail);
+            mDatabase.child("invitations").push().setValue(secondInvite);
+        } else {
+            // both are null thus no invites need to be sent.
+            return;
+        }
     }
 
 

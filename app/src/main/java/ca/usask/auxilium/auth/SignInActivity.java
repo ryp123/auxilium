@@ -45,7 +45,9 @@ import com.google.firebase.dynamiclinks.PendingDynamicLinkData;
 
 import org.joda.time.DateTime;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 import com.google.firebase.messaging.FirebaseMessaging;
 
@@ -79,9 +81,6 @@ public class SignInActivity extends BaseActivity implements View.OnClickListener
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_signin);
 
-        //notification stuff march 29--------------------------------------------
-        FirebaseMessaging.getInstance().subscribeToTopic("all");
-        //notification ends  -----------------------------------------------
 
         // Views
         mStatusTextView = findViewById(R.id.status);
@@ -461,6 +460,26 @@ public class SignInActivity extends BaseActivity implements View.OnClickListener
             Log.d("invitations", "callback: starting main activity!");
             // user is already a part of a circle
             startActivity(new Intent(getBaseContext(), MainActivity.class));
+
+
+            final List<String> circleIds=new ArrayList<String>();
+            DatabaseReference circleDatabase= FirebaseDatabase.getInstance().getReference().child("users").child(userId).child("circles");
+            circleDatabase.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    for(DataSnapshot snap:dataSnapshot.getChildren()){
+                        circleIds.add(snap.getKey());
+                        FirebaseMessaging.getInstance().subscribeToTopic(circleIds.get(circleIds.size()-1));
+
+                    }
+                }
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+
+                }
+            });
+
+
         } else {
             // user is not a part of any circle
             Log.d("invitations", "callback: starting create room activity");

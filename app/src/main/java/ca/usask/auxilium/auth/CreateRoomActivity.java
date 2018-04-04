@@ -25,6 +25,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.messaging.FirebaseMessaging;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -117,6 +118,13 @@ public class CreateRoomActivity extends AppCompatActivity {
         Log.d("CircleActivity", "The circle id is: " + circleId);
         Log.d("CircleActivity", "The user id is: " + FirebaseAuth.getInstance().getCurrentUser().getUid());
         Toast.makeText(this.getBaseContext(), "Creating your circle!", Toast.LENGTH_SHORT);
+
+
+        /////////notification///////
+        FirebaseMessaging.getInstance().subscribeToTopic(circleId);
+
+        /////end of notification/////////
+
         mDatabase.updateChildren(getUpdateTasks(circleId)).addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
             public void onComplete(@NonNull Task<Void> task) {
@@ -129,6 +137,9 @@ public class CreateRoomActivity extends AppCompatActivity {
                 createRoomActivity.finish();
             }
         });
+
+
+
 
     }
 

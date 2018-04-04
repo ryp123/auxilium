@@ -1,15 +1,10 @@
 package ca.usask.auxilium;
 
-import android.app.Activity;
 import android.app.FragmentManager;
-import android.app.NotificationChannel;
-import android.app.NotificationManager;
-import android.content.Context;
-import android.content.Intent;
+
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.Color;
-import android.graphics.drawable.Drawable;
+
 import android.os.Bundle;
 import android.os.StrictMode;
 import android.support.annotation.NonNull;
@@ -27,18 +22,15 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.ViewGroup;
-import android.view.inputmethod.InputMethodManager;
-import android.widget.ArrayAdapter;
+
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.ListView;
 
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.Logger;
 import com.google.firebase.database.ValueEventListener;
 
 import android.net.Uri;
@@ -50,7 +42,6 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 
@@ -98,43 +89,9 @@ public final class  MainActivity extends AppCompatActivity
             StrictMode.setThreadPolicy(policy);
         }
 
-        //notification stuff march 29--------------------------------------------
-
-        FirebaseMessaging.getInstance().subscribeToTopic("all");
-
-        NotificationManager notificationManager =
-                (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-
-        String channelId = "1";
-        String channel2 = "2";
-
-        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
-            NotificationChannel notificationChannel = new NotificationChannel(channelId,
-                    "Channel 1", NotificationManager.IMPORTANCE_HIGH);
-
-            notificationChannel.setDescription("This is Auxilium");
-            notificationChannel.setLightColor(Color.RED);
-            notificationChannel.enableVibration(true);
-            notificationChannel.setShowBadge(true);
-            notificationManager.createNotificationChannel(notificationChannel);
-
-            NotificationChannel notificationChannel2 = new NotificationChannel(channel2,
-                    "Channel 2", NotificationManager.IMPORTANCE_MIN);
-
-            notificationChannel.setDescription("This is Auxilium");
-            notificationChannel.setLightColor(Color.RED);
-            notificationChannel.enableVibration(true);
-            notificationChannel.setShowBadge(true);
-            notificationManager.createNotificationChannel(notificationChannel2);
-        }
-
-            //notification ends  -----------------------------------------------
-
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
-
 
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);

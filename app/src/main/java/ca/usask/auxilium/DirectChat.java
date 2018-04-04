@@ -14,7 +14,9 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -88,6 +90,7 @@ public class DirectChat extends Fragment {
                 BaseActivity.hideSoftKeyboard(getActivity());
             }
         });
+
 
         root.child("users")
                 .child(FirebaseAuth.getInstance().getCurrentUser().getUid())

@@ -66,6 +66,7 @@ public class IndexChat extends Fragment {
         listView.setAdapter(arrayAdapter);
 
 
+
         root.child("users")
                 .child(FirebaseAuth.getInstance().getCurrentUser().getUid())
                 .addListenerForSingleValueEvent(new ValueEventListener() {

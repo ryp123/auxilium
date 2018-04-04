@@ -17,6 +17,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -56,6 +57,8 @@ public class Chat extends AppCompatActivity
         chat_conversation = (TextView) findViewById(R.id.textView);
         mAuth = FirebaseAuth.getInstance();
         //circleID = mAuth.getCurrentUser().getUid();
+
+
 
 
         btn_send_msg.setOnClickListener(new View.OnClickListener() {

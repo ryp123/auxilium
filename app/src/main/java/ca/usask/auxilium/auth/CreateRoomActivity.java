@@ -148,7 +148,7 @@ public class CreateRoomActivity extends AppCompatActivity {
          circleDetails.put("role", "Index");
          updateTasks.put(circlePath, circleDetails);
          updateTasks.put(userPath + "/lastCircleOpen", circleId);
-         updateTasks.put(userPath + "/circles/" + circleId, circleDetails);
+         updateTasks.put(userPath + "/circles/" + circleId, userCircleDetails);
          updateTasks.put("/circleMembers/" + circleId + "/" + userId, memberDetails);
          return updateTasks;
 

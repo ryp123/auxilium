@@ -4,7 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="ca.usask.auxilium.auth.CreateRoomActivity">
+    android:id="@+id/parent_create_room"
+    tools:context="ca.usask.auxilium.auth.CreateRoomActivity"  >
 
     <TextView
         android:id="@+id/newRoomLabel"

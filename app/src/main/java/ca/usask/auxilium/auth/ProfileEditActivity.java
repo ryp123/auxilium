@@ -129,7 +129,15 @@ public class ProfileEditActivity extends AppCompatActivity {
                     user.setPreferredName(user.getFirstName());
                 }
 
-                mDatabase.child("users").child(userId).setValue(user);
+                mDatabase.child("users").child(userId).child("firstName").setValue(user.getFirstName() .toString());
+                mDatabase.child("users").child(userId).child("lastName").setValue(user.getLastName().toString());
+                mDatabase.child("users").child(userId).child("preferredName").setValue(user.getPreferredName().toString());
+                mDatabase.child("users").child(userId).child("age").setValue(user.getAge().toString());
+                mDatabase.child("users").child(userId).child("gender").setValue(user.getGender().toString());
+                mDatabase.child("users").child(userId).child("diagnosis").setValue(user.getDiagnosis().toString());
+                mDatabase.child("users").child(userId).child("emergencyContact").setValue(user.getEmergencyContact().toString());
+
+
                 Toast.makeText(getBaseContext(), "Changes Saved", Toast.LENGTH_LONG).show();
                 Log.d("FirebaseSave", "Edited user data saved");
                 setResult(RESULT_OK);

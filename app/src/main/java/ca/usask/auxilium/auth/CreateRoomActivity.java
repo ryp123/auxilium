@@ -8,7 +8,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.util.Log;
 import android.util.Patterns;
+import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.Spinner;
@@ -56,6 +58,7 @@ public class CreateRoomActivity extends AppCompatActivity {
         Log.d("CircleActivity", "new instance created!");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_room);
+        setupUI(findViewById(R.id.parent_create_room));
 
         //Set the default items for the ailment drop down
         Spinner spinner = (Spinner) findViewById(R.id.ailmentSpinner);
@@ -201,6 +204,27 @@ public class CreateRoomActivity extends AppCompatActivity {
         }
     }
 
+
+    public void setupUI(View view) {
+
+        // Set up touch listener for non-text box views to hide keyboard.
+        if (!(view instanceof EditText)) {
+            view.setOnTouchListener(new View.OnTouchListener() {
+                public boolean onTouch(View v, MotionEvent event) {
+                    BaseActivity.hideSoftKeyboard(CreateRoomActivity.this);
+                    return false;
+                }
+            });
+        }
+
+        //If a layout container, iterate over children and seed recursion.
+        if (view instanceof ViewGroup) {
+            for (int i = 0; i < ((ViewGroup) view).getChildCount(); i++) {
+                View innerView = ((ViewGroup) view).getChildAt(i);
+                setupUI(innerView);
+            }
+        }
+    }
 
 
 

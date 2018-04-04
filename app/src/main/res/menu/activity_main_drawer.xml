@@ -4,7 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:showIn="navigation_view">
 
-    <group android:checkableBehavior="single">
+    <group android:checkableBehavior="single"
+        android:visible="true">
         <item
             android:id="@+id/nav_profile_page"
             android:icon="@android:drawable/btn_star_big_on"
@@ -31,10 +32,15 @@
 
 
     <group android:title="Users"
-           android:id="@+id/users">
-            
-
-
+           android:id="@+id/users"
+        android:visible="true">
     </group>
+
+    <group android:title="Circles"
+           android:id="@+id/circles"
+           android:visible="false">
+    </group>
+
+
 
 </menu>

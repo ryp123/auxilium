@@ -27,6 +27,8 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 
+import ca.usask.auxilium.auth.ProfileEditActivity;
+
 
 public class IndexChat extends Fragment {
 

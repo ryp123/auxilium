@@ -41,9 +41,12 @@ public class IndexChat extends Fragment {
     private ArrayList<IndexListItem> arrayList;
     private DatabaseReference root = FirebaseDatabase.getInstance().getReference().getRoot();
     private View myView;
-    private String con_inq1 = "How are you doing?";
-    private String con_inq2 = "Wishing you the best";
-    private String con_inq3 = "I am worried about you";
+    public static String con_inq1 = "How are you doing?";
+    public static String con_inq2 = "Wishing you the best";
+    public static String con_inq3 = "I am worried about you";
+    public static String ind_inq1 = "I am not feeling too well";
+    public static String ind_inq2 = "I need someone to talk to";
+    public static String ind_inq3 = "I am having trouble";
     private String currentCircle;
 
 
@@ -55,9 +58,6 @@ public class IndexChat extends Fragment {
         btnMsg1 = (Button) myView.findViewById(R.id.btn_msg1);
         btnMsg2 = (Button) myView.findViewById(R.id.btn_msg2);
         btnMsg3 = (Button) myView.findViewById(R.id.btn_msg3);
-        btnMsg1.setText(con_inq1);
-        btnMsg2.setText(con_inq2);
-        btnMsg3.setText(con_inq3);
         //message = (EditText) findViewById(R.id.room_name_edittext);
         listView = (ListView) myView.findViewById(R.id.chat_listView);
         //arrayAdapter = new ArrayAdapter<String>(this.getActivity(),android.R.layout.simple_list_item_1);
@@ -93,6 +93,30 @@ public class IndexChat extends Fragment {
                     public void onDataChange(DataSnapshot dataSnapshot) {
                         String curCircle = dataSnapshot.getValue(String.class);
                         currentCircle = curCircle;
+                        root.child("circleMembers")
+                                .child(currentCircle)
+                                .child(FirebaseAuth.getInstance().getCurrentUser().getUid())
+                                .child("role")
+                                .addListenerForSingleValueEvent(new ValueEventListener() {
+                                    @Override
+                                    public void onDataChange(DataSnapshot dataSnapshot) {
+                                        String role = dataSnapshot.getValue(String.class);
+                                        if(role.equals("Index")){
+                                            btnMsg1.setText(ind_inq1);
+                                            btnMsg2.setText(ind_inq2);
+                                            btnMsg3.setText(ind_inq3);
+                                        } else { // concerned
+                                            btnMsg1.setText(con_inq1);
+                                            btnMsg2.setText(con_inq2);
+                                            btnMsg3.setText(con_inq3);
+                                        }
+                                    }
+
+                                    @Override
+                                    public void onCancelled(DatabaseError databaseError) {
+
+                                    }
+                                });
                         root.child("messages")
                                 .child(currentCircle).addChildEventListener(new ChildEventListener() {
                                     @Override

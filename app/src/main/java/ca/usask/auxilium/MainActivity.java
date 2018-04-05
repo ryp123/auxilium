@@ -219,6 +219,8 @@ public final class  MainActivity extends AppCompatActivity
                         if(user.getPreferredName()  != null)
                         {
                             mDisplayname.setText(user.getPreferredName());
+                        }else {
+                            mDisplayname.setText(mGoogleSignInAccount.getEmail());
                         }
                     }
 

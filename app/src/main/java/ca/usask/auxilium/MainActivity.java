@@ -341,6 +341,7 @@ public final class  MainActivity extends AppCompatActivity
         }
 
 
+
         FragmentManager fragmentManager2 = getFragmentManager();
         if (id == R.id.nav_profile_page) {
             fragmentManager2.beginTransaction().replace(R.id.content_frame, new ProfileFragment()).commit();
@@ -355,6 +356,17 @@ public final class  MainActivity extends AppCompatActivity
             fragmentManager2.beginTransaction().replace(R.id.content_frame, new IndexChat()).commit();
         } else if (id == R.id.nav_concernchat){
             fragmentManager2.beginTransaction().replace(R.id.content_frame, new ChatLanding()).commit();
+        }
+
+        if(item.getGroupId() == R.id.circles){
+            String circleId = mCirclename_ID.get(item.getTitle());
+            FirebaseDatabase.getInstance()
+                    .getReference()
+                    .child("users")
+                    .child(FirebaseAuth.getInstance().getCurrentUser().getUid())
+                    .child("lastCircleOpen").setValue(circleId);
+
+            recreate();
         }
 
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
@@ -373,8 +385,6 @@ public final class  MainActivity extends AppCompatActivity
     }
 
 
-
-
     public void getCirclesFromFirebase() {
 
 
@@ -389,21 +399,14 @@ public final class  MainActivity extends AppCompatActivity
                         Iterator<DataSnapshot> dataSnapshots = dataSnapshot.getChildren()
                                 .iterator();
 
-
-
                         while (dataSnapshots.hasNext()) {
                             DataSnapshot dataSnapshotChild = dataSnapshots.next();
                             mCircleIDs.add(dataSnapshotChild.getKey());
-
                         }
-
                     }
-
                     @Override
                     public void onCancelled(DatabaseError databaseError) {
-                        // Unable to retrieve the users.
                     }
-
                 });
 
 
@@ -430,13 +433,9 @@ public final class  MainActivity extends AppCompatActivity
 
                     @Override
                     public void onCancelled(DatabaseError databaseError) {
-                        // Unable to retrieve the users.
                     }
 
                 });
-
-
-
 
 
     }
@@ -467,7 +466,6 @@ public final class  MainActivity extends AppCompatActivity
                                                 .iterator();
 
                                         Log.d("current Circle ccccccc", "onDataChange: "+currentCircle);
-                                        Log.d("current Circle ccccccc", "onDataChange: "+dataSnapshots.hasNext());
 
                                         while (dataSnapshots.hasNext()) {
                                             DataSnapshot dataSnapshotChild = dataSnapshots.next();
@@ -489,15 +487,11 @@ public final class  MainActivity extends AppCompatActivity
                                                         while (dataSnapshots.hasNext()) {
                                                             DataSnapshot dataSnapshotChild = dataSnapshots.next();
                                                             User user = dataSnapshotChild.getValue(User.class);
-                                                            Log.d("uuuseridddddddddd", "onDataChange: " + dataSnapshotChild.getKey());
 
                                                             if (userIds.contains(dataSnapshotChild.getKey())) {
-                                                                Log.d("uuuseriiiiiiiiiiiiiiii", "onDataChange: " + dataSnapshotChild.getKey());
                                                                 users.add(user);
                                                             }
                                                         }
-                                                        // All users are retrieved except the one who is currently logged
-                                                        // in device.
 
                                                         for (int i = 0; i < users.size(); i++) {
                                                             Log.d("*** USER NAME: ", users.get(i).getPreferredName());
@@ -509,7 +503,6 @@ public final class  MainActivity extends AppCompatActivity
 
                                                     @Override
                                                     public void onCancelled(DatabaseError databaseError) {
-                                                        // Unable to retrieve the users.
                                                     }
 
                                                 });
@@ -532,10 +525,8 @@ public final class  MainActivity extends AppCompatActivity
                     }
 
                 });
-        
+
     }
-
-
 
 
     public boolean addNewUser(User user, String userId){

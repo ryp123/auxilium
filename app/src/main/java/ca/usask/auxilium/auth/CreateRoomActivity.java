@@ -30,10 +30,13 @@ import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.messaging.FirebaseMessaging;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.LinkedHashSet;
 import java.util.List;
 
+import java.util.Set;
 import java.util.regex.Pattern;
 
 import ca.usask.auxilium.Circle;
@@ -50,8 +53,7 @@ public class CreateRoomActivity extends AppCompatActivity {
 
     private Circle mCircle;
 
-    private String firstInviteEmail;
-    private String secondInviteEmail;
+    private String [] emails;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,7 +72,6 @@ public class CreateRoomActivity extends AppCompatActivity {
 
     public void  onCreateButtonClick(View v) {
         EditText edt = (EditText) findViewById(R.id.roomNameText);
-        String circleCreatorEmail = FirebaseAuth.getInstance().getCurrentUser().getEmail();
         String circleName = edt.getText().toString();
         Log.d("the name of circle being created",circleName);
         mCircle = new Circle();
@@ -80,32 +81,6 @@ public class CreateRoomActivity extends AppCompatActivity {
         Spinner spinner = (Spinner) findViewById(R.id.ailmentSpinner);
         mCircle.setAilment(spinner.getSelectedItem().toString());
 
-        //get email information
-        Log.d("Invitations", "Getting the emails to send invitations to");
-        EditText emailInput = (EditText) findViewById(R.id.friendEmail1);
-        String email = emailInput.getText().toString();
-        if (this.isEmailTheDefaultValue(email)) {
-            this.firstInviteEmail = null;
-        } else if (!this.isEmailValid(email)) {
-            emailInput.setError("Invalid email");
-            return;
-        } else if(email.equals(circleCreatorEmail)) {
-            emailInput.setError("Cannot send invitation to yourself.");
-        }  else {
-            this.firstInviteEmail = email;
-        }
-        emailInput = (EditText) findViewById(R.id.friendEmail2);
-        email = emailInput.getText().toString();
-        if (this.isEmailTheDefaultValue(email)) {
-            this.secondInviteEmail = null;
-        } else if (!this.isEmailValid(email)) {
-            emailInput.setError("Invalid email");
-            return;
-        } else if(email.equals(circleCreatorEmail)) {
-            emailInput.setError("Cannot send invitation to yourself.");
-        }  else {
-            this.secondInviteEmail = email;
-        }
 
         // set room info
         EditText circleInfo = (EditText) findViewById(R.id.roomInfoText);
@@ -140,6 +115,9 @@ public class CreateRoomActivity extends AppCompatActivity {
                 createRoomActivity.finish();
             }
         });
+
+
+
 
 
 
@@ -179,28 +157,34 @@ public class CreateRoomActivity extends AppCompatActivity {
 
     }
 
-
     private void processInvitations(String circleId) {
-        String currentEmail = FirebaseAuth.getInstance().getCurrentUser().getEmail();
-        if (this.firstInviteEmail != null && this.secondInviteEmail != null) {
-            if (!this.firstInviteEmail.equals(this.secondInviteEmail)) {
-                Invitations invite = new Invitations(circleId, this.firstInviteEmail, currentEmail);
-                mDatabase.child("invitations").push().setValue(invite);
-                Invitations secondInvite = new Invitations(circleId, this.secondInviteEmail, currentEmail);
-                mDatabase.child("invitations").push().setValue(secondInvite);
+        //get email information
+        Log.d("Invitations", "Getting the emails to send invitations to");
+        String circleCreatorEmail = FirebaseAuth.getInstance().getCurrentUser().getEmail();
+        EditText emailInput = (EditText) findViewById(R.id.friendEmail1);
+        String emailParts = emailInput.getText().toString();
+        String[] emails = emailParts.split(",");
+        List<String> emailList = Arrays.asList(emails);
+        Set<String> emailSet = new LinkedHashSet<String>(emailList);
+        for (String email: emailSet) {
+            if (isEmailTheDefaultValue(email)) {
+                sendInvitation(null);
+            } else if (circleCreatorEmail.equals(email)) {
+                sendInvitation(null);
+            } else if (isEmailValid(email)) {
+                sendInvitation(new Invitations(circleId, email, circleCreatorEmail));
             } else {
-                Invitations invite = new Invitations(circleId, this.firstInviteEmail, currentEmail);
-                mDatabase.child("invitations").push().setValue(invite);
+                sendInvitation(null);
             }
-        } else if(this.firstInviteEmail != null && this.secondInviteEmail == null) {
-            Invitations invite = new Invitations(circleId, this.firstInviteEmail, currentEmail);
-            mDatabase.child("invitations").push().setValue(invite);
-        } else if(this.firstInviteEmail == null && this.secondInviteEmail != null) {
-            Invitations secondInvite = new Invitations(circleId, this.secondInviteEmail, currentEmail);
-            mDatabase.child("invitations").push().setValue(secondInvite);
-        } else {
-            // both are null thus no invites need to be sent.
+        }
+    }
+
+
+    private void sendInvitation(Invitations invite) {
+        if (invite == null) {
             return;
+        } else {
+            mDatabase.child("invitations").push().setValue(invite);
         }
     }
 

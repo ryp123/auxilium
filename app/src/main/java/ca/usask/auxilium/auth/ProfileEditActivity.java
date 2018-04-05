@@ -3,6 +3,7 @@ package ca.usask.auxilium.auth;
 import android.app.Activity;
 import android.app.Fragment;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Menu;
@@ -14,6 +15,8 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -21,6 +24,8 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+
+import java.util.HashMap;
 
 import ca.usask.auxilium.R;
 import ca.usask.auxilium.User;
@@ -128,21 +133,34 @@ public class ProfileEditActivity extends AppCompatActivity {
                 if(user.getPreferredName().isEmpty()){
                     user.setPreferredName(user.getFirstName());
                 }
+                HashMap<String, Object> updateTasks = new HashMap<>();
+                String userPath = "/users/" + userId + "/";
+                updateTasks.put(userPath + "firstName", user.getFirstName());
+                updateTasks.put(userPath + "lastName", user.getLastName());
+                updateTasks.put(userPath + "preferredName", user.getPreferredName());
+                updateTasks.put(userPath + "age", user.getAge());
+                updateTasks.put(userPath + "gender", user.getGender());
+                updateTasks.put(userPath + "diagnosis", user.getDiagnosis());
+                updateTasks.put(userPath + "emergencyContact", user.getEmergencyContact());
+                final ProfileEditActivity thisActivity = this;
+                mDatabase.updateChildren(updateTasks).addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        if (task.isSuccessful()) {
+                            Toast.makeText(getBaseContext(), "Changes Saved", Toast.LENGTH_LONG).show();
+                            Log.d("ProfileEditActivity", "updated profile!");
+                            thisActivity.setResult(RESULT_OK);
 
-                mDatabase.child("users").child(userId).child("firstName").setValue(user.getFirstName() .toString());
-                mDatabase.child("users").child(userId).child("lastName").setValue(user.getLastName().toString());
-                mDatabase.child("users").child(userId).child("preferredName").setValue(user.getPreferredName().toString());
-                mDatabase.child("users").child(userId).child("age").setValue(user.getAge().toString());
-                mDatabase.child("users").child(userId).child("gender").setValue(user.getGender().toString());
-                mDatabase.child("users").child(userId).child("diagnosis").setValue(user.getDiagnosis().toString());
-                mDatabase.child("users").child(userId).child("emergencyContact").setValue(user.getEmergencyContact().toString());
-
-
-                Toast.makeText(getBaseContext(), "Changes Saved", Toast.LENGTH_LONG).show();
+                        } else {
+                            Log.d("CircleActivity", "Failed to create new circle!");
+                        }
+                        thisActivity.finish();
+                    }
+                });
                 Log.d("FirebaseSave", "Edited user data saved");
-                setResult(RESULT_OK);
-                this.finish();
                 return true;
+
+
         }
         return super.onOptionsItemSelected(item);
     }

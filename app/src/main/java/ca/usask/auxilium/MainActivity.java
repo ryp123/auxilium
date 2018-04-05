@@ -445,8 +445,7 @@ public final class  MainActivity extends AppCompatActivity
 
        final ArrayList<String> userIds = new ArrayList<>();
 
-
-        FirebaseDatabase.getInstance()
+                FirebaseDatabase.getInstance()
                 .getReference()
                 .child("users")
                 .child(FirebaseAuth.getInstance().getCurrentUser().getUid())
@@ -454,106 +453,86 @@ public final class  MainActivity extends AppCompatActivity
                 .addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
-                        Iterator<DataSnapshot> dataSnapshots = dataSnapshot.getChildren()
-                                .iterator();
+
                         currentCircle = dataSnapshot.getValue().toString();
 
-                        Log.d("last circle opennnnnnnnnnn", "onDataChange: "+dataSnapshot.getValue().toString());
+                        FirebaseDatabase.getInstance()
+                                .getReference()
+                                .child("circleMembers")
+                                .child(currentCircle)
+                                .addListenerForSingleValueEvent(new ValueEventListener() {
+                                    @Override
+                                    public void onDataChange(DataSnapshot dataSnapshot) {
+                                        Iterator<DataSnapshot> dataSnapshots = dataSnapshot.getChildren()
+                                                .iterator();
 
-                        while (dataSnapshots.hasNext()) {
-                            DataSnapshot dataSnapshotChild = dataSnapshots.next();
-                            Log.d("last circle opennnnnnnnnnn", "onDataChange: "+dataSnapshotChild.getValue(String.class));
-                            Log.d("last circle opennnnnnnnnnn2", "onDataChange: "+dataSnapshot.getValue(String.class));
-                            currentCircle = dataSnapshot.getValue().toString();
+                                        Log.d("current Circle ccccccc", "onDataChange: "+currentCircle);
+                                        Log.d("current Circle ccccccc", "onDataChange: "+dataSnapshots.hasNext());
 
-                        }
+                                        while (dataSnapshots.hasNext()) {
+                                            DataSnapshot dataSnapshotChild = dataSnapshots.next();
+                                            userIds.add(dataSnapshotChild.getKey());
+                                            Log.d("userID in that circleeeeeeeeeee", "onDataChange: "+dataSnapshotChild.getKey());
+                                        }
+
+                                        FirebaseDatabase.getInstance()
+                                                .getReference()
+                                                .child("users")
+                                                .addListenerForSingleValueEvent(new ValueEventListener() {
+                                                    @Override
+                                                    public void onDataChange(DataSnapshot dataSnapshot) {
+                                                        Iterator<DataSnapshot> dataSnapshots = dataSnapshot.getChildren()
+                                                                .iterator();
+
+                                                        final List<User>  users = new ArrayList<>();
+
+                                                        while (dataSnapshots.hasNext()) {
+                                                            DataSnapshot dataSnapshotChild = dataSnapshots.next();
+                                                            User user = dataSnapshotChild.getValue(User.class);
+                                                            Log.d("uuuseridddddddddd", "onDataChange: " + dataSnapshotChild.getKey());
+
+                                                            if (userIds.contains(dataSnapshotChild.getKey())) {
+                                                                Log.d("uuuseriiiiiiiiiiiiiiii", "onDataChange: " + dataSnapshotChild.getKey());
+                                                                users.add(user);
+                                                            }
+                                                        }
+                                                        // All users are retrieved except the one who is currently logged
+                                                        // in device.
+
+                                                        for (int i = 0; i < users.size(); i++) {
+                                                            Log.d("*** USER NAME: ", users.get(i).getPreferredName());
+                                                            Log.d("*** USER ID: ", userIds.get(i));
+                                                            addNewUser(users.get(i), userIds.get(i));
+                                                        }
+
+                                                    }
+
+                                                    @Override
+                                                    public void onCancelled(DatabaseError databaseError) {
+                                                        // Unable to retrieve the users.
+                                                    }
+
+                                                });
+
+                                    }
+
+                                    @Override
+                                    public void onCancelled(DatabaseError databaseError) {
+                                        // Unable to retrieve the users.
+                                    }
+
+                                });
 
                     }
+
 
                     @Override
                     public void onCancelled(DatabaseError databaseError) {
-                        // Unable to retrieve the users.
+
                     }
 
                 });
-
-
-
-
-        FirebaseDatabase.getInstance()
-                .getReference()
-                .child("circleMembers")
-                .child(currentCircle)
-                .addListenerForSingleValueEvent(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(DataSnapshot dataSnapshot) {
-                        Iterator<DataSnapshot> dataSnapshots = dataSnapshot.getChildren()
-                                .iterator();
-
-                        Log.d("current Circle ccccccc", "onDataChange: "+currentCircle);
-                        Log.d("current Circle ccccccc", "onDataChange: "+dataSnapshots.hasNext());
-
-                        while (dataSnapshots.hasNext()) {
-                            DataSnapshot dataSnapshotChild = dataSnapshots.next();
-                            userIds.add(dataSnapshotChild.getKey());
-                            Log.d("userID in that circleeeeeeeeeee", "onDataChange: "+dataSnapshotChild.getKey());
-                        }
-
-                    }
-
-                    @Override
-                    public void onCancelled(DatabaseError databaseError) {
-                        // Unable to retrieve the users.
-                    }
-
-                });
-
-
-
-
-        FirebaseDatabase.getInstance()
-                .getReference()
-                .child("users")
-                .addListenerForSingleValueEvent(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(DataSnapshot dataSnapshot) {
-                        Iterator<DataSnapshot> dataSnapshots = dataSnapshot.getChildren()
-                                .iterator();
-
-                        final List<User>  users = new ArrayList<>();
-
-                        while (dataSnapshots.hasNext()) {
-                            DataSnapshot dataSnapshotChild = dataSnapshots.next();
-                            User user = dataSnapshotChild.getValue(User.class);
-                            Log.d("uuuseridddddddddd", "onDataChange: " + dataSnapshotChild.getKey());
-
-                            if (userIds.contains(dataSnapshotChild.getKey())) {
-                                Log.d("uuuseriiiiiiiiiiiiiiii", "onDataChange: " + dataSnapshotChild.getKey());
-                                users.add(user);
-                            }
-                        }
-                        // All users are retrieved except the one who is currently logged
-                        // in device.
-
-                        for (int i = 0; i < users.size(); i++) {
-                            Log.d("*** USER NAME: ", users.get(i).getPreferredName());
-                            Log.d("*** USER ID: ", userIds.get(i));
-                            addNewUser(users.get(i), userIds.get(i));
-                        }
-
-                    }
-
-                    @Override
-                    public void onCancelled(DatabaseError databaseError) {
-                        // Unable to retrieve the users.
-                    }
-
-                });
-
-
-
-
-
+        
     }
 
 

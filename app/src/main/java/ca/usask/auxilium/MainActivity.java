@@ -418,8 +418,7 @@ public final class  MainActivity extends AppCompatActivity
                 .addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
-                        Iterator<DataSnapshot> dataSnapshots = dataSnapshot.getChildren()
-                                .iterator();
+
 
                         for(String circleId:mCircleIDs){
                             mCircleNames.add(dataSnapshot.child(circleId).child("name").getValue(String.class));

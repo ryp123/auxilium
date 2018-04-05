@@ -67,6 +67,7 @@ public class SignInActivity extends BaseActivity implements View.OnClickListener
     private static final int RC_SIGN_IN = 9001;
     private static final int RC_CREATE_PROFILE = 42;
 
+    private Boolean hasCircleActNotBeenCreated;
     // [START declare_auth]
     private FirebaseAuth mAuth;
     // [END declare_auth]
@@ -80,7 +81,7 @@ public class SignInActivity extends BaseActivity implements View.OnClickListener
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_signin);
-
+        this.hasCircleActNotBeenCreated = true;
 
         // Views
         mStatusTextView = findViewById(R.id.status);
@@ -119,6 +120,7 @@ public class SignInActivity extends BaseActivity implements View.OnClickListener
         // Check if user is signed in (non-null) and update UI accordingly.
         FirebaseUser currentUser = mAuth.getCurrentUser();
         updateUI(currentUser);
+        Log.d("invitations", "calling on start get first login.");
         if(currentUser != null){
             checkFirstTimeLogin();
         }
@@ -148,6 +150,7 @@ public class SignInActivity extends BaseActivity implements View.OnClickListener
         }
         else if(requestCode == RC_CREATE_PROFILE && resultCode == RESULT_OK){
             // user registered on the registration screen
+            Log.d("invitations", "also a possible entry point to 2 circles.");
             checkCircleInvitesAndStatus();
         }
     }
@@ -271,16 +274,16 @@ public class SignInActivity extends BaseActivity implements View.OnClickListener
 
 
    public void checkFirstTimeLogin(){
-       FirebaseUser user = mAuth.getCurrentUser();
+       final FirebaseUser user = mAuth.getCurrentUser();
        if(user != null) {
            DatabaseReference db = FirebaseDatabase.getInstance().getReference();
-           db.child("users").child(user.getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
+           db.addListenerForSingleValueEvent(new ValueEventListener() {
                @Override
                public void onDataChange(DataSnapshot dataSnapshot) {
-                   if(!dataSnapshot.exists()){
+                   if(!dataSnapshot.child("users").child(user.getUid()).exists()){
                        startActivityForResult(new Intent(getBaseContext(), ProfileEditActivity.class), RC_CREATE_PROFILE);
                    } else {
-                       checkCircleInvitesAndStatus();
+                       activityCallback(dataSnapshot, user.getUid());
                    }
                }
 
@@ -429,6 +432,7 @@ public class SignInActivity extends BaseActivity implements View.OnClickListener
 
     private void redirectToActivity(DatabaseReference db) {
        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        final SignInActivity signInActivity = this;
         Log.d("invitations", user.getUid());
         db.child("users").child(user.getUid())
                 .addListenerForSingleValueEvent(new ValueEventListener() {
@@ -440,8 +444,12 @@ public class SignInActivity extends BaseActivity implements View.OnClickListener
                             startActivity(new Intent(getBaseContext(), MainActivity.class));
                         } else {
                             // user is not a part of any circle
-                            Log.d("invitations", "starting create room activity");
-                            startActivity(new Intent(getBaseContext(), CreateRoomActivity.class));
+                            Log.d("invitations", signInActivity.hasCircleActNotBeenCreated.toString());
+                            if (signInActivity.hasCircleActNotBeenCreated) {
+                                Log.d("invitations", "starting create room activity");
+                                signInActivity.hasCircleActNotBeenCreated = false;
+                                startActivity(new Intent(signInActivity.getBaseContext(), CreateRoomActivity.class));
+                            }
                         }
                     }
 
@@ -482,8 +490,12 @@ public class SignInActivity extends BaseActivity implements View.OnClickListener
 
         } else {
             // user is not a part of any circle
-            Log.d("invitations", "callback: starting create room activity");
-            startActivity(new Intent(getBaseContext(), CreateRoomActivity.class));
+            Log.d("invitations", "callback: " + this.hasCircleActNotBeenCreated.toString());
+            if (this.hasCircleActNotBeenCreated) {
+                Log.d("invitations", "callback: starting create room activity");
+                startActivity(new Intent(getBaseContext(), CreateRoomActivity.class));
+                this.hasCircleActNotBeenCreated = false;
+            }
         }
     }
 

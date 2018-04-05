@@ -121,6 +121,7 @@ public class SignInActivity extends BaseActivity implements View.OnClickListener
         FirebaseUser currentUser = mAuth.getCurrentUser();
         updateUI(currentUser);
         Log.d("invitations", "calling on start get first login.");
+        this.hasCircleActNotBeenCreated = true;
         if(currentUser != null){
             checkFirstTimeLogin();
         }

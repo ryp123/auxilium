@@ -41,12 +41,12 @@ public class IndexChat extends Fragment {
     private ArrayList<IndexListItem> arrayList;
     private DatabaseReference root = FirebaseDatabase.getInstance().getReference().getRoot();
     private View myView;
-    public static String con_inq1 = "How are you doing?";
-    public static String con_inq2 = "Wishing you the best";
-    public static String con_inq3 = "I am worried about you";
-    public static String ind_inq1 = "I am not feeling too well";
-    public static String ind_inq2 = "I need someone to talk to";
-    public static String ind_inq3 = "I am having trouble";
+    public static final String con_inq1 = "How are you doing?";
+    public static final String con_inq2 = "Wishing you the best";
+    public static final String con_inq3 = "I am worried about you";
+    public static final String ind_inq1 = "I am not feeling too well";
+    public static final String ind_inq2 = "I need someone to talk to";
+    public static final String ind_inq3 = "I am having trouble";
     private String currentCircle;
 
 

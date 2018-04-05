@@ -2,12 +2,14 @@ package ca.usask.auxilium;
 
 import android.app.FragmentManager;
 
+import android.content.ClipData;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 
 import android.os.Bundle;
 import android.os.StrictMode;
 import android.support.annotation.NonNull;
+import android.support.constraint.Group;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.util.Log;
@@ -42,6 +44,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 
@@ -74,6 +77,15 @@ public final class  MainActivity extends AppCompatActivity
     NavigationView navigationView;
     ArrayList<MenuItem> mMenuItems = new ArrayList<>();
     ArrayList<String> mUsers = new ArrayList<>();
+
+    ArrayList<MenuItem> mCircleMenuItems = new ArrayList<>();
+    ArrayList<String> mCircleIDs = new ArrayList<>();
+
+    HashMap<String,String>  mCirclename_ID = new HashMap<>();
+    ArrayList<String> mCircleNames = new ArrayList<>();
+
+
+
     private String currentCircle = "null";
     private GoogleSignInClient mGoogleSignInClient;
     private DatabaseReference root = FirebaseDatabase.getInstance().getReference().getRoot();
@@ -173,6 +185,7 @@ public final class  MainActivity extends AppCompatActivity
                 });
 
         getAllUsersFromFirebase();
+        getCirclesFromFirebase();
 
 
         fab.setVisibility(View.GONE);
@@ -215,6 +228,31 @@ public final class  MainActivity extends AppCompatActivity
                     }
                 });
         //----------------------------------------------------------------
+
+
+        ImageView iv  = (ImageView) navigationView.getHeaderView(0).findViewById(R.id.switch_circle_button);
+        iv.setOnClickListener(new View.OnClickListener() {
+                                  @Override
+                                  public void onClick(View view) {
+
+                                      if(navigationView.getMenu().getItem(0).isVisible()) {
+                                          navigationView.getMenu().setGroupVisible(0, false);
+                                          navigationView.getMenu().getItem(5).setVisible(false);
+                                          navigationView.getMenu().getItem(6).setVisible(true);
+
+
+                                      }else{
+                                          navigationView.getMenu().setGroupVisible(0, true);
+                                          navigationView.getMenu().getItem(5).setVisible(true);
+                                          navigationView.getMenu().getItem(6).setVisible(false);
+                                      }
+
+                                  }
+                              }
+
+        );
+
+
 
     }
 
@@ -336,7 +374,141 @@ public final class  MainActivity extends AppCompatActivity
 
 
 
+
+    public void getCirclesFromFirebase() {
+
+
+        FirebaseDatabase.getInstance()
+                .getReference()
+                .child("users")
+                .child(FirebaseAuth.getInstance().getCurrentUser().getUid())
+                .child("circles")
+                .addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        Iterator<DataSnapshot> dataSnapshots = dataSnapshot.getChildren()
+                                .iterator();
+
+
+
+                        while (dataSnapshots.hasNext()) {
+                            DataSnapshot dataSnapshotChild = dataSnapshots.next();
+                            mCircleIDs.add(dataSnapshotChild.getKey());
+
+                        }
+
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+                        // Unable to retrieve the users.
+                    }
+
+                });
+
+
+        FirebaseDatabase.getInstance()
+                .getReference()
+                .child("circles")
+                .addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        Iterator<DataSnapshot> dataSnapshots = dataSnapshot.getChildren()
+                                .iterator();
+
+                        for(String circleId:mCircleIDs){
+                            mCircleNames.add(dataSnapshot.child(circleId).child("name").getValue(String.class));
+                            mCirclename_ID.put(dataSnapshot.child(circleId).child("name").getValue(String.class),circleId);
+                        }
+
+
+                        for (int i = 0; i < mCircleNames.size(); i++) {
+                            addNewCircle(mCircleNames.get(i));
+                        }
+
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+                        // Unable to retrieve the users.
+                    }
+
+                });
+
+
+
+
+
+    }
+
     public void getAllUsersFromFirebase() {
+
+       final ArrayList<String> userIds = new ArrayList<>();
+
+
+        FirebaseDatabase.getInstance()
+                .getReference()
+                .child("users")
+                .child(FirebaseAuth.getInstance().getCurrentUser().getUid())
+                .child("lastCircleOpen")
+                .addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        Iterator<DataSnapshot> dataSnapshots = dataSnapshot.getChildren()
+                                .iterator();
+                        currentCircle = dataSnapshot.getValue().toString();
+
+                        Log.d("last circle opennnnnnnnnnn", "onDataChange: "+dataSnapshot.getValue().toString());
+
+                        while (dataSnapshots.hasNext()) {
+                            DataSnapshot dataSnapshotChild = dataSnapshots.next();
+                            Log.d("last circle opennnnnnnnnnn", "onDataChange: "+dataSnapshotChild.getValue(String.class));
+                            Log.d("last circle opennnnnnnnnnn2", "onDataChange: "+dataSnapshot.getValue(String.class));
+                            currentCircle = dataSnapshot.getValue().toString();
+
+                        }
+
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+                        // Unable to retrieve the users.
+                    }
+
+                });
+
+
+
+
+        FirebaseDatabase.getInstance()
+                .getReference()
+                .child("circleMembers")
+                .child(currentCircle)
+                .addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        Iterator<DataSnapshot> dataSnapshots = dataSnapshot.getChildren()
+                                .iterator();
+
+                        Log.d("current Circle ccccccc", "onDataChange: "+currentCircle);
+                        Log.d("current Circle ccccccc", "onDataChange: "+dataSnapshots.hasNext());
+
+                        while (dataSnapshots.hasNext()) {
+                            DataSnapshot dataSnapshotChild = dataSnapshots.next();
+                            userIds.add(dataSnapshotChild.getKey());
+                            Log.d("userID in that circleeeeeeeeeee", "onDataChange: "+dataSnapshotChild.getKey());
+                        }
+
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+                        // Unable to retrieve the users.
+                    }
+
+                });
+
+
 
 
         FirebaseDatabase.getInstance()
@@ -349,13 +521,16 @@ public final class  MainActivity extends AppCompatActivity
                                 .iterator();
 
                         final List<User>  users = new ArrayList<>();
-                        ArrayList<String> userIds = new ArrayList<>();
 
                         while (dataSnapshots.hasNext()) {
                             DataSnapshot dataSnapshotChild = dataSnapshots.next();
                             User user = dataSnapshotChild.getValue(User.class);
-                            users.add(user);
-                            userIds.add(dataSnapshotChild.getKey());
+                            Log.d("uuuseridddddddddd", "onDataChange: " + dataSnapshotChild.getKey());
+
+                            if (userIds.contains(dataSnapshotChild.getKey())) {
+                                Log.d("uuuseriiiiiiiiiiiiiiii", "onDataChange: " + dataSnapshotChild.getKey());
+                                users.add(user);
+                            }
                         }
                         // All users are retrieved except the one who is currently logged
                         // in device.
@@ -377,22 +552,33 @@ public final class  MainActivity extends AppCompatActivity
 
 
 
+
+
     }
 
 
 
 
     public boolean addNewUser(User user, String userId){
-        Menu menu = navigationView.getMenu();
+        Menu menu = navigationView.getMenu().getItem(5).getSubMenu();
         MenuItem menuItem;
         menuItem = menu.add(R.id.users,mMenuItems.size(),mMenuItems.size(),user.getPreferredName());
         menuItem.setCheckable(true);
         mMenuItems.add(menuItem);
-
         mUsers.add(userId);
-
         return true;
     }
+
+    public boolean addNewCircle(String circleName){
+        Menu menu = navigationView.getMenu().getItem(6).getSubMenu();
+        MenuItem menuItem;
+        menuItem = menu.add(R.id.circles,mCircleMenuItems.size(),mCircleMenuItems.size(),circleName);
+        menuItem.setCheckable(true);
+        mCircleMenuItems.add(menuItem);
+        return true;
+    }
+
+
 
     /* Returns index of checked user item, or -1 if none is selected*/
     private int getCheckedUserNavItem(){
@@ -419,22 +605,7 @@ public final class  MainActivity extends AppCompatActivity
         MainActivity.isAppRunning = false;
     }
 
-    private Bitmap getImageBitmap(String url) {
-        Bitmap bm = null;
-        try {
-            URL aURL = new URL(url);
-            URLConnection conn = aURL.openConnection();
-            conn.connect();
-            InputStream is = conn.getInputStream();
-            BufferedInputStream bis = new BufferedInputStream(is);
-            bm = BitmapFactory.decodeStream(bis);
-            bis.close();
-            is.close();
-        } catch (IOException e) {
-            Log.d ( "Exception", "Error getting bitmap");
-        }
-        return bm;
-    }
+
 
     public void setupUI(View view) {
 

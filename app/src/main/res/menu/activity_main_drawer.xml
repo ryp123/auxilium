@@ -5,7 +5,7 @@
     tools:showIn="navigation_view">
 
     <group android:checkableBehavior="single"
-        android:visible="true">
+           android:visible="true">
         <item
             android:id="@+id/nav_profile_page"
             android:icon="@android:drawable/btn_star_big_on"
@@ -30,17 +30,26 @@
 
     </group>
 
-
+<item
+    android:title="Below are Users in THIS CIRCLE">
+    <menu>
     <group android:title="Users"
            android:id="@+id/users"
         android:visible="true">
     </group>
+    </menu>
+</item>
 
+<item
+    android:title="Here are Circles you are In"
+    android:visible="false"
+    >
+    <menu>
     <group android:title="Circles"
-           android:id="@+id/circles"
-           android:visible="false">
+           android:id="@+id/circles">
     </group>
+    </menu>
 
-
+</item>
 
 </menu>

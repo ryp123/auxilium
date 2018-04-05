@@ -68,6 +68,7 @@ public class SignInActivity extends BaseActivity implements View.OnClickListener
     private static final int RC_CREATE_PROFILE = 42;
 
     private Boolean hasCircleActNotBeenCreated;
+    private Boolean hasInviteNotBeenProcess;
     // [START declare_auth]
     private FirebaseAuth mAuth;
     // [END declare_auth]
@@ -82,6 +83,7 @@ public class SignInActivity extends BaseActivity implements View.OnClickListener
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_signin);
         this.hasCircleActNotBeenCreated = true;
+        this.hasInviteNotBeenProcess = true;
 
         // Views
         mStatusTextView = findViewById(R.id.status);
@@ -120,10 +122,18 @@ public class SignInActivity extends BaseActivity implements View.OnClickListener
         // Check if user is signed in (non-null) and update UI accordingly.
         FirebaseUser currentUser = mAuth.getCurrentUser();
         updateUI(currentUser);
-        Log.d("invitations", "calling on start get first login.");
         this.hasCircleActNotBeenCreated = true;
+        this.hasInviteNotBeenProcess = true;
         if(currentUser != null){
-            checkFirstTimeLogin();
+            if (getIntent().getData() == null) {
+                checkFirstTimeLogin();
+            } else {
+                this.hasCircleActNotBeenCreated = false;
+                if (this.hasInviteNotBeenProcess) {
+                    this.hasCircleActNotBeenCreated = false;
+                    checkCircleInvitesAndStatus();
+                }
+            }
         }
     }
     // [END on_start_check_user]
@@ -152,7 +162,15 @@ public class SignInActivity extends BaseActivity implements View.OnClickListener
         else if(requestCode == RC_CREATE_PROFILE && resultCode == RESULT_OK){
             // user registered on the registration screen
             Log.d("invitations", "also a possible entry point to 2 circles.");
-            checkCircleInvitesAndStatus();
+            if (getIntent().getData() == null) {
+                checkFirstTimeLogin();
+            } else {
+                this.hasCircleActNotBeenCreated = false;
+                if (this.hasInviteNotBeenProcess) {
+                    this.hasInviteNotBeenProcess = false;
+                    checkCircleInvitesAndStatus();
+                }
+            }
         }
     }
     // [END onactivityresult]
@@ -298,83 +316,88 @@ public class SignInActivity extends BaseActivity implements View.OnClickListener
 
    public void checkCircleInvitesAndStatus(){
        final FirebaseUser user = mAuth.getCurrentUser();
+       final SignInActivity thisActivity = this;
        if(user != null) {
-           FirebaseDynamicLinks.getInstance()
-                   .getDynamicLink(getIntent())
-                   .addOnSuccessListener(this, new OnSuccessListener<PendingDynamicLinkData>() {
-                       @Override
-                       public void onSuccess(PendingDynamicLinkData pendingDynamicLinkData) {
-                           Uri deepLink = null;
-                           final DatabaseReference db = FirebaseDatabase.getInstance()
-                                   .getReference();
-                           if (pendingDynamicLinkData != null) {
-                               deepLink = pendingDynamicLinkData.getLink();
-                               Toast.makeText(getBaseContext(),
-                                       "Processing Invitation",
-                                       Toast.LENGTH_LONG).show();
-                               final String invitationId = deepLink.getQueryParameter("invitationId");
-                               Log.d("invitations", "Id:" + invitationId);
-                               db.addListenerForSingleValueEvent(new ValueEventListener() {
-                                           @Override
-                                           public void onDataChange(final DataSnapshot dbRef) {
-                                               Invitations invitation = dbRef.child("invitations")
-                                                                             .child(invitationId)
-                                                                             .getValue(Invitations.class);
-                                               Toast.makeText(getBaseContext(), "Processing Invitation", Toast.LENGTH_LONG);
-                                               if (invitation == null) {
-                                                   Toast.makeText(getBaseContext(),
-                                                             "The invitation no longer exists.",
-                                                                   Toast.LENGTH_LONG).show();
-                                                   activityCallback(dbRef, user.getUid());
-                                               } else {
-                                                   if (isInvitationValid(invitation, user.getEmail(), invitationId)) {
-                                                       String circleId = invitation.getCircleId();
-                                                       String userId = user.getUid();
-                                                       Log.d("invitations", "Adding user " + userId  + "to circle " + circleId);
-                                                       // update tasks is being used for batch writes.
-                                                       HashMap<String, Object> updateTasks = new HashMap<>();
-                                                       updateUserWithCircleId(updateTasks,circleId, userId);
-                                                       updateCircleMembers(updateTasks,circleId, userId);
-                                                       if (!isLastOpenedCircleSet(dbRef,userId)) {
-                                                           updateLastOpenedCircle(updateTasks,userId,circleId);
-                                                       }
-                                                       db.updateChildren(updateTasks).addOnCompleteListener(new OnCompleteListener<Void>() {
-                                                           @Override
-                                                           public void onComplete(@NonNull Task<Void> task) {
-                                                               if (task.isSuccessful()) {
-                                                                   Log.d("invitations", "Success!");
-                                                                   deleteUsedInvitation(db, invitationId);
-                                                                   activityCallback(dbRef, user.getUid());
-                                                               } else {
-                                                                   Log.d("invitations", "Failure");
-                                                               }
-                                                           }
-                                                       });
-                                                   } else {
-                                                       activityCallback(dbRef, user.getUid());
+           final DatabaseReference db = FirebaseDatabase.getInstance().getReference();
+           db.addListenerForSingleValueEvent(new ValueEventListener() {
+               @Override
+               public void onDataChange(final DataSnapshot dataSnapshot) {
+                   if(!dataSnapshot.child("users").child(user.getUid()).exists()){
+                       thisActivity.hasInviteNotBeenProcess = true;
+                       startActivityForResult(new Intent(getBaseContext(), ProfileEditActivity.class), RC_CREATE_PROFILE);
+                   } else {
+                       FirebaseDynamicLinks.getInstance()
+                               .getDynamicLink(getIntent())
+                               .addOnSuccessListener(thisActivity, new OnSuccessListener<PendingDynamicLinkData>() {
+                                   @Override
+                                   public void onSuccess(PendingDynamicLinkData pendingDynamicLinkData) {
+                                       Uri deepLink = null;
+                                       if (pendingDynamicLinkData != null) {
+                                           deepLink = pendingDynamicLinkData.getLink();
+                                           Toast.makeText(getBaseContext(),
+                                                   "Processing Invitation",
+                                                   Toast.LENGTH_LONG).show();
+                                           final String invitationId = deepLink.getQueryParameter("invitationId");
+                                           Log.d("invitations", "Id:" + invitationId);
+                                           Invitations invitation = dataSnapshot.child("invitations")
+                                                   .child(invitationId)
+                                                   .getValue(Invitations.class);
+                                           Toast.makeText(getBaseContext(), "Processing Invitation", Toast.LENGTH_LONG);
+                                           if (invitation == null) {
+                                               Toast.makeText(getBaseContext(),
+                                                       "The invitation no longer exists.",
+                                                       Toast.LENGTH_LONG).show();
+                                               activityCallback(dataSnapshot, user.getUid());
+                                           } else {
+                                               if (isInvitationValid(invitation, user.getEmail(), invitationId)) {
+                                                   String circleId = invitation.getCircleId();
+                                                   String userId = user.getUid();
+                                                   Log.d("invitations", "Adding user " + userId  + "to circle " + circleId);
+                                                   // update tasks is being used for batch writes.
+                                                   HashMap<String, Object> updateTasks = new HashMap<>();
+                                                   updateUserWithCircleId(updateTasks,circleId, userId);
+                                                   updateCircleMembers(updateTasks,circleId, userId);
+                                                   if (!isLastOpenedCircleSet(dataSnapshot,userId)) {
+                                                       updateLastOpenedCircle(updateTasks,userId,circleId);
                                                    }
+                                                   db.updateChildren(updateTasks).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                                       @Override
+                                                       public void onComplete(@NonNull Task<Void> task) {
+                                                           if (task.isSuccessful()) {
+                                                               Log.d("invitations", "Success!");
+                                                               deleteUsedInvitation(db, invitationId);
+                                                               redirectToActivity(db);
+                                                           } else {
+                                                               Log.d("invitations", "Failure");
+                                                           }
+                                                       }
+                                                   });
+                                               } else {
+                                                   activityCallback(dataSnapshot, user.getUid());
                                                }
                                            }
+                                       } else {
+                                           Log.d("invitations", "No link redirecting to activity!");
+                                           redirectToActivity(db);
+                                       }
+                                   }
+                               })
+                               .addOnFailureListener(thisActivity, new OnFailureListener() {
+                                   @Override
+                                   public void onFailure(@NonNull Exception e) {
+                                       Log.d("invitations", "getDynamicLink:onFailure", e);
+                                       DatabaseReference db = FirebaseDatabase.getInstance().getReference();
+                                       redirectToActivity(db);
+                                   }
+                               });
+                   }
+               }
 
-                                           @Override
-                                           public void onCancelled(DatabaseError databaseError) {
-                                                Log.e("invitations", databaseError.getDetails());
-                                           }
-                                       });
-                           } else {
-                               Log.d("invitations", "No link redirecting to activity!");
-                               redirectToActivity(db);
-                           }
-                       }
-                   })
-                   .addOnFailureListener(this, new OnFailureListener() {
-                       @Override
-                       public void onFailure(@NonNull Exception e) {
-                           Log.d("invitations", "getDynamicLink:onFailure", e);
-                           DatabaseReference db = FirebaseDatabase.getInstance().getReference();
-                           redirectToActivity(db);
-                       }
-                   });
+               @Override
+               public void onCancelled(DatabaseError databaseError) {
+                   Log.e("FirebaseError", databaseError.getDetails());
+               }
+           });
        }
    }
 
@@ -439,7 +462,7 @@ public class SignInActivity extends BaseActivity implements View.OnClickListener
                 .addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
-                        if(dataSnapshot.child("circles").exists()){
+                        if(dataSnapshot.child("circles").exists() || dataSnapshot.child("lastCircleOpen").exists()){
                             // user is already a part of a circle
                             Log.d("invitations", "starting main activity");
                             startActivity(new Intent(getBaseContext(), MainActivity.class));
@@ -464,6 +487,7 @@ public class SignInActivity extends BaseActivity implements View.OnClickListener
 
     private void activityCallback(DataSnapshot dbRef, String userId) {
         DataSnapshot dataSnapshot = dbRef.child("users").child(userId).child("circles");
+
 
         if(dataSnapshot.exists()){
             Log.d("invitations", "callback: starting main activity!");

@@ -17,6 +17,9 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * Created by Kocur on 2018-03-29.
  */
@@ -110,6 +113,34 @@ public class EditIndexStatusActivity extends AppCompatActivity {
                 indexStatus.setLastSeenVia(lastType.getText().toString());;
                 indexStatus.setReportedAssessment(assesment.getText().toString());
                 mDatabase.child("circles").child(currentCircle).child("indexStatus").setValue(indexStatus);
+                indexStatus.validate();
+                if(!indexStatus.isValid()){
+                    HashMap<String, String> errorMessages = indexStatus.getValidationErrors();
+                    for(Map.Entry<String, String> entry: errorMessages.entrySet()){
+                        String key = entry.getKey();
+                        String errorMessage = entry.getValue();
+                        switch(key){
+                            case "lastSeenBy" :{
+                                lastSeenBy.setError(errorMessage);
+                                break;
+                            }
+                            case "lastSeenVia" :{
+                                lastType.setError(errorMessage);
+                                break;
+                            }
+                            case "reportedAssessment" : {
+                                assesment.setError(errorMessage);
+                                break;
+                            }
+                            default: {
+                                Log.d("Validate Index", "Missing a case " + key );
+                                break;
+                            }
+                        }
+                    }
+                    return true;
+                }
+
                 Toast.makeText(getBaseContext(), "Changes Saved", Toast.LENGTH_LONG).show();
                 Log.d("Firebase Save", "Update Saved");
                 this.finish();

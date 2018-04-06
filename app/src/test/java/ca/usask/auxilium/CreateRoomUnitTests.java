@@ -79,10 +79,16 @@ public class CreateRoomUnitTests {
             System.out.println("checkDefaultEmailTest: Test 1 passed");
 
             //Test 2: valid email
-            String defaultEmail = "Email address";
+            String defaultEmail = "Comma delimited list of emails.";
             result = (boolean) emailMethod.invoke(mRoom, defaultEmail);
             assertEquals(true, result);
             System.out.println("checkDefaultEmailTest: Test 2 passed");
+
+            //Test 3: valid email
+            String defaultEmail2 = "";
+            result = (boolean) emailMethod.invoke(mRoom, defaultEmail2);
+            assertEquals(true, result);
+            System.out.println("checkDefaultEmailTest: Test 3 passed");
 
             emailMethod.setAccessible(false);
 

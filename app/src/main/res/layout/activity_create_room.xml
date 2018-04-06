@@ -106,7 +106,7 @@
         android:layout_marginBottom="152dp"
         android:layout_marginEnd="42dp"
         android:layout_marginStart="40dp"
-        android:ems="10"
+        android:ems="15"
         android:inputType="textEmailAddress"
         android:text="@string/email_text"
         android:textColor="@color/grey_300"

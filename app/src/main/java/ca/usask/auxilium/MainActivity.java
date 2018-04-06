@@ -167,6 +167,8 @@ public final class  MainActivity extends AppCompatActivity
                                                     .child("indexStatus")
                                                     .child("lastUsed")
                                                     .setValue(timeStamp);
+                                        } else {
+                                            navigationView.getMenu().findItem(R.id.nav_concernchat).setVisible(true);
                                         }
                                     }
 

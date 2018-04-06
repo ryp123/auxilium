@@ -25,6 +25,7 @@
         <item
         android:id="@+id/nav_concernchat"
         android:icon="@android:drawable/ic_menu_send"
+            android:visible="false"
         android:title="Concerned Chat" />
 
 

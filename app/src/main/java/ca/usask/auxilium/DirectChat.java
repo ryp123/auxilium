@@ -43,6 +43,7 @@ public class DirectChat extends Fragment {
     private String roomType2;
     private String talkingTo;
     private View myView;
+    private final int maxMessageLength = 1000;
 
     @Nullable
     @Override
@@ -169,29 +170,35 @@ public class DirectChat extends Fragment {
             @Override
             public void onClick(View view) {
 
+                String messageTobeSent = message.getText().toString().trim();
+                if (messageTobeSent.length() > maxMessageLength) {
+                    message.setError("Message exceeded the 1000 maximum character length.");
 
-                final Message newMessage = new Message(senderName, message.getText().toString());
+                } else {
+                    final Message newMessage = new Message(senderName, messageTobeSent);
+                    root.child("personalMessages")
+                            .addListenerForSingleValueEvent(new ValueEventListener() {
+                                @Override
+                                public void onDataChange(DataSnapshot dataSnapshot) {
+                                    String roomId;
+                                    if (dataSnapshot.hasChild(roomType2)) roomId = roomType2;
+                                    else roomId = roomType1;
+                                    root.child("personalMessages")
+                                            .child(roomId)
+                                            .push().setValue(newMessage);
+                                }
+
+                                @Override
+                                public void onCancelled(DatabaseError databaseError) {
+
+                                }
+                            });
+
+                    message.setText("");
+                }
 
 
-                root.child("personalMessages")
-                        .addListenerForSingleValueEvent(new ValueEventListener() {
-                            @Override
-                            public void onDataChange(DataSnapshot dataSnapshot) {
-                                String roomId;
-                                if (dataSnapshot.hasChild(roomType2)) roomId = roomType2;
-                                else roomId = roomType1;
-                                root.child("personalMessages")
-                                        .child(roomId)
-                                        .push().setValue(newMessage);
-                            }
 
-                            @Override
-                            public void onCancelled(DatabaseError databaseError) {
-
-                            }
-                        });
-
-                message.setText("");
 
             }
         });

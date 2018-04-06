@@ -41,6 +41,7 @@ public class Chat extends AppCompatActivity
     private EditText input_msg;
     private TextView chat_conversation;
     private FirebaseAuth mAuth;
+    private final int maxMessageLength = 1000;
 
     private DatabaseReference root = FirebaseDatabase.getInstance().getReference().getRoot() ;
 
@@ -64,17 +65,21 @@ public class Chat extends AppCompatActivity
         btn_send_msg.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                String message = input_msg.getText().toString().trim();
+                if (message.length() > maxMessageLength) {
+                    input_msg.setError("Message exceeded the 1000 maximum character length.");
+                } else {
+                    Map<String,Object> map = new HashMap<String, Object>();
+                    //temp_key = root.push().getKey();
+                    root.updateChildren(map);
 
-                Map<String,Object> map = new HashMap<String, Object>();
-                //temp_key = root.push().getKey();
-                root.updateChildren(map);
+                    DatabaseReference message_root = root;
+                    Map<String,Object> map2 = new HashMap<String, Object>();
+                    map2.put("name",mAuth.getCurrentUser().getDisplayName().toString());
+                    map2.put("msg",message);
 
-                DatabaseReference message_root = root;
-                Map<String,Object> map2 = new HashMap<String, Object>();
-                map2.put("name",mAuth.getCurrentUser().getDisplayName().toString());
-                map2.put("msg",input_msg.getText().toString());
-
-                message_root.updateChildren(map2);
+                    message_root.updateChildren(map2);
+                }
             }
         });
 

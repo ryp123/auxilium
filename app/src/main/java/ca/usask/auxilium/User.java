@@ -1,7 +1,5 @@
 package ca.usask.auxilium;
 
-import android.text.InputFilter;
-import android.text.Spanned;
 import android.util.Patterns;
 
 import java.util.HashMap;

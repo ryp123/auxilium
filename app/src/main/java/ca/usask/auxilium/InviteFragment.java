@@ -37,10 +37,6 @@ public class InviteFragment extends Fragment {
 
     private DatabaseReference mDatabase;
 
-    private Circle mCircle;
-
-    private String [] emails;
-
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {

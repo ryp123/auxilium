@@ -344,22 +344,21 @@ public final class  MainActivity extends AppCompatActivity
             fragmentManager.beginTransaction().replace(R.id.content_frame, mDirectChat).commit();
         }
 
-
-
-        FragmentManager fragmentManager2 = getFragmentManager();
         if (id == R.id.nav_profile_page) {
-            fragmentManager2.beginTransaction().replace(R.id.content_frame, new ProfileFragment()).commit();
+            fragmentManager.beginTransaction().replace(R.id.content_frame, new ProfileFragment()).commit();
             // Handle the camera action
         } else if (id == R.id.nav_indexstatus) {
-            fragmentManager2.beginTransaction().replace(R.id.content_frame, new IndexStatusActivity()).commit();
+            fragmentManager.beginTransaction().replace(R.id.content_frame, new IndexStatusActivity()).commit();
 
         } else if (id == R.id.nav_helpscreen) {
-            fragmentManager2.beginTransaction().replace(R.id.content_frame, new HelpScreen()).commit();
+            fragmentManager.beginTransaction().replace(R.id.content_frame, new HelpScreen()).commit();
 
         } else if (id == R.id.nav_indexchat){
-            fragmentManager2.beginTransaction().replace(R.id.content_frame, new IndexChat()).commit();
+            fragmentManager.beginTransaction().replace(R.id.content_frame, new IndexChat()).commit();
         } else if (id == R.id.nav_concernchat){
-            fragmentManager2.beginTransaction().replace(R.id.content_frame, new ChatLanding()).commit();
+            fragmentManager.beginTransaction().replace(R.id.content_frame, new ChatLanding()).commit();
+        } else if (id == R.id.nav_invite) {
+            fragmentManager.beginTransaction().replace(R.id.content_frame, new InviteFragment()).commit();
         }
 
         if(item.getGroupId() == R.id.circles){
@@ -533,7 +532,7 @@ public final class  MainActivity extends AppCompatActivity
 
 
     public boolean addNewUser(User user, String userId){
-        Menu menu = navigationView.getMenu().getItem(5).getSubMenu();
+        Menu menu = navigationView.getMenu().getItem(6).getSubMenu();
         MenuItem menuItem;
         menuItem = menu.add(R.id.users,mMenuItems.size(),mMenuItems.size(),user.getPreferredName());
         menuItem.setCheckable(true);
@@ -543,7 +542,7 @@ public final class  MainActivity extends AppCompatActivity
     }
 
     public boolean addNewCircle(String circleName){
-        Menu menu = navigationView.getMenu().getItem(6).getSubMenu();
+        Menu menu = navigationView.getMenu().getItem(7).getSubMenu();
         MenuItem menuItem;
         menuItem = menu.add(R.id.circles,mCircleMenuItems.size(),mCircleMenuItems.size(),circleName);
         menuItem.setCheckable(true);

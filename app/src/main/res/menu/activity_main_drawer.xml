@@ -27,6 +27,10 @@
         android:icon="@android:drawable/ic_menu_send"
             android:visible="false"
         android:title="Concerned Chat" />
+        <item
+            android:id="@+id/nav_invite"
+            android:icon="@android:drawable/ic_input_add"
+            android:title="Invite" />
 
 
     </group>

@@ -26,6 +26,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.HashMap;
+import java.util.Map;
 
 import ca.usask.auxilium.R;
 import ca.usask.auxilium.User;
@@ -113,9 +114,11 @@ public class ProfileEditActivity extends AppCompatActivity {
         return true;
     }
 
+
     public boolean onOptionsItemSelected(MenuItem item){
         switch (item.getItemId()) {
             case R.id.action_save:
+                User user = new User();
                 String userId = fUser.getUid();
                 user.setFirstName(txtFirstName.getText().toString());
                 user.setLastName(txtLastName.getText().toString());
@@ -124,9 +127,47 @@ public class ProfileEditActivity extends AppCompatActivity {
                 user.setGender(txtGender.getText().toString());
                 user.setDiagnosis(txtDiagnosis.getText().toString());
                 user.setEmergencyContact(txtEmergencyContact.getText().toString());
-
+                user.validate();
                 if(!user.isValid()){
-                    Toast.makeText(getBaseContext(), "Error: please fill out the required fields", Toast.LENGTH_LONG).show();
+                    HashMap<String, String> errorMessages = user.getValidationErrors();
+                    for (Map.Entry<String, String> entry : errorMessages.entrySet()) {
+                        String key = entry.getKey();
+                        String errorMessage = entry.getValue();
+                        switch (key) {
+                            case "firstName": {
+                                txtFirstName.setError(errorMessage);
+                                break;
+                            }
+                            case "lastName": {
+                                txtLastName.setError(errorMessage);
+                                break;
+                            }
+                            case "preferredName": {
+                                txtPrefName.setError(errorMessage);
+                                break;
+                            }
+                            case "age": {
+                                txtAge.setError(errorMessage);
+                                break;
+                            }
+                            case "gender": {
+                                txtGender.setError(errorMessage);
+                                break;
+                            }
+                            case "diagnosis": {
+                                txtDiagnosis.setError(errorMessage);
+                                break;
+                            }
+                            case "emergencyContact": {
+                                txtEmergencyContact.setError(errorMessage);
+                                break;
+                            }
+                            default: {
+                                Log.d("validateProfile", "missing edge case " + key);
+                                break;
+                            }
+                        }
+                    }
                     return true;
                 }
 

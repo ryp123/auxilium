@@ -32,6 +32,7 @@ import com.google.firebase.messaging.FirebaseMessaging;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedHashSet;
 import java.util.List;
@@ -68,6 +69,22 @@ public class CreateRoomActivity extends AppCompatActivity {
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
                 android.R.layout.simple_spinner_dropdown_item, spinItems);
         spinner.setAdapter(adapter);
+        final EditText emailInput = (EditText) findViewById(R.id.friendEmail1);
+        final String hint = "Comma delimited list of emails.";
+        emailInput.setText(hint);
+        emailInput.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(final View view, final boolean hasFocus) {
+                if (hasFocus) {
+                    Log.d("invitations", "set text to empty?");
+                    emailInput.setHint(hint);
+                    emailInput.setText("");
+                } else {
+                    emailInput.setText(hint);
+                }
+            }
+        });
+
     }
 
     public void  onCreateButtonClick(View v) {
@@ -96,8 +113,32 @@ public class CreateRoomActivity extends AppCompatActivity {
         Log.d("CircleActivity", "The circle id is: " + circleId);
         Log.d("CircleActivity", "The user id is: " + FirebaseAuth.getInstance().getCurrentUser().getUid());
         Toast.makeText(this.getBaseContext(), "Creating your circle!", Toast.LENGTH_SHORT);
-
-
+        Log.d("Invitations", "Getting the emails to send invitations to");
+        final String circleCreatorEmail = FirebaseAuth.getInstance().getCurrentUser().getEmail();
+        EditText emailInput = (EditText) findViewById(R.id.friendEmail1);
+        String emailParts = emailInput.getText().toString();
+        String[] emails = emailParts.split(",");
+        List<String> emailList = Arrays.asList(emails);
+        Set<String> emailSet = new LinkedHashSet<String>(emailList);
+        for (String email: emailSet) {
+            Log.d("invitations", "The email I processed is: " + email);
+            if (isEmailTheDefaultValue(email)) {
+                emailSet.remove(email);
+            } else if (circleCreatorEmail.equals(email)) {
+                Toast.makeText(getBaseContext(),
+                          "You cannot send an email to yourself!",
+                               Toast.LENGTH_LONG).show();
+                return;
+            } else if (isEmailValid(email)) {
+               continue;
+            } else {
+                Toast.makeText(getBaseContext(),
+                               "The email " + email + " is invalid.",
+                                Toast.LENGTH_LONG).show();
+                return;
+            }
+        }
+        final Set<String> validEmails = emailSet;
         /////////notification///////
         FirebaseMessaging.getInstance().subscribeToTopic(circleId);
 
@@ -108,7 +149,7 @@ public class CreateRoomActivity extends AppCompatActivity {
             public void onComplete(@NonNull Task<Void> task) {
                 if (task.isSuccessful()) {
                     Log.d("CircleActivity", "Created new circle!");
-                    processInvitations(circleId);
+                    processInvitations(validEmails, circleId, circleCreatorEmail);
                 } else {
                     Log.d("CircleActivity", "Failed to create new circle!");
                 }
@@ -152,30 +193,17 @@ public class CreateRoomActivity extends AppCompatActivity {
     }
 
     private boolean isEmailTheDefaultValue(String email) {
-        String defaultValue = "Email address";
-        return email.equals(defaultValue);
+        String defaultValue = "Comma delimited list of emails.";
+        return email.equals(defaultValue) || email.isEmpty();
 
     }
 
-    private void processInvitations(String circleId) {
+    private void processInvitations(Set<String> emailSet, String circleId, String circleCreatorEmail) {
+
         //get email information
-        Log.d("Invitations", "Getting the emails to send invitations to");
-        String circleCreatorEmail = FirebaseAuth.getInstance().getCurrentUser().getEmail();
-        EditText emailInput = (EditText) findViewById(R.id.friendEmail1);
-        String emailParts = emailInput.getText().toString();
-        String[] emails = emailParts.split(",");
-        List<String> emailList = Arrays.asList(emails);
-        Set<String> emailSet = new LinkedHashSet<String>(emailList);
+
         for (String email: emailSet) {
-            if (isEmailTheDefaultValue(email)) {
-                sendInvitation(null);
-            } else if (circleCreatorEmail.equals(email)) {
-                sendInvitation(null);
-            } else if (isEmailValid(email)) {
-                sendInvitation(new Invitations(circleId, email, circleCreatorEmail));
-            } else {
-                sendInvitation(null);
-            }
+            sendInvitation(new Invitations(circleId, email, circleCreatorEmail));
         }
     }
 

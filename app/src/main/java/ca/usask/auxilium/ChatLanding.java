@@ -128,11 +128,14 @@ public class ChatLanding extends Fragment {
         send.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
-                Message newMessage = new Message(senderName, message.getText().toString());
-                root.child("concernedMessages").child(currentCircle).push().setValue(newMessage);
-                message.setText("");
-
+                String messageToBeSent = message.getText().toString().trim();
+                if (messageToBeSent.length() > 1000) {
+                    message.setError("Message exceeded the 1000 maximum character length.");
+                } else {
+                    Message newMessage = new Message(senderName,messageToBeSent);
+                    root.child("concernedMessages").child(currentCircle).push().setValue(newMessage);
+                    message.setText("");
+                }
             }
         });
 

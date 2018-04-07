@@ -333,9 +333,6 @@ public final class  MainActivity extends AppCompatActivity
             fragmentManager.beginTransaction().replace(R.id.content_frame, profileFragment).commit();
             return true;
         }
-        else if (id == R.id.action_settings) {
-            return true;
-        }
         else if (id == R.id.action_sign_out) {
             FirebaseAuth.getInstance().signOut();
             // Google sign out

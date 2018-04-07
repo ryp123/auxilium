@@ -185,7 +185,7 @@ public class IndexStatusActivity extends Fragment {
 
                     @Override
                     public void onCancelled(DatabaseError databaseError) {
-
+                        Log.d("Firebase Error", "Current Circle doesn't exist");
                     }
                 });
 

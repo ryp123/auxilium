@@ -43,7 +43,6 @@ public class DirectChat extends Fragment {
     private String roomType2;
     private String talkingTo;
     private View myView;
-    private final int maxMessageLength = 1000;
 
     @Nullable
     @Override
@@ -171,7 +170,7 @@ public class DirectChat extends Fragment {
             public void onClick(View view) {
 
                 String messageTobeSent = message.getText().toString().trim();
-                if (messageTobeSent.length() > maxMessageLength) {
+                if (messageTobeSent.length() > 1000) {
                     message.setError("Message exceeded the 1000 maximum character length.");
 
                 } else {

@@ -36,7 +36,7 @@
     </group>
 
 <item
-    android:title="Below are Users in THIS CIRCLE">
+    android:title="Users in This Circle">
     <menu>
     <group android:title="Users"
            android:id="@+id/users"
@@ -46,7 +46,7 @@
 </item>
 
 <item
-    android:title="Here are Circles you are In"
+    android:title="Circles you are in"
     android:visible="false"
     >
     <menu>

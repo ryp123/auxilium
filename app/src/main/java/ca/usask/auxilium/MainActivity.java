@@ -270,9 +270,6 @@ public final class  MainActivity extends AppCompatActivity
                                                       role = dataSnapshot.getValue().toString();
                                                       if (role.equals("Index")){
                                                           navigationView.getMenu().findItem(R.id.nav_concernchat).setVisible(false);
-                                                      }else {
-                                                          navigationView.getMenu().findItem(R.id.nav_concernchat).setVisible(true);
-
                                                       }
                                                   }
 

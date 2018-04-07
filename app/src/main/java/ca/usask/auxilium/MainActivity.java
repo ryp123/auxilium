@@ -85,6 +85,7 @@ public final class  MainActivity extends AppCompatActivity
     ArrayList<String> mCircleNames = new ArrayList<>();
 
 
+    String role = "null";
 
     private String currentCircle = "null";
     private GoogleSignInClient mGoogleSignInClient;
@@ -167,6 +168,9 @@ public final class  MainActivity extends AppCompatActivity
                                                     .child("indexStatus")
                                                     .child("lastUsed")
                                                     .setValue(timeStamp);
+
+
+                                            navigationView.getMenu().findItem(R.id.nav_concernchat).setVisible(false);
                                         } else {
                                             navigationView.getMenu().findItem(R.id.nav_concernchat).setVisible(true);
                                         }
@@ -241,15 +245,41 @@ public final class  MainActivity extends AppCompatActivity
 
                                       if(navigationView.getMenu().getItem(0).isVisible()) {
                                           navigationView.getMenu().setGroupVisible(0, false);
-                                          navigationView.getMenu().getItem(5).setVisible(false);
-                                          navigationView.getMenu().getItem(6).setVisible(true);
+                                          navigationView.getMenu().getItem(6).setVisible(false);
+                                          navigationView.getMenu().getItem(7).setVisible(true);
+
+
 
 
                                       }else{
                                           navigationView.getMenu().setGroupVisible(0, true);
-                                          navigationView.getMenu().getItem(5).setVisible(true);
-                                          navigationView.getMenu().getItem(6).setVisible(false);
+                                          navigationView.getMenu().getItem(6).setVisible(true);
+                                          navigationView.getMenu().getItem(7).setVisible(false);
+
                                       }
+
+
+                                      root.child("users")
+                                              .child(FirebaseAuth.getInstance().getCurrentUser().getUid())
+                                              .child("circles")
+                                              .child(currentCircle)
+                                              .child("role")
+                                              .addListenerForSingleValueEvent(new ValueEventListener() {
+                                                  @Override
+                                                  public void onDataChange(DataSnapshot dataSnapshot) {
+                                                      role = dataSnapshot.getValue().toString();
+                                                      if (role.equals("Index")){
+                                                          navigationView.getMenu().findItem(R.id.nav_concernchat).setVisible(false);
+                                                      }else {
+                                                          navigationView.getMenu().findItem(R.id.nav_concernchat).setVisible(true);
+
+                                                      }
+                                                  }
+
+                                                  @Override
+                                                  public void onCancelled(DatabaseError databaseError) {
+                                                  }
+                                              });
 
                                   }
                               }

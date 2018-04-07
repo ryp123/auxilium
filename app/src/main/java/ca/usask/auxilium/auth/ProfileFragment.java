@@ -35,7 +35,6 @@ public class ProfileFragment extends Fragment {
     TextView txtPrefName;
     TextView txtAge;
     TextView txtGender;
-    TextView txtDiagnosis;
     TextView txtEmergencyContact;
 
     @Nullable
@@ -48,7 +47,6 @@ public class ProfileFragment extends Fragment {
         txtPrefName = myView.findViewById(R.id.indexPrefName);
         txtAge = myView.findViewById(R.id.indexAge);
         txtGender = myView.findViewById(R.id.indexGender);
-        txtDiagnosis = myView.findViewById(R.id.indexDiagnosis);
         txtEmergencyContact = myView.findViewById(R.id.emergencyContact);
         getActivity().setTitle("Profile");
         return myView;
@@ -93,7 +91,6 @@ public class ProfileFragment extends Fragment {
                             txtPrefName.setText(user.getPreferredName());
                             txtAge.setText(user.getAge());
                             txtGender.setText(user.getGender());
-                            txtDiagnosis.setText(user.getDiagnosis());
                             txtEmergencyContact.setText(user.getEmergencyContact());
                         }
                         else{

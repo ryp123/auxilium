@@ -12,7 +12,9 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.ArrayAdapter;
 import android.widget.EditText;
+import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -47,8 +49,8 @@ public class ProfileEditActivity extends AppCompatActivity {
     EditText txtPrefName;
     EditText txtAge;
     EditText txtGender;
-    EditText txtDiagnosis;
     EditText txtEmergencyContact;
+    Spinner genderSpinner;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,6 +66,11 @@ public class ProfileEditActivity extends AppCompatActivity {
         String userId = fUser.getUid();
 
         setupUI(findViewById(R.id.edit_profile));
+        Spinner spinner = (Spinner) findViewById(R.id.genderSpinner);
+        final String[] spinItems = new String[]{"Male", "Female", "Other", "Prefer not to say"};
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
+                android.R.layout.simple_spinner_dropdown_item, spinItems);
+        spinner.setAdapter(adapter);
 
 
         //imgProfilePic = findViewById(R.id.profilePicture);
@@ -71,8 +78,7 @@ public class ProfileEditActivity extends AppCompatActivity {
         txtLastName = findViewById(R.id.indexLastName);
         txtPrefName = findViewById(R.id.indexPrefName);
         txtAge = findViewById(R.id.indexAge);
-        txtGender = findViewById(R.id.indexGender);
-        txtDiagnosis = findViewById(R.id.indexDiagnosis);
+        genderSpinner = (Spinner) findViewById(R.id.genderSpinner);
         txtEmergencyContact = findViewById(R.id.emergencyContact);
 
         Log.d("PROFILE email/id", userId);
@@ -88,8 +94,15 @@ public class ProfileEditActivity extends AppCompatActivity {
                     txtLastName.setText(user.getLastName());
                     txtPrefName.setText(user.getPreferredName());
                     txtAge.setText(user.getAge());
-                    txtGender.setText(user.getGender());
-                    txtDiagnosis.setText(user.getDiagnosis());
+                    int position = 0;
+                    for (String spinnerVal: spinItems) {
+                        if (spinnerVal.equals(user.getGender())) {
+                            genderSpinner.setSelection(position);
+                            break;
+                        } else {
+                            position++;
+                        }
+                    }
                     txtEmergencyContact.setText(user.getEmergencyContact());
                 }
                 else{
@@ -124,8 +137,7 @@ public class ProfileEditActivity extends AppCompatActivity {
                 user.setLastName(txtLastName.getText().toString());
                 user.setPreferredName(txtPrefName.getText().toString());
                 user.setAge(txtAge.getText().toString());
-                user.setGender(txtGender.getText().toString());
-                user.setDiagnosis(txtDiagnosis.getText().toString());
+                user.setGender(genderSpinner.getSelectedItem().toString());
                 user.setEmergencyContact(txtEmergencyContact.getText().toString());
                 user.validate();
                 if(!user.isValid()){
@@ -154,10 +166,6 @@ public class ProfileEditActivity extends AppCompatActivity {
                                 txtGender.setError(errorMessage);
                                 break;
                             }
-                            case "diagnosis": {
-                                txtDiagnosis.setError(errorMessage);
-                                break;
-                            }
                             case "emergencyContact": {
                                 txtEmergencyContact.setError(errorMessage);
                                 break;
@@ -181,7 +189,6 @@ public class ProfileEditActivity extends AppCompatActivity {
                 updateTasks.put(userPath + "preferredName", user.getPreferredName());
                 updateTasks.put(userPath + "age", user.getAge());
                 updateTasks.put(userPath + "gender", user.getGender());
-                updateTasks.put(userPath + "diagnosis", user.getDiagnosis());
                 updateTasks.put(userPath + "emergencyContact", user.getEmergencyContact());
                 final ProfileEditActivity thisActivity = this;
                 mDatabase.updateChildren(updateTasks).addOnCompleteListener(new OnCompleteListener<Void>() {

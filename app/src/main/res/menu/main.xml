@@ -7,11 +7,6 @@
         android:title="Profile"
         app:showAsAction="never" />
     <item
-        android:id="@+id/action_settings"
-        android:orderInCategory="101"
-        android:title="@string/action_settings"
-        app:showAsAction="never" />
-    <item
         android:id="@+id/action_sign_out"
         android:orderInCategory="102"
         android:title="Sign Out"

@@ -171,8 +171,12 @@ public final class  MainActivity extends AppCompatActivity
 
 
                                             navigationView.getMenu().findItem(R.id.nav_concernchat).setVisible(false);
+                                            navigationView.getMenu().findItem(R.id.nav_indexstatus).setVisible(false);
+
                                         } else {
                                             navigationView.getMenu().findItem(R.id.nav_concernchat).setVisible(true);
+                                            navigationView.getMenu().findItem(R.id.nav_indexstatus).setVisible(true);
+
                                         }
                                     }
 
@@ -270,6 +274,7 @@ public final class  MainActivity extends AppCompatActivity
                                                       role = dataSnapshot.getValue().toString();
                                                       if (role.equals("Index")){
                                                           navigationView.getMenu().findItem(R.id.nav_concernchat).setVisible(false);
+                                                          navigationView.getMenu().findItem(R.id.nav_indexstatus).setVisible(false);
                                                       }
                                                   }
 

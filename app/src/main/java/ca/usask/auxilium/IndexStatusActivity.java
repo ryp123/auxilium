@@ -109,7 +109,50 @@ public class IndexStatusActivity extends Fragment {
 
         return myView;
     }
+    //Populate data from DB after saving in the edit activity
+    private void populateIndex(){
+        root.child("users")
+                .child(FirebaseAuth.getInstance().getCurrentUser().getUid())
+                .child("lastCircleOpen")
+                .addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        String curCircle = dataSnapshot.getValue(String.class);
+                        currentCircle = curCircle;
+                        root.child("circles")
+                                .child(currentCircle)
+                                .child("indexStatus")
+                                .addListenerForSingleValueEvent(new ValueEventListener() {
+                                    @Override
+                                    public void onDataChange(DataSnapshot dataSnapshot) {
+                                        indexStatus = dataSnapshot.getValue(IndexStatus.class);
+                                        if (indexStatus != null) {
+                                            lastUsed.setText(indexStatus.getLastUsed());
+                                            lastSeenBy.setText(indexStatus.getLastSeenBy());
+                                            lastType.setText(indexStatus.getLastSeenVia());
+                                            assesment.setText(indexStatus.getReportedAssessment());
+                                        } else {
+                                            Log.e("Firebase Error", "Index status is null");
+                                            indexStatus = new IndexStatus();
+                                        }
+                                    }
 
+                                    @Override
+                                    public void onCancelled(DatabaseError databaseError) {
+                                        Log.d("Firebase Error", "Current Circle doesn't exist");
+                                    }
+                                });
+
+
+
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+                        throw databaseError.toException();
+                    }
+                });
+    }
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -130,6 +173,23 @@ public class IndexStatusActivity extends Fragment {
         } else {
             userId = fUser.getUid();
         }
+        root.child("users")
+                .child(FirebaseAuth.getInstance().getCurrentUser().getUid())
+                .child("lastCircleOpen")
+                .addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        String curCircle = dataSnapshot.getValue(String.class);
+                        currentCircle = curCircle;
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+
+                    }
+                });
+
+
 
     }
     @Override
@@ -153,6 +213,7 @@ public class IndexStatusActivity extends Fragment {
 
     @Override
     public void onResume() {
+        populateIndex();
         super.onResume();
     }
 

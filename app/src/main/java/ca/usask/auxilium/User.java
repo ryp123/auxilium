@@ -128,17 +128,22 @@ public class User {
                 }
                 return;
             }
-            Integer age = Integer.parseInt(this.age);
-            if (age > 200) {
+            Pattern numPattern = Pattern.compile("^-?\\d+$");
+            if (!numPattern.matcher(this.age).matches()) {
                 if (!this.validationErrors.containsKey("age")) {
-                    this.validationErrors.put("age", "Age exceeds maximum value");
+                    this.validationErrors.put("age", "Age must be a number.");
+                }
+            }
+            Integer currentAge = Integer.parseInt(this.age);
+            if (currentAge > 200 || currentAge < 1) {
+                if (!this.validationErrors.containsKey("age")) {
+                    this.validationErrors.put("age", "Age must be between 1 and 200");
                 }
             }
         } catch(NumberFormatException _notUsed) {
             if (!this.validationErrors.containsKey("age")) {
                 this.validationErrors.put("age", "Invalid age value");
             }
-            return;
         }
         return;
     }
